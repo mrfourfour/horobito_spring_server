@@ -1,28 +1,34 @@
 package com.example.demo.user.domain;
 
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.*;
+
 
 import javax.persistence.*;
-import java.util.List;
+import java.io.Serializable;
+import java.util.*;
 
 @Entity
-@Table(name = "user")
+@Table
 @Getter
-@AllArgsConstructor(access = AccessLevel.PUBLIC)
-public class User {
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
+public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id; // = code
 
-    private String userId;
+    @Column(nullable = false, unique = true)
+    private String userId; // = email
 
-    private String password;
+    @Column(nullable = false)
+    private String password; // = passowrd
 
-    private String auth;
+    @Setter
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+
 
 
     @OneToMany(mappedBy = "feed", cascade = {CascadeType.PERSIST})

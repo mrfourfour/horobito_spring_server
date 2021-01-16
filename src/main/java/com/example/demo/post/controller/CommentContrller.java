@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class CommentContrller {
+
+
     @PostMapping("/feed/{feedId}/comments")
-    public void makeComment(@PathVariable Long id){
+    public void makeComment(@PathVariable Long i,
+                            @RequestParam String contents){
 
     }
 
