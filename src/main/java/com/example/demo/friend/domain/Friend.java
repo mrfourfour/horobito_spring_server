@@ -1,6 +1,7 @@
-package com.example.demo.user.domain;
+package com.example.demo.friend.domain;
 
 
+import com.example.demo.user.domain.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,20 +16,25 @@ public class Friend {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
     private Long frinedId;
+
+    @Embedded
+    private Owner owner;
+
+    private String friendname;
 
     private Boolean isFriend;
 
-    private Friend(Long frinedId){
-        this.frinedId = frinedId;
+
+
+    public Friend(User friendUser){
+        this.frinedId = friendUser.getId();
+        this.friendname = friendUser.getUserId();
+        this.isFriend = false;
     }
 
 
-    public static Friend makeFriend(Long friendId) {
-        return new Friend(friendId);
+    public void agreeFriend() {
+        this.isFriend = true;
     }
 }

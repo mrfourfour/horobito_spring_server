@@ -23,8 +23,7 @@ public class FeedController {
 
     @GetMapping("/feeds/{feedID}")
     public Feed  findFeedDetailByFeedId(@PathVariable Long FeedId){
-        feedService.findFeedDetailByFeedId(FeedId);
-
+        return feedService.findFeedDetailByFeedId(FeedId);
     }
 
     @PostMapping("/feeds")

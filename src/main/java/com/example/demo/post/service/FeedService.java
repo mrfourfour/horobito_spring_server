@@ -40,7 +40,7 @@ public class FeedService {
 
     public void makeFeedByContents(String contents) {
         User user = null;
-        Writer writer = null;
+        Writer writer = new Writer(user.getId(), user.getUserId());
         Feed feed = Feed.createFeed(writer, contents);
     }
 }

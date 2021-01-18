@@ -1,9 +1,10 @@
-package com.example.demo.user.controller;
+package com.example.demo.friend.controller;
 
 
-import com.example.demo.user.domain.Friend;
-import com.example.demo.user.service.FriendService;
+import com.example.demo.friend.domain.Friend;
+import com.example.demo.friend.service.FriendService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,8 +16,8 @@ public class FriendController {
     private final FriendService friendService;
 
     @GetMapping("/friends")
-    public List<Friend> findFriendList(@RequestParam(value = "page")int page,
-                                                    @RequestParam(value = "size")int size){
+    public Page<Friend> findFriendList(@RequestParam(value = "page")int page,
+                                       @RequestParam(value = "size")int size){
         return friendService.findFriendListByPageAndPageSize(page, size);
 
     }
@@ -26,15 +27,17 @@ public class FriendController {
         friendService.requestOrAcceptFriendByFriendId(FriendId);
     }
 
-    @PostMapping("/friends/{friendId}")
+    @DeleteMapping("/friends/{friendId}")
     public void deleteFriend(@PathVariable Long friendId){
         friendService.deleteFriendByFriendId(friendId);
+
 
     }
 
     @GetMapping("/friends/request")
-    public List<Friend> findRequest(@RequestParam(value = "page")Long page,
-                                         @RequestParam(value = "size")Long size){
+    public Page<Friend> findRequest(@RequestParam(value = "page")int page,
+                                         @RequestParam(value = "size")int size){
+        return friendService.findFriendRequest(page, size);
 
     }
 }

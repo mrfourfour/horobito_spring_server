@@ -36,4 +36,18 @@ public class Comment {
     private Long likeNum;
 
     private boolean isDelete;
+
+    public Comment(Writer writer, String content){
+        this.writer = writer;
+        this.content = content;
+    }
+
+
+    public static Comment makeComment(Writer writer, String contents) {
+        return new Comment(writer, contents);
+    }
+
+    public void likeOrDislike() {
+
+    }
 }

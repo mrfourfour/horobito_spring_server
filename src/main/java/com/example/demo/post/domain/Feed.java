@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "feed")
+@Table
 @Getter
 @Setter
 @NoArgsConstructor
@@ -30,7 +30,7 @@ public class Feed {
 
     private Long likeNum;
 
-    private  Feed(Writer writer, String content){
+    private Feed(Writer writer, String content){
         this.writer = writer;
         this.content = content;
     }
@@ -50,5 +50,10 @@ public class Feed {
 
     public static Feed createFeed(Writer writer, String contents) {
         return new Feed(writer, contents);
+    }
+
+    public void enrollComment(Comment comment) {
+        comment.setFeed(this);
+        comments.add(comment);
     }
 }
