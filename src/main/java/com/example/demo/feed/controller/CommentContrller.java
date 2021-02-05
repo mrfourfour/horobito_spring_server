@@ -1,12 +1,9 @@
-package com.example.demo.post.controller;
+package com.example.demo.feed.controller;
 
 
-import com.example.demo.post.service.CommentService;
+import com.example.demo.feed.service.CommentService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor

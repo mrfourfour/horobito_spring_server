@@ -1,5 +1,7 @@
 package com.example.demo.user.domain;
 
+import com.example.demo.login.service.UserRole;
+import com.example.demo.user.service.SignUp;
 import lombok.*;
 
 
@@ -8,14 +10,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+
 
 @Entity
-@Table
+@Table(name = "user")
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
-public class User implements Serializable {
+public class User  implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,37 +29,77 @@ public class User implements Serializable {
     @Column(nullable = false)
     private String password; // = passowrd
 
+    @Embedded
+            // 수정해야 할 부분
+            //  user- friend 로 해야 하나
+            // 아니면 user - friendlist 관계로 해야 하나...
+    IsFriend isFriend;
+
+
+    @Setter
+    @Column(name = "user_role")
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
 
 
 
-    private HashMap<Long, Boolean> isFriend  = new HashMap<>();
-
-    public void setFriend(User user) {
-        isFriend.put(user.getId(), false);
+    public static User createUser(SignUp signUp) {
+        return new User(signUp);
     }
 
-    public Boolean findFriend(User friendUser) {
-        return isFriend.get(friendUser.getId());
+    public User(SignUp signUp){
+        this.userId = signUp.getUserId();
+        this.password = signUp.getPassword();
+        this.role = UserRole.ROLE_USER;
+        this.isFriend = new IsFriend();
+    }
+
+    public User(String userId, String password){
+        this.userId = userId;
+        this.password = password;
+    }
+
+
+
+    public Integer findFriend(User friendUser) {
+        return this.isFriend.getFriendList().get(friendUser.getId());
     }
 
     public void agreeFriend(User friendUser) {
-        isFriend.put(friendUser.getId(), true);
+        this.isFriend.getFriendList().put(friendUser.getId(), 3);
     }
 
     public void deleteFriend(User user) {
-        isFriend.put(user.getId(), null);
+        this.isFriend.getFriendList().put(user.getId(), 0);
     }
 
 
-    public List<Long> findRequest() {
-        Set<Long> keys = isFriend.keySet();
-        List<Long> friendIds = new ArrayList<>();
 
-        for (Long friendId : keys){
-            if(isFriend.get(friendId)==false){
-                friendIds.add(friendId);
+    public boolean getIsEnable() {
+        return true;
+    }
+
+    public void setFriend(User user) {
+        this.isFriend.getFriendList().put(user.getId(), 2);
+    }
+
+    public void requestFriend(User friendUser) {
+        this.isFriend.getFriendList().put(friendUser.getId(), 1);
+    }
+
+    public List<Long> findFriendRequestList() {
+        HashMap<Long, Integer> friendList = this.isFriend.getFriendList();
+        List<Long> friendRequestList = new ArrayList<>();
+
+        ;
+        for(Long userId : friendList.keySet()){
+            if(friendList.get(userId)==1){
+                friendRequestList.add(userId);
             }
         }
-        return friendIds;
+        return friendRequestList;
+
     }
+
+
 }

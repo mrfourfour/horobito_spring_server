@@ -1,6 +1,7 @@
-package com.example.demo.post.domain;
+package com.example.demo.feed.domain;
 
 
+import com.example.demo.user.domain.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table
+@Table(name = "comment")
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -49,5 +50,11 @@ public class Comment {
 
     public void likeOrDislike() {
 
+    }
+
+    public boolean checkPossibleOfLike(User user) {
+        String writerId = this.getWriter().getWrtName();
+        String username = user.getUserId();
+        return !writerId.equals(username);
     }
 }

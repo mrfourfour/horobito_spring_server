@@ -11,7 +11,8 @@ import java.util.List;
 @Repository
 public interface FriendRepository extends JpaRepository<Friend, Long> {
 
-    Friend findByFriendId(Long friendId);
+    Friend findFriendById(Long friendId);
 
-    Page<Friend> findAllFriend(Boolean isFriend, PageRequest of);
+
+
 }
