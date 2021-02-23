@@ -25,7 +25,7 @@ public class Friend {
 
     private String friendname;
 
-
+//
 
 
     public Friend(User friendUser){
