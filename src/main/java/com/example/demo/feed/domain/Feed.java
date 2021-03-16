@@ -1,4 +1,4 @@
-package com.example.demo.post.domain;
+package com.example.demo.feed.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table
+@Table(name = "feed")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -21,8 +21,6 @@ public class Feed {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
-
     @Embedded
     private Writer writer;
 
@@ -30,23 +28,24 @@ public class Feed {
 
     private Long likeNum;
 
+    private LocalDateTime wrtTime;
+
+    @Column(name = "is_delete")
+    private Boolean isDeleted;
+
     private Feed(Writer writer, String content){
         this.writer = writer;
         this.content = content;
     }
 
     public void delete(){
-        this.isDelete=true;
+        this.isDeleted =true;
     }
-
-
     @OneToMany(mappedBy = "feed", cascade = {CascadeType.PERSIST})
     @JsonIgnoreProperties("feed")
     private List<Comment> comments;
 
-    private LocalDateTime wrtTime;
 
-    private boolean isDelete;
 
     public static Feed createFeed(Writer writer, String contents) {
         return new Feed(writer, contents);

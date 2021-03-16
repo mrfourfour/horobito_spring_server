@@ -1,12 +1,15 @@
-package com.example.demo.post.domain;
+package com.example.demo.feed.domain;
 
 
+import com.example.demo.user.domain.User;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
+@Getter
 @NoArgsConstructor
 public class Writer {
 
@@ -19,5 +22,9 @@ public class Writer {
     public Writer(Long id, String wrtName) {
         this.id = id;
         this.wrtName = wrtName;
+    }
+
+    public static Writer makeWriter(User user) {
+        return new Writer(user.getId(), user.getUserId());
     }
 }

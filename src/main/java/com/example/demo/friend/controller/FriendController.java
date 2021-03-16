@@ -23,7 +23,7 @@ public class FriendController {
     }
 
     @PostMapping("/friends/{friendId}")
-    public String requestFriend(@PathVariable Long FriendId){
+    public void requestFriend(@PathVariable Long FriendId){
         friendService.requestOrAcceptFriendByFriendId(FriendId);
     }
 
@@ -35,7 +35,7 @@ public class FriendController {
     }
 
     @GetMapping("/friends/request")
-    public Page<Friend> findRequest(@RequestParam(value = "page")int page,
+    public Page<String> findRequest(@RequestParam(value = "page")int page,
                                          @RequestParam(value = "size")int size){
         return friendService.findFriendRequest(page, size);
 

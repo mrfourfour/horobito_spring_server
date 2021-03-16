@@ -3,6 +3,7 @@ package com.example.demo.friend.domain;
 
 import com.example.demo.user.domain.User;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @Table(name = "friend")
 @Getter
 @Setter
+@NoArgsConstructor
 public class Friend {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,18 +25,13 @@ public class Friend {
 
     private String friendname;
 
-    private Boolean isFriend;
-
+//
 
 
     public Friend(User friendUser){
         this.frinedId = friendUser.getId();
         this.friendname = friendUser.getUserId();
-        this.isFriend = false;
     }
 
 
-    public void agreeFriend() {
-        this.isFriend = true;
-    }
 }
