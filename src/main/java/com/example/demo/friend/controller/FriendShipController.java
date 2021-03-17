@@ -4,6 +4,8 @@ package com.example.demo.friend.controller;
 import com.example.demo.friend.service.FriendDto;
 import com.example.demo.friend.service.FriendShipService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,15 +26,15 @@ public class FriendShipController {
     }
 
     @PostMapping("/{friendId}")
-    public String dealWithFriendShip(@PathVariable Long friendId){
+    public void dealWithFriendShip(@PathVariable Long friendId){
         String result = friendShipService.dealWithFriendShip(friendId);
 
         if (result.equals("Accept") || result.equals("Already accept")){
-            return "200 OK";
+            ResponseEntity.ok();
         }else if(result.equals("Already accept")){
-            return "400 Bad Request";
+            ResponseEntity.status(HttpStatus.BAD_REQUEST);
         }else {
-            return "홀ㄹ로홀로";
+            ResponseEntity.status(HttpStatus.FORBIDDEN);
         }
     }
 }
