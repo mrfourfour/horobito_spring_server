@@ -11,7 +11,7 @@ import javax.persistence.*;
 
 @Entity
 @Setter
-@Getter
+@Getter(AccessLevel.PACKAGE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Friend {
 

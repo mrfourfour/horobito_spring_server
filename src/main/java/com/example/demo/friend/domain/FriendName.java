@@ -1,6 +1,7 @@
 package com.example.demo.friend.domain;
 
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,7 +10,7 @@ import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 
 @Getter
-@Setter
+@Setter(AccessLevel.PACKAGE)
 @Embeddable
 public class FriendName {
 
