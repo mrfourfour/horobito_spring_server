@@ -27,6 +27,9 @@ public class User {
     @Embedded
     private Password password; // = passowrd
 
+    @Embedded
+    private UserBasicInfo userBasicInfo;
+
     @OneToMany(mappedBy = "user")
     private List<Friendship> friendships = new ArrayList<>();
 
@@ -34,13 +37,13 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
     private Set<Authority> authorities = new HashSet<>();
 
-    public User(Username username, Password password){
-        this.username = username;
-        this.password = password;
+    public User(UserBasicInfo userBasicInfo){
+        this.userBasicInfo = userBasicInfo;
     }
 
     public static User createUser(Username username, Password password) {
-        return new User(username, password);
+        UserBasicInfo userBasicInfo = new UserBasicInfo(username, password);
+        return new User(userBasicInfo);
     }
 
     public void addAuthorities(Authority authority){
