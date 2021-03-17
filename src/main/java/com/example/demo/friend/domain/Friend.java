@@ -10,8 +10,8 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Setter
-@Getter(AccessLevel.PACKAGE)
+@Setter(AccessLevel.PACKAGE)
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Friend {
 
