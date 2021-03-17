@@ -21,11 +21,6 @@ public class User {
     private Long id; // = code
 
 
-    @Embedded
-    private Username username; // = email
-
-    @Embedded
-    private Password password; // = passowrd
 
     @Embedded
     private UserBasicInfo userBasicInfo;
