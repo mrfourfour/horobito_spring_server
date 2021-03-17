@@ -44,7 +44,7 @@ public class FriendShipService {
 
 
     @Transactional
-    public String dealWithFriendShip(Long friendId) {
+    public Result dealWithFriendShip(Long friendId) {
         User user = null;
 
         User friendUser = userRepository.findUserById(friendId);
@@ -61,11 +61,11 @@ public class FriendShipService {
             
             friendShipRepository.save(forwordFriendship);
 
-            return "Try to make FriendShip";
+            return Result.Try_to_make_FriendShip;
 
         }else if(friendship.getFriendState()){
 
-            return "Already accept";
+            return Result.Already_Accept;
 
         }else {
             Friendship friendsFriendShip = friendShipRepository
@@ -74,7 +74,7 @@ public class FriendShipService {
             friendship.acceptFriendShip();
             friendsFriendShip.acceptFriendShip();
             
-            return "Accept";
+            return Result.Accept;
             
         }
     }
