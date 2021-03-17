@@ -11,7 +11,7 @@ import java.util.*;
 
 @Entity
 @Getter
-@Setter
+@Setter(AccessLevel.PACKAGE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
