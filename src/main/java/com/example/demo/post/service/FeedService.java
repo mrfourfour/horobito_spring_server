@@ -36,7 +36,7 @@ public class FeedService {
 
     public void makeFeedByContents(String contents) {
         User user = null;
-        Writer writer = new Writer(user.getId(), user.getUsername().getUsername());
+        Writer writer = new Writer(user.getId(), user.getUserBasicInfo().getUsernameInfo());
         Content content = Content.createContent(contents);
         Feed feed = Feed.createFeed(writer, content);
     }
