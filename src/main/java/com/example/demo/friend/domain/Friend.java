@@ -26,7 +26,7 @@ public class Friend {
     @Embedded
     private FriendName friendname;
 
-    public Friend(FriendId friendId, FriendName friendname){
+    private Friend(FriendId friendId, FriendName friendname){
         this.friendId = friendId;
         this.friendname = friendname;
     }

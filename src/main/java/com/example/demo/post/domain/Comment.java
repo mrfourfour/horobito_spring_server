@@ -37,7 +37,7 @@ public class Comment {
 
     private boolean deleted;
 
-    public Comment(Writer writer, Content content){
+    private Comment(Writer writer, Content content){
         this.writer = writer;
         this.content = content;
     }

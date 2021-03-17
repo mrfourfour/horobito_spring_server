@@ -28,7 +28,7 @@ public class Friendship {
 
     private Boolean friendState;
 
-    public Friendship(User user, Friend friend){
+    private Friendship(User user, Friend friend){
         this.user = user;
         this.friend = friend;
         this.friendState = false;

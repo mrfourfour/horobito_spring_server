@@ -17,7 +17,7 @@ public class Content {
     @Column(name = "content")
     private String content;
 
-    public Content(String contentParameter){
+    private Content(String contentParameter){
         this.content = contentParameter;
     }
 
