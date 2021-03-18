@@ -38,4 +38,9 @@ public class FriendShipController {
             ResponseEntity.status(HttpStatus.FORBIDDEN);
         }
     }
+
+    @DeleteMapping("/{friendId}")
+    public void deleteFriendShipRequest(@PathVariable Long friendId){
+        friendShipService.deleteFriendShipRequest(friendId);
+    }
 }

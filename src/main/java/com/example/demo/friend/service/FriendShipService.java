@@ -46,19 +46,15 @@ public class FriendShipService {
     @Transactional
     public Result dealWithFriendShip(Long friendId) {
         User user = null;
-
         User friendUser = userRepository.findUserById(friendId);
-
         Friendship friendship = friendShipRepository.findFriendshipByUserAndFriend_FriendId(user, friendId);
 
         if (friendship==null){
             
             Friendship forwordFriendship = createFriendship(friendUser, user);
-
             Friendship BackwordFriendship = createFriendship(user, friendUser);
 
             friendShipRepository.save(BackwordFriendship);
-            
             friendShipRepository.save(forwordFriendship);
 
             return Result.Try_to_make_FriendShip;
@@ -90,4 +86,20 @@ public class FriendShipService {
     }
 
 
+    public void deleteFriendShipRequest(Long friendId) {
+        User user = null;
+
+        User friendUser = userRepository.findUserById(friendId);
+        User me = userRepository.findUserById(user.getId());
+
+        Friendship forwardFriendShip
+                = friendShipRepository.findFriendshipByUserAndFriend_FriendId(me, friendUser.getId());
+
+        Friendship backwardFriendShip
+                = friendShipRepository.findFriendshipByUserAndFriend_FriendId(friendUser, me.getId());
+
+        forwardFriendShip.deleteFriendShip();
+        backwardFriendShip.deleteFriendShip();
+
+    }
 }

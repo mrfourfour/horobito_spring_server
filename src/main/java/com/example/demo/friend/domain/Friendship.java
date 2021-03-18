@@ -41,4 +41,8 @@ public class Friendship {
     public void acceptFriendShip() {
         this.friendState = true;
     }
+
+    public void deleteFriendShip() {
+        this.friendState = false;
+    }
 }
