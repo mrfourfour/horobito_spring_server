@@ -51,11 +51,11 @@ public class FriendShipService {
 
         if (friendship==null){
             
-            Friendship forwordFriendship = createFriendship(friendUser, user);
-            Friendship BackwordFriendship = createFriendship(user, friendUser);
+            Friendship forwardFriendship = createFriendship(friendUser, user);
+            Friendship backwardFriendship = createFriendship(user, friendUser);
 
-            friendShipRepository.save(BackwordFriendship);
-            friendShipRepository.save(forwordFriendship);
+            friendShipRepository.save(backwardFriendship);
+            friendShipRepository.save(forwardFriendship);
 
             return Result.Try_to_make_FriendShip;
 
