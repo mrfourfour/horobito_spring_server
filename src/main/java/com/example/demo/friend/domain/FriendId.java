@@ -18,7 +18,11 @@ public class FriendId {
     @Column(name = "Friend_id")
     private Long friendId;
 
-    public FriendId(Long friendId) {
+    private FriendId(Long friendId) {
         this.friendId = friendId;
+    }
+
+    public static FriendId createFriendId(Long friendId){
+        return new FriendId(friendId);
     }
 }

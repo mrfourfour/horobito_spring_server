@@ -19,7 +19,11 @@ public class FriendName {
     @Column(name = "friend_name")
     private String friendName;
 
-    public FriendName(String friendName) {
+    private FriendName(String friendName) {
         this.friendName = friendName;
+    }
+
+    public static FriendName createFriendName(String friendName){
+        return new FriendName(friendName);
     }
 }
