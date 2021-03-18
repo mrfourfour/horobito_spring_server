@@ -102,4 +102,17 @@ public class FriendShipService {
         backwardFriendShip.deleteFriendShip();
 
     }
+
+    public List<FriendDto>findRequestForMe(int page, int size) {
+        Username username = Username.createUsername("jihwan");
+        User user = userRepository.findByUsername(username);
+        List<FriendDto> friendshipList = friendShipRepository.findAllByUser(user, PageRequest.of(page, size))
+                .stream()
+                .filter(friendship -> !friendship.getFriendState())
+                .map(Friendship::getFriend)
+                .map(this::toFriendDto)
+                .collect(Collectors.toList());
+
+        return friendshipList;
+    }
 }

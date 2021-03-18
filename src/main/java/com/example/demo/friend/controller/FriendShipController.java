@@ -45,8 +45,8 @@ public class FriendShipController {
     }
 
     @GetMapping("/request")
-    public void findRequestToMe(@RequestParam(value="page") int page,
+    public List<FriendDto> findRequestToMe(@RequestParam(value="page") int page,
                                 @RequestParam(value = "size") int size){
-        friendShipService.findRequestForMe();
+        return friendShipService.findRequestForMe(page, size);
     }
 }
