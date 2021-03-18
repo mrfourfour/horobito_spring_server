@@ -49,7 +49,7 @@ public class Feed {
 
 
 
-    public static Feed createFeed(Writer writer, String contents) {
+    public static Feed createFeed(Writer writer, Content contents) {
         return new Feed(writer, contents);
     }
 

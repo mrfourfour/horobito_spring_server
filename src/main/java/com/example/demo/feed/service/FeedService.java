@@ -1,6 +1,7 @@
 package com.example.demo.feed.service;
 
 
+import com.example.demo.feed.domain.Content;
 import com.example.demo.feed.domain.Feed;
 import com.example.demo.feed.domain.FeedRepository;
 import com.example.demo.feed.domain.Writer;
@@ -46,7 +47,8 @@ public class FeedService {
     public void makeFeedByContents(String contents) {
         User user = findUserByAuthentication();
         Writer writer = Writer.makeWriter(user);
-        Feed feed = Feed.createFeed(writer, contents);
+        Content content = Content.createContent(contents);
+        Feed feed = Feed.createFeed(writer, content);
 
         feedRepository.save(feed);
     }
