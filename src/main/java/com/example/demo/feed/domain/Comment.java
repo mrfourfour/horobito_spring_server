@@ -54,7 +54,7 @@ public class Comment {
 
     public boolean checkPossibleOfLike(User user) {
         String writerId = this.getWriter().getWrtName();
-        String username = user.getUserId();
+        String username = user.getUserBasicInfo().getUsernameInfo();
         return !writerId.equals(username);
     }
 }

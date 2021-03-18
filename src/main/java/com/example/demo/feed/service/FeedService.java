@@ -28,7 +28,7 @@ public class FeedService {
     }
 
     public Page<Feed> findMyTimeLine(int page, int pageSize) { // 친구 문제
-        User user = findUserByUsername();
+        User user = findUserByAuthentication();
         Page<Feed> feeds = feedRepository.findAll(PageRequest.of(page, pageSize));
 //        Page<Feed> friends = feedRepository.findAllByWriterId( user.getIsFriend().getFriendList().keySet());
         //// 여기서 막힘
@@ -44,14 +44,14 @@ public class FeedService {
 
 
     public void makeFeedByContents(String contents) {
-        User user = findUserByUsername();
+        User user = findUserByAuthentication();
         Writer writer = Writer.makeWriter(user);
         Feed feed = Feed.createFeed(writer, contents);
 
         feedRepository.save(feed);
     }
 
-    public User findUserByUsername(){
+    public User findUserByAuthentication(){
         Authentication authentication = findAuthentication();
         Username username = Username.createUsername(authentication.getName());
         return userRepository.findByUserBasicInfo_Username(username);
