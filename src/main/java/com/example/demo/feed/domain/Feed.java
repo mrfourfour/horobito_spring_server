@@ -2,6 +2,7 @@ package com.example.demo.feed.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,8 +14,8 @@ import java.util.List;
 @Entity
 @Table(name = "feed")
 @Getter
-@Setter
-@NoArgsConstructor
+@Setter(AccessLevel.PACKAGE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Feed {
 
     @Id
@@ -24,7 +25,8 @@ public class Feed {
     @Embedded
     private Writer writer;
 
-    private String content;
+    @Embedded
+    private Content content;
 
     private Long likeNum;
 
@@ -33,7 +35,7 @@ public class Feed {
     @Column(name = "is_delete")
     private Boolean isDeleted;
 
-    private Feed(Writer writer, String content){
+    private Feed(Writer writer, Content content){
         this.writer = writer;
         this.content = content;
     }

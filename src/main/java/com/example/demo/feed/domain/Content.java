@@ -1,4 +1,4 @@
-package com.example.demo.post.domain;
+package com.example.demo.feed.domain;
 
 
 import lombok.Getter;
