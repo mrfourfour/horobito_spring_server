@@ -13,7 +13,7 @@ import javax.persistence.Embeddable;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Username {
 
-    @Column(unique = true)
+    @Column(name = "user_name", unique = true)
     private String username;
 
     public Username(String username){
