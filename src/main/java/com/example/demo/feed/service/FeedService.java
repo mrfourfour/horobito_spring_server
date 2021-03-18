@@ -10,13 +10,10 @@ import com.example.demo.user.domain.Username;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -57,7 +54,7 @@ public class FeedService {
     public User findUserByUsername(){
         Authentication authentication = findAuthentication();
         Username username = Username.createUsername(authentication.getName());
-        return userRepository.findByUsername(username);
+        return userRepository.findByUserBasicInfo_Username(username);
 
     }
 

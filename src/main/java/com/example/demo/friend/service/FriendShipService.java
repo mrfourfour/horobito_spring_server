@@ -24,7 +24,7 @@ public class FriendShipService {
     @Transactional
     public List<FriendDto> getMyFriendList(int page, int size) {
         Username username = Username.createUsername("jihwan");
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByUserBasicInfo_Username(username);
         List<FriendDto> friendshipList = friendShipRepository.findAllByUser(user, PageRequest.of(page, size))
                 .stream()
                 .filter(Friendship::getFriendState)
@@ -105,7 +105,7 @@ public class FriendShipService {
 
     public List<FriendDto>findRequestForMe(int page, int size) {
         Username username = Username.createUsername("jihwan");
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByUserBasicInfo_Username(username);
         List<FriendDto> friendshipList = friendShipRepository.findAllByUser(user, PageRequest.of(page, size))
                 .stream()
                 .filter(friendship -> !friendship.getFriendState())
