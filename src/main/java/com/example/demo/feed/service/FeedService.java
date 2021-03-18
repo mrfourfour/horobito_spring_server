@@ -6,6 +6,7 @@ import com.example.demo.feed.domain.FeedRepository;
 import com.example.demo.feed.domain.Writer;
 import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserRepository;
+import com.example.demo.user.domain.Username;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,16 +30,11 @@ public class FeedService {
         feed.delete();
     }
 
-
-
     public Page<Feed> findMyTimeLine(int page, int pageSize) { // 친구 문제
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userRepository.findByUserId(authentication.getName());
-
+        User user = findUserByUsername();
         Page<Feed> feeds = feedRepository.findAll(PageRequest.of(page, pageSize));
 //        Page<Feed> friends = feedRepository.findAllByWriterId( user.getIsFriend().getFriendList().keySet());
         //// 여기서 막힘
-        
 
         return feeds;
     }
@@ -51,10 +47,21 @@ public class FeedService {
 
 
     public void makeFeedByContents(String contents) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userRepository.findByUserId(authentication.getName());
+        User user = findUserByUsername();
         Writer writer = Writer.makeWriter(user);
         Feed feed = Feed.createFeed(writer, contents);
+
         feedRepository.save(feed);
+    }
+
+    public User findUserByUsername(){
+        Authentication authentication = findAuthentication();
+        Username username = Username.createUsername(authentication.getName());
+        return userRepository.findByUsername(username);
+
+    }
+
+    public Authentication findAuthentication(){
+        return SecurityContextHolder.getContext().getAuthentication();
     }
 }
