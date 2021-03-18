@@ -80,8 +80,8 @@ public class FriendShipService {
     }
 
     private Friendship createFriendship(User user, User friendUser) {
-        FriendId friendsId = new FriendId(friendUser.getId());
-        FriendName friendName = new FriendName(friendUser.getUserBasicInfo().getUsernameInfo());
+        FriendId friendsId = FriendId.createFriendId(friendUser.getId());
+        FriendName friendName = FriendName.createFriendName(friendUser.getUserBasicInfo().getUsernameInfo());
 
         Friend friend = Friend.createFriend(friendsId, friendName);
         
