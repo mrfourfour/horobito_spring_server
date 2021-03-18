@@ -43,4 +43,10 @@ public class FriendShipController {
     public void deleteFriendShipRequest(@PathVariable Long friendId){
         friendShipService.deleteFriendShipRequest(friendId);
     }
+
+    @GetMapping("/request")
+    public void findRequestToMe(@RequestParam(value="page") int page,
+                                @RequestParam(value = "size") int size){
+        friendShipService.findRequestForMe();
+    }
 }
