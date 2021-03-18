@@ -87,10 +87,9 @@ public class FriendShipService {
 
 
     public void deleteFriendShipRequest(Long friendId) {
-        User user = null;
+        User me = null;
 
         User friendUser = userRepository.findUserById(friendId);
-        User me = userRepository.findUserById(user.getId());
 
         Friendship forwardFriendShip
                 = friendShipRepository.findFriendshipByUserAndFriend_FriendId(me, friendUser.getId());

@@ -7,6 +7,7 @@ import com.example.demo.feed.domain.FeedRepository;
 import com.example.demo.feed.domain.Writer;
 import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserRepository;
+import com.example.demo.user.domain.Username;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,7 +29,8 @@ public class CommentService {
     public void makeCommentByFeedIdAndContents(Long feedId, String contents) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Feed feed = feedRepository.findFeedByIdAndIsDeleted(feedId, false);
-        User user = userRepository.findByUserId(authentication.getName());
+        Username username = Username.createUsername(authentication.getName());
+        User user = userRepository.findByUserBasicInfo_Username(username);
         Writer writer = Writer.makeWriter(user);
 
         Comment comment = Comment.makeComment(writer, contents);
