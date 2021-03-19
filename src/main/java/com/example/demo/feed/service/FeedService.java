@@ -29,7 +29,7 @@ public class FeedService {
     }
 
     public Page<Feed> findMyTimeLine(int page, int pageSize) { // 친구 문제
-        User user = findUserByAuthentication();
+        User user = findUser();
         Page<Feed> feeds = feedRepository.findAll(PageRequest.of(page, pageSize));
 
 
@@ -44,7 +44,7 @@ public class FeedService {
 
 
     public void makeFeedByContents(String InsertedContent) {
-        User user = findUserByAuthentication();
+        User user = findUser();
         Writer writer = Writer.create(user);
         Content content = Content.create(InsertedContent);
         Feed feed = Feed.create(writer, content);
@@ -52,7 +52,7 @@ public class FeedService {
         feedRepository.save(feed);
     }
 
-    public User findUserByAuthentication(){
+    public User findUser(){
         Authentication authentication = findAuthentication();
         Username username = Username.create(authentication.getName());
         return userRepository.findByUserBasicInfo_Username(username);
