@@ -34,7 +34,7 @@ public class Comment {
 
     private String content;
 
-    private Long likeNum;
+    private Long preference;
 
     private boolean deleted;
 

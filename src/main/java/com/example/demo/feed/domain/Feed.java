@@ -28,7 +28,8 @@ public class Feed {
     @Embedded
     private Content content;
 
-    private Long likeNum;
+    @Column(name = "preference")
+    private Long preference;
 
     private LocalDateTime wrtTime;
 
