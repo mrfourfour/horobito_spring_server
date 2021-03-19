@@ -22,7 +22,7 @@ public class Content {
         this.content = contentParameter;
     }
 
-    public static Content createContent(String contents) {
+    public static Content create(String contents) {
         return new Content(contents);
     }
 }

@@ -50,7 +50,7 @@ public class Feed {
 
 
 
-    public static Feed createFeed(Writer writer, Content content) {
+    public static Feed create(Writer writer, Content content) {
         return new Feed(writer, content);
     }
 

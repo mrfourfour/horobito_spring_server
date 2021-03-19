@@ -45,16 +45,16 @@ public class FeedService {
 
     public void makeFeedByContents(String InsertedContent) {
         User user = findUserByAuthentication();
-        Writer writer = Writer.makeWriter(user);
-        Content content = Content.createContent(InsertedContent);
-        Feed feed = Feed.createFeed(writer, content);
+        Writer writer = Writer.create(user);
+        Content content = Content.create(InsertedContent);
+        Feed feed = Feed.create(writer, content);
 
         feedRepository.save(feed);
     }
 
     public User findUserByAuthentication(){
         Authentication authentication = findAuthentication();
-        Username username = Username.createUsername(authentication.getName());
+        Username username = Username.create(authentication.getName());
         return userRepository.findByUserBasicInfo_Username(username);
 
     }

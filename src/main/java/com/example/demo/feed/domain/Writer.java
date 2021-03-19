@@ -25,7 +25,7 @@ public class Writer {
         this.wrtName = wrtName;
     }
 
-    public static Writer makeWriter(User user) {
+    public static Writer create(User user) {
         return new Writer(user.getId(), user.getUserBasicInfo().getUsernameInfo());
     }
 }

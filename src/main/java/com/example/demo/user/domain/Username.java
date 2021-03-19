@@ -20,7 +20,7 @@ public class Username {
         this.username = username;
     }
 
-    public static Username createUsername(String username) {
+    public static Username create(String username) {
         return new Username(username);
     }
 }

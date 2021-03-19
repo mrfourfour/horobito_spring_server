@@ -14,8 +14,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 
 @Service
 @RequiredArgsConstructor
@@ -29,11 +27,11 @@ public class CommentService {
     public void makeCommentByFeedIdAndContents(Long feedId, String insertedContent) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Feed feed = feedRepository.findFeedByIdAndIsDeleted(feedId, false);
-        Username username = Username.createUsername(authentication.getName());
+        Username username = Username.create(authentication.getName());
         User user = userRepository.findByUserBasicInfo_Username(username);
-        Writer writer = Writer.makeWriter(user);
+        Writer writer = Writer.create(user);
 
-        Comment comment = Comment.makeComment(writer, insertedContent);
+        Comment comment = Comment.create(writer, insertedContent);
         feed.enrollComment(comment);
     }
 

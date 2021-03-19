@@ -31,7 +31,7 @@ public class Friend {
         this.friendname = friendname;
     }
 
-    public static Friend createFriend(FriendId friendId, FriendName friendname) {
+    public static Friend create(FriendId friendId, FriendName friendname) {
         return new Friend(friendId, friendname);
 
     }

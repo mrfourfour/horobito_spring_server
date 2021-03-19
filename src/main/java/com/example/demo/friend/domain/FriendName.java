@@ -23,7 +23,7 @@ public class FriendName {
         this.friendName = friendName;
     }
 
-    public static FriendName createFriendName(String friendName){
+    public static FriendName create(String friendName){
         return new FriendName(friendName);
     }
 }

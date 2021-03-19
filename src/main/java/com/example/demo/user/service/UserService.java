@@ -23,7 +23,7 @@ public class UserService  {
         Password password = new Password(signupRequest.getPassword());
 
         Authority authority = new Authority(signupRequest.getAuthorities());
-        User user = User.createUser(username, password);
+        User user = User.create(username, password);
         user.addAuthorities(authority);
         userRepository.save(user);
     }

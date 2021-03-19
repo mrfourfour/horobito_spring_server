@@ -23,7 +23,7 @@ public class FriendShipService {
 
     @Transactional
     public List<FriendDto> getMyFriendList(int page, int size) {
-        Username username = Username.createUsername("jihwan");
+        Username username = Username.create("jihwan");
         User user = userRepository.findByUserBasicInfo_Username(username);
         List<FriendDto> friendshipList = friendShipRepository.findAllByUser(user, PageRequest.of(page, size))
                 .stream()
@@ -51,7 +51,7 @@ public class FriendShipService {
 
         if (friendship==null){
             
-            Friendship forwardFriendship = createFriendship(friendUser, user);
+            Friendship forwardFriendship =createFriendship(friendUser, user);
             Friendship backwardFriendship = createFriendship(user, friendUser);
 
             friendShipRepository.save(backwardFriendship);
@@ -76,10 +76,10 @@ public class FriendShipService {
     }
 
     private Friendship createFriendship(User user, User friendUser) {
-        FriendId friendsId = FriendId.createFriendId(friendUser.getId());
-        FriendName friendName = FriendName.createFriendName(friendUser.getUserBasicInfo().getUsernameInfo());
+        FriendId friendsId = FriendId.create(friendUser.getId());
+        FriendName friendName = FriendName.create(friendUser.getUserBasicInfo().getUsernameInfo());
 
-        Friend friend = Friend.createFriend(friendsId, friendName);
+        Friend friend = Friend.create(friendsId, friendName);
         
         return Friendship.create(user, friend);
         
@@ -103,7 +103,7 @@ public class FriendShipService {
     }
 
     public List<FriendDto>findRequestForMe(int page, int size) {
-        Username username = Username.createUsername("jihwan");
+        Username username = Username.create("jihwan");
         User user = userRepository.findByUserBasicInfo_Username(username);
         List<FriendDto> friendshipList = friendShipRepository.findAllByUser(user, PageRequest.of(page, size))
                 .stream()

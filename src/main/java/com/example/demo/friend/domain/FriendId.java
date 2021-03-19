@@ -22,7 +22,7 @@ public class FriendId {
         this.friendId = friendId;
     }
 
-    public static FriendId createFriendId(Long friendId){
+    public static FriendId create(Long friendId){
         return new FriendId(friendId);
     }
 }

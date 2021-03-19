@@ -35,7 +35,7 @@ public class User {
         this.userBasicInfo = userBasicInfo;
     }
 
-    public static User createUser(Username username, Password password) {
+    public static User create(Username username, Password password) {
         UserBasicInfo userBasicInfo = new UserBasicInfo(username, password);
         return new User(userBasicInfo);
     }
