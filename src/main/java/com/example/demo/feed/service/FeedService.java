@@ -31,8 +31,7 @@ public class FeedService {
     public Page<Feed> findMyTimeLine(int page, int pageSize) { // 친구 문제
         User user = findUserByAuthentication();
         Page<Feed> feeds = feedRepository.findAll(PageRequest.of(page, pageSize));
-//        Page<Feed> friends = feedRepository.findAllByWriterId( user.getIsFriend().getFriendList().keySet());
-        //// 여기서 막힘
+
 
         return feeds;
     }

@@ -2,6 +2,7 @@ package com.example.demo.feed.domain;
 
 
 import com.example.demo.user.domain.User;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +11,7 @@ import javax.persistence.Embeddable;
 
 @Embeddable
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Writer {
 
     @Column(name = "writer_id")
