@@ -22,7 +22,7 @@ public class FriendShipService {
     private final UserRepository userRepository;
 
     @Transactional
-    public List<FriendDto> getMyFriendList(int page, int size) {
+    public List<FriendDto> getMyFriends(int page, int size) {
         Username username = Username.create("jihwan");
         User user = userRepository.findByUserBasicInfo_Username(username);
         List<FriendDto> friendshipList = friendShipRepository.findAllByUser(user, PageRequest.of(page, size))

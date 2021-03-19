@@ -20,9 +20,9 @@ public class FriendShipController {
 
     @GetMapping
     // request query로 받는 값들
-    public List<FriendDto> getMyFriendList(@RequestParam(value="page") int page,
-                                           @RequestParam(value = "size") int size){
-        return friendShipService.getMyFriendList(page, size);
+    public List<FriendDto> getMyFriends(@RequestParam(value="page") int page,
+                                        @RequestParam(value = "size") int size){
+        return friendShipService.getMyFriends(page, size);
 
     }
 
