@@ -40,7 +40,7 @@ public class FriendShipController {
     }
 
     @DeleteMapping("/{friendId}")
-    public void deleteFriendShipRequest(@PathVariable Long friendId){
+    public void deleteFriendShip(@PathVariable Long friendId){
         friendShipService.deleteFriendShipRequest(friendId);
     }
 
