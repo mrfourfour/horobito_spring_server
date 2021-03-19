@@ -50,8 +50,8 @@ public class Feed {
 
 
 
-    public static Feed createFeed(Writer writer, Content contents) {
-        return new Feed(writer, contents);
+    public static Feed createFeed(Writer writer, Content content) {
+        return new Feed(writer, content);
     }
 
     public void enrollComment(Comment comment) {

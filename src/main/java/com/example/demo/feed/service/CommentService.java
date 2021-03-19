@@ -26,14 +26,14 @@ public class CommentService {
     private final UserRepository userRepository;
 
     @Transactional
-    public void makeCommentByFeedIdAndContents(Long feedId, String contents) {
+    public void makeCommentByFeedIdAndContents(Long feedId, String insertedContent) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Feed feed = feedRepository.findFeedByIdAndIsDeleted(feedId, false);
         Username username = Username.createUsername(authentication.getName());
         User user = userRepository.findByUserBasicInfo_Username(username);
         Writer writer = Writer.makeWriter(user);
 
-        Comment comment = Comment.makeComment(writer, contents);
+        Comment comment = Comment.makeComment(writer, insertedContent);
         feed.enrollComment(comment);
     }
 

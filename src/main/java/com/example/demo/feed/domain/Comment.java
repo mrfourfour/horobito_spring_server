@@ -44,8 +44,8 @@ public class Comment {
     }
 
 
-    public static Comment makeComment(Writer writer, String contents) {
-        return new Comment(writer, contents);
+    public static Comment makeComment(Writer writer, String content) {
+        return new Comment(writer, content);
     }
 
     public void likeOrDislike() {

@@ -43,10 +43,10 @@ public class FeedService {
 
 
 
-    public void makeFeedByContents(String contents) {
+    public void makeFeedByContents(String InsertedContent) {
         User user = findUserByAuthentication();
         Writer writer = Writer.makeWriter(user);
-        Content content = Content.createContent(contents);
+        Content content = Content.createContent(InsertedContent);
         Feed feed = Feed.createFeed(writer, content);
 
         feedRepository.save(feed);
