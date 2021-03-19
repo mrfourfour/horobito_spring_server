@@ -32,8 +32,8 @@ public class Feed {
 
     private LocalDateTime wrtTime;
 
-    @Column(name = "is_delete")
-    private Boolean isDeleted;
+    @Column(name = "deleted")
+    private Boolean deleted;
 
     private Feed(Writer writer, Content content){
         this.writer = writer;
@@ -41,7 +41,7 @@ public class Feed {
     }
 
     public void delete(){
-        this.isDeleted =true;
+        this.deleted =true;
     }
     @OneToMany(mappedBy = "feed", cascade = {CascadeType.PERSIST})
     @JsonIgnoreProperties("feed")

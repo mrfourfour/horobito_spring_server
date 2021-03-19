@@ -36,7 +36,7 @@ public class Comment {
 
     private Long likeNum;
 
-    private boolean isDelete;
+    private boolean deleted;
 
     public Comment(Writer writer, String content){
         this.writer = writer;
