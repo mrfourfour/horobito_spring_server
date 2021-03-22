@@ -29,7 +29,7 @@ public class Feed {
     private Content content;
 
     @Column(name = "preference")
-    private Long preference;
+    private Preference preferenceInfo;
 
     private LocalDateTime wrtTime;
 
