@@ -3,7 +3,7 @@ package com.example.demo.friend.controller;
 
 import com.example.demo.friend.service.FriendDto;
 import com.example.demo.friend.service.FriendShipService;
-import com.example.demo.friend.service.Result;
+import com.example.demo.friend.service.FriendShipResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,11 +28,11 @@ public class FriendShipController {
 
     @PostMapping("/{friendId}")
     public void dealWithFriendShip(@PathVariable Long friendId){
-        Result result = friendShipService.dealWithFriendShip(friendId);
+        FriendShipResult friendShipResult = friendShipService.create(friendId);
 
-        if (result==Result.Try_to_make_FriendShip || result==Result.Accept){
+        if (friendShipResult == FriendShipResult.Try_to_make_FriendShip || friendShipResult == FriendShipResult.Accept){
             ResponseEntity.ok();
-        }else if(result==Result.Already_Accept){
+        }else if(friendShipResult == FriendShipResult.Already_Accept){
             ResponseEntity.status(HttpStatus.BAD_REQUEST);
         }else {
             ResponseEntity.status(HttpStatus.FORBIDDEN);
