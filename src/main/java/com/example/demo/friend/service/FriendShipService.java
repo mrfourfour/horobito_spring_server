@@ -77,7 +77,7 @@ public class FriendShipService {
 
     private Friendship createFriendship(User user, User friendUser) {
         FriendId friendsId = FriendId.create(friendUser.getId());
-        FriendName friendName = FriendName.create(friendUser.getUserBasicInfo().getUsernameInfo());
+        FriendName friendName = FriendName.create(friendUser.getUserBasicInfo().getUsername());
 
         Friend friend = Friend.create(friendsId, friendName);
         

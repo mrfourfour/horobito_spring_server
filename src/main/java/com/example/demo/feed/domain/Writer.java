@@ -26,6 +26,6 @@ public class Writer {
     }
 
     public static Writer create(User user) {
-        return new Writer(user.getId(), user.getUserBasicInfo().getUsernameInfo());
+        return new Writer(user.getId(), user.getUserBasicInfo().getUsername());
     }
 }

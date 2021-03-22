@@ -25,11 +25,11 @@ public class UserBasicInfo {
         this.password = password;
     }
 
-    public String getPasswordInfo(){
+    public String getPassword(){
         return this.password.getPassword();
     }
 
-    public String getUsernameInfo(){
+    public String getUsername(){
         return this.username.getUsername();
     }
 }
