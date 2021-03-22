@@ -20,7 +20,7 @@ public class Authority {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_pk")
     private User user;
 
     private String authority;

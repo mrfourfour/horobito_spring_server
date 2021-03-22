@@ -44,7 +44,11 @@ public class FeedService {
 
 
     public void makeFeedByContents(String InsertedContent) {
-        User user = findUser();
+//        User user = findUser();
+        Username username = Username.create("jihwan");
+        User user = userRepository.findByUserBasicInfo_Username(username);
+
+
         Writer writer = Writer.create(user);
         Content content = Content.create(InsertedContent);
         Feed feed = Feed.create(writer, content);

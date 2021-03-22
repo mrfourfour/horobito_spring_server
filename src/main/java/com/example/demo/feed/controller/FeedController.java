@@ -35,7 +35,7 @@ public class FeedController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/feeds")
-    public void makeFeed(@RequestParam String contents){
+    public void makeFeed(@RequestBody String contents){
         feedService.makeFeedByContents(contents);
 
     }
