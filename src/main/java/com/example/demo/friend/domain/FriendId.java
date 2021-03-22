@@ -15,7 +15,7 @@ import javax.persistence.Embeddable;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FriendId {
 
-    @Column(name = "Friend_id")
+    @Column(name = "friend_id")
     private Long friendId;
 
     private FriendId(Long friendId) {
