@@ -26,7 +26,7 @@ public class CommentService {
     @Transactional
     public void makeCommentByFeedIdAndContents(Long feedId, String insertedContent) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Feed feed = feedRepository.findFeedByIdAndIsDeleted(feedId, false);
+        Feed feed = feedRepository.findFeedByIdAndDeleted(feedId, false);
         Username username = Username.create(authentication.getName());
         User user = userRepository.findByUserBasicInfo_Username(username);
         Writer writer = Writer.create(user);
@@ -39,7 +39,7 @@ public class CommentService {
     public String likeOrDislikeCommentByFeedIdAndCommentId(Long feedId, int commentId) {
         User user = null;
         try {
-            Feed feed = feedRepository.findFeedByIdAndIsDeleted(feedId, false);
+            Feed feed = feedRepository.findFeedByIdAndDeleted(feedId, false);
             Comment comment = feed.getComments().get(commentId);
             if(comment.checkPossibleOfLike(user)){
                 comment.likeOrDislike();

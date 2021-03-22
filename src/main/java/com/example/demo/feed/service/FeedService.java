@@ -24,7 +24,7 @@ public class FeedService {
 
     @Transactional
     public void deleteFeedByFeedId(Long id) {
-        Feed feed = feedRepository.findFeedByIdAndIsDeleted(id, false);
+        Feed feed = feedRepository.findFeedByIdAndDeleted(id, false);
         feed.delete();
     }
 
@@ -37,7 +37,7 @@ public class FeedService {
     }
 
     public Feed findFeedDetailByFeedId(Long id) {
-        Feed feed = feedRepository.findFeedByIdAndIsDeleted(id, false);
+        Feed feed = feedRepository.findFeedByIdAndDeleted(id, false);
         return feed;
     }
 
