@@ -46,6 +46,7 @@ public class Feed {
         this.content = content;
         this.wrtTime = LocalDateTime.now();
         this.preferenceInfo = Preference.create();
+        this.deleted = false;
     }
 
 
@@ -55,6 +56,10 @@ public class Feed {
 
     public static Feed create(Writer writer, Content content) {
         return new Feed(writer, content);
+    }
+
+    public void like(){
+        this.preferenceInfo.like();
     }
 
     public void enrollComment(Comment comment) {

@@ -8,13 +8,17 @@ import com.example.demo.feed.domain.Writer;
 import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserRepository;
 import com.example.demo.user.domain.Username;
+import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -70,6 +74,7 @@ public class FeedService {
 
     @Transactional
     public void likeFeedByFeedID(Long id) {
-        Feed feed = feedRepository.findFeedB(id);
+
+
     }
 }
