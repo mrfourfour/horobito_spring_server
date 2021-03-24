@@ -45,7 +45,8 @@ public class FriendShipService {
 
     @Transactional
     public FriendShipResult create(Long friendId) {
-        User user = null;
+        Username username = Username.create("jihwan");
+        User user = userRepository.findByUserBasicInfo_Username(username);
         User friendUser = userRepository.findUserById(friendId);
         Friendship friendship = friendShipRepository.findFriendshipByUserAndFriend_FriendId(user, friendId);
 
