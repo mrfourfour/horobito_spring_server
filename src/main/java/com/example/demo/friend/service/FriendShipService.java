@@ -46,20 +46,22 @@ public class FriendShipService {
     @Transactional
     public FriendShipResult create(Long inputId) {
         Username username = Username.create("jihwan");
+
         User user = userRepository.findByUserBasicInfo_Username(username);
         FriendId myId = FriendId.create(inputId);
 
         User friendUser = userRepository.findUserById(inputId);
         FriendId friendId = FriendId.create(inputId);
+
         Friendship friendship = friendShipRepository.findFriendshipByUserAndFriend_FriendId(user, friendId);
 
         if (friendship==null){
             
-            Friendship forwardFriendship =createFriendship(friendUser, user);
-            Friendship backwardFriendship = createFriendship(user, friendUser);
+            Friendship forwardFriendship =createFriendship(user, friendUser);
+            Friendship backwardFriendship = createFriendship(friendUser, user);
 
+            friendShipRepository.save(forwardFriendship); // 저장할 때 터진다.
             friendShipRepository.save(backwardFriendship);
-            friendShipRepository.save(forwardFriendship);
 
             return FriendShipResult.Try_to_make_FriendShip;
 
@@ -86,7 +88,6 @@ public class FriendShipService {
         Friend friend = Friend.create(friendsId, friendName);
         
         return Friendship.create(user, friend);
-        
     }
 
 

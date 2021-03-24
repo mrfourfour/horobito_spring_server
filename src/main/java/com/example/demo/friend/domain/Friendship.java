@@ -26,6 +26,7 @@ public class Friendship {
     @JoinColumn(name = "friend_id")
     private Friend friend;
 
+    @Column(name = "friend_state")
     private Boolean friendState;
 
     private Friendship(User user, Friend friend){
