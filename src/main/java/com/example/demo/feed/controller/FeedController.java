@@ -47,7 +47,9 @@ public class FeedController {
     }
 
     @PostMapping("/feeds/{feedId}/likes")
-    public void likeFeedByFeedId(@PathVariable Long id){}
+    public void likeFeedByFeedId(@PathVariable Long id){
+        feedService.likeFeedByFeedID(id);
+    }
 
 
 }

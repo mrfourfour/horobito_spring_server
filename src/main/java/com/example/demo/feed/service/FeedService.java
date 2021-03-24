@@ -66,4 +66,10 @@ public class FeedService {
     public Authentication findAuthentication(){
         return SecurityContextHolder.getContext().getAuthentication();
     }
+
+
+    @Transactional
+    public void likeFeedByFeedID(Long id) {
+        Feed feed = feedRepository.findFeedB(id);
+    }
 }
