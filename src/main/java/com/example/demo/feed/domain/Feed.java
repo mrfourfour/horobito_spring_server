@@ -66,4 +66,9 @@ public class Feed {
         comment.setFeed(this);
         comments.add(comment);
     }
+
+
+    public Comment getComment(int commentId) {
+        return comments.get(commentId);
+    }
 }

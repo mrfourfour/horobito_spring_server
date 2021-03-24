@@ -38,10 +38,11 @@ public class CommentService {
 
     @Transactional
     public String likeOrDislikeCommentByFeedIdAndCommentId(Long feedId, int commentId) {
-        User user = null;
+        Username username = Username.create("jihwan");
+        User user = userRepository.findByUserBasicInfo_Username(username);
         try {
             Feed feed = feedRepository.findFeedByIdAndDeleted(feedId, false);
-            Comment comment = feed.getComments().get(commentId);
+            Comment comment = feed.getComment(commentId);
             if(comment.checkPossibleOfLike(user)){
                 comment.likeOrDislike();
             }
