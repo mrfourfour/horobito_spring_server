@@ -14,7 +14,7 @@ public class CommentController {
 
     @PostMapping("/feed/{feedId}/comments")
     public void makeComment(@PathVariable Long feedId,
-                            @RequestParam String contents){
+                            @RequestBody String contents){
         commentService.makeCommentByFeedIdAndContents(feedId, contents);
     }
 
