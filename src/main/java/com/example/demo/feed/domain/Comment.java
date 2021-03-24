@@ -44,6 +44,7 @@ public class Comment {
         this.writer = writer;
         this.content = content;
         this.preferenceInfo = Preference.create();
+        this.wrtTime = LocalDateTime.now();
         this.deleted = false;
     }
 
