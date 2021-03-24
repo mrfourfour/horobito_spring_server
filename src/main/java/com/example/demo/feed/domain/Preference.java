@@ -16,7 +16,7 @@ import javax.persistence.Embeddable;
 public class Preference {
 
     @Column(name = "preference")
-    private Long preference;
+    private Long preference = 0L;
 
     public void like(){
         this.preference ++;
