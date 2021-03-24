@@ -31,24 +31,26 @@ public class Feed {
     @Column(name = "preference")
     private Preference preferenceInfo;
 
+    @Column(name = "wrt_time")
     private LocalDateTime wrtTime;
 
     @Column(name = "deleted")
     private Boolean deleted;
 
-    private Feed(Writer writer, Content content){
-        this.writer = writer;
-        this.content = content;
-    }
-
-    public void delete(){
-        this.deleted =true;
-    }
     @OneToMany(mappedBy = "feed", cascade = {CascadeType.PERSIST})
     @JsonIgnoreProperties("feed")
     private List<Comment> comments;
 
+    private Feed(Writer writer, Content content){
+        this.writer = writer;
+        this.content = content;
+        this.wrtTime = LocalDateTime.now();
+    }
 
+
+    public void delete(){
+        this.deleted =true;
+    }
 
     public static Feed create(Writer writer, Content content) {
         return new Feed(writer, content);
