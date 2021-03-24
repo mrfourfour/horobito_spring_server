@@ -17,7 +17,7 @@ import java.util.Set;
 public interface FeedRepository extends JpaRepository<Feed, Long> {
 
 
-    Feed findFeedByIdAndDeleted(Long id, boolean isDeleted);
+    Feed findFeedByIdAndDeleted(Long id, boolean deleted);
 
 
 
