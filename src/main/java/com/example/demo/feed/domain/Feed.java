@@ -45,6 +45,7 @@ public class Feed {
         this.writer = writer;
         this.content = content;
         this.wrtTime = LocalDateTime.now();
+        this.preferenceInfo = Preference.create();
     }
 
 

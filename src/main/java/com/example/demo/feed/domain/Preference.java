@@ -17,4 +17,16 @@ public class Preference {
 
     @Column(name = "preference")
     private Long preference;
+
+    public void like(){
+        this.preference ++;
+    }
+
+
+
+    public static Preference create(){
+        return new Preference();
+    }
+
+
 }
