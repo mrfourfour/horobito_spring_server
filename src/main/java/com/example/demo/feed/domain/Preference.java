@@ -15,6 +15,6 @@ import javax.persistence.Embeddable;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class Preference {
 
-    @Column
-    private Long preference =0L;
+    @Column(name = "preference")
+    private Long preference;
 }
