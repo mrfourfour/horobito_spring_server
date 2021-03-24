@@ -15,7 +15,7 @@ import javax.persistence.Embeddable;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class Content {
 
-    @Column(name = "content")
+    @Column
     private String content;
 
     private Content(String contentParameter){

@@ -1,10 +1,7 @@
 package com.example.demo.feed.service;
 
 
-import com.example.demo.feed.domain.Comment;
-import com.example.demo.feed.domain.Feed;
-import com.example.demo.feed.domain.FeedRepository;
-import com.example.demo.feed.domain.Writer;
+import com.example.demo.feed.domain.*;
 import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserRepository;
 import com.example.demo.user.domain.Username;
@@ -30,8 +27,9 @@ public class CommentService {
         Username username = Username.create(authentication.getName());
         User user = userRepository.findByUserBasicInfo_Username(username);
         Writer writer = Writer.create(user);
+        Content content = Content.create(insertedContent);
 
-        Comment comment = Comment.create(writer, insertedContent);
+        Comment comment = Comment.create(writer, content);
         feed.enrollComment(comment);
     }
 

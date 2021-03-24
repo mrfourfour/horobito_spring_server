@@ -32,19 +32,21 @@ public class Comment {
 
     private LocalDateTime wrtTime;
 
-    private String content;
+    @Embedded
+    private Content content;
 
-    private Long preference;
+    @Embedded
+    private Preference preference;
 
     private boolean deleted;
 
-    public Comment(Writer writer, String content){
+    public Comment(Writer writer, Content content){
         this.writer = writer;
         this.content = content;
     }
 
 
-    public static Comment create(Writer writer, String content) {
+    public static Comment create(Writer writer, Content content) {
         return new Comment(writer, content);
     }
 
