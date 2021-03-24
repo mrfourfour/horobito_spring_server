@@ -44,10 +44,13 @@ public class FriendShipService {
 
 
     @Transactional
-    public FriendShipResult create(Long friendId) {
+    public FriendShipResult create(Long inputId) {
         Username username = Username.create("jihwan");
         User user = userRepository.findByUserBasicInfo_Username(username);
-        User friendUser = userRepository.findUserById(friendId);
+        FriendId myId = FriendId.create(inputId);
+
+        User friendUser = userRepository.findUserById(inputId);
+        FriendId friendId = FriendId.create(inputId);
         Friendship friendship = friendShipRepository.findFriendshipByUserAndFriend_FriendId(user, friendId);
 
         if (friendship==null){
@@ -66,7 +69,7 @@ public class FriendShipService {
 
         }else {
             Friendship friendsFriendShip = friendShipRepository
-                    .findFriendshipByUserAndFriend_FriendId(friendUser, user.getId());
+                    .findFriendshipByUserAndFriend_FriendId(friendUser, myId);
 
             friendship.acceptFriendShip();
             friendsFriendShip.acceptFriendShip();
@@ -87,16 +90,19 @@ public class FriendShipService {
     }
 
 
-    public void deleteFriendShipRequest(Long friendId) {
+    public void deleteFriendShipRequest(Long inputId) {
         User me = null;
 
-        User friendUser = userRepository.findUserById(friendId);
+        User friendUser = userRepository.findUserById(inputId);
+        FriendId friendId = FriendId.create(inputId);
+
+        FriendId myId = FriendId.create(me.getId());
 
         Friendship forwardFriendShip
-                = friendShipRepository.findFriendshipByUserAndFriend_FriendId(me, friendUser.getId());
+                = friendShipRepository.findFriendshipByUserAndFriend_FriendId(me, friendId);
 
         Friendship backwardFriendShip
-                = friendShipRepository.findFriendshipByUserAndFriend_FriendId(friendUser, me.getId());
+                = friendShipRepository.findFriendshipByUserAndFriend_FriendId(friendUser, myId);
 
         forwardFriendShip.deleteFriendShip();
         backwardFriendShip.deleteFriendShip();
