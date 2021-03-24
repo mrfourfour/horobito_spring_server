@@ -1,4 +1,4 @@
-package com.example.demo.user.application;
+package com.example.demo.user.service;
 
 
 import lombok.Value;

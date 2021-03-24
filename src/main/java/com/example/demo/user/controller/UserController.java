@@ -2,7 +2,7 @@ package com.example.demo.user.controller;
 
 
 
-import com.example.demo.user.application.LoginRequest;
+import com.example.demo.user.service.LoginRequest;
 import com.example.demo.user.service.SignupRequest;
 import com.example.demo.user.service.UserService;
 import lombok.RequiredArgsConstructor;
