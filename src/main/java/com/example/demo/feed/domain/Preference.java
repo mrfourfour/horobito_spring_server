@@ -16,5 +16,5 @@ import javax.persistence.Embeddable;
 public class Preference {
 
     @Column
-    private Long preference;
+    private Long preference =0L;
 }
