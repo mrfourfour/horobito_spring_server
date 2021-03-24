@@ -47,7 +47,7 @@ public class CommentService {
                 comment.likeOrDislike();
             }
         } catch (Exception e){
-            return "400 Bad Request";
+
         }
         return null;
     }
