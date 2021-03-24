@@ -36,13 +36,15 @@ public class Comment {
     private Content content;
 
     @Embedded
-    private Preference preference;
+    private Preference preferenceInfo;
 
     private boolean deleted;
 
     public Comment(Writer writer, Content content){
         this.writer = writer;
         this.content = content;
+        this.preferenceInfo = Preference.create();
+        this.deleted = false;
     }
 
 

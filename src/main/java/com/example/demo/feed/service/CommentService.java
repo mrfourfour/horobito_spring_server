@@ -22,9 +22,12 @@ public class CommentService {
 
     @Transactional
     public void makeCommentByFeedIdAndContents(Long feedId, String insertedContent) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Feed feed = feedRepository.findFeedByIdAndDeleted(feedId, false);
-        Username username = Username.create(authentication.getName());
+//        Username username = Username.create(authentication.getName());
+        Username username = Username.create("jihwan");
+
+
         User user = userRepository.findByUserBasicInfo_Username(username);
         Writer writer = Writer.create(user);
         Content content = Content.create(insertedContent);
