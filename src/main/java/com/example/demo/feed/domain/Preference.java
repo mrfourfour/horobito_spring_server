@@ -12,7 +12,7 @@ import javax.persistence.Embeddable;
 @Getter
 @Setter(AccessLevel.PACKAGE)
 @Embeddable
-@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Preference {
 
     @Column(name = "preference")
