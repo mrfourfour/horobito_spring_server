@@ -1,6 +1,5 @@
 package com.example.demo.user.domain;
 
-import com.example.demo.friend.domain.Friendship;
 import lombok.*;
 
 

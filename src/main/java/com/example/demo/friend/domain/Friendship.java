@@ -1,7 +1,6 @@
 package com.example.demo.friend.domain;
 
 
-import com.example.demo.user.domain.User;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

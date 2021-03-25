@@ -13,7 +13,11 @@ import javax.persistence.Embeddable;
 public class Password {
     private String password;
 
-    public Password(String password){
+    private Password(String password){
         this.password = password;
+    }
+
+    public static Password create(String password){
+        return new Password(password);
     }
 }

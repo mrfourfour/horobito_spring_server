@@ -1,9 +1,8 @@
 package com.example.demo.friend.service;
 
 import com.example.demo.friend.domain.*;
-import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserRepository;
-import com.example.demo.user.domain.Username;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -23,9 +22,12 @@ public class FriendShipService {
 
     @Transactional
     public List<FriendDto> getMyFriends(int page, int size) {
-        Username username = Username.create("jihwan");
-        User user = userRepository.findByUserBasicInfo_Username(username);
-        List<FriendDto> friendshipList = friendShipRepository.findAllByUser(user, PageRequest.of(page, size))
+        UserName userName = UserName.create("jihwan");
+        Long id = Long.parseLong("3");
+        UserId userId = UserId.create(id);
+        UserInfo userInfo = UserInfo.create(userId, userName);
+
+        List<FriendDto> friendshipList = friendShipRepository.findAllByUserInfo(userInfo, PageRequest.of(page, size))
                 .stream()
                 .filter(Friendship::getFriendState)
                 .map(Friendship::getFriend)
@@ -45,15 +47,15 @@ public class FriendShipService {
 
     @Transactional
     public FriendShipResult create(Long inputId) {
-        Username username = Username.create("jihwan");
+        UserName username = UserName.create("jihwan");
 
-        User user = userRepository.findByUserBasicInfo_Username(username);
+        UserInfo user = null;
         FriendId myId = FriendId.create(inputId);
 
-        User friendUser = userRepository.findUserById(inputId);
+        UserInfo friendUser = null;
         FriendId friendId = FriendId.create(inputId);
 
-        Friendship friendship = friendShipRepository.findFriendshipByUserAndFriend_FriendId(user, friendId);
+        Friendship friendship = friendShipRepository.findFriendshipByUserInfoAndFriendAndFriend_FriendId(user, friendId);
 
         if (friendship==null){
             
@@ -71,7 +73,7 @@ public class FriendShipService {
 
         }else {
             Friendship friendsFriendShip = friendShipRepository
-                    .findFriendshipByUserAndFriend_FriendId(friendUser, myId);
+                    .findFriendshipByUserInfoAndFriendAndFriend_FriendId(friendUser, myId);
 
             friendship.acceptFriendShip();
             friendsFriendShip.acceptFriendShip();
@@ -81,9 +83,9 @@ public class FriendShipService {
         }
     }
 
-    private Friendship createFriendship(User user, User friendUser) {
-        FriendId friendsId = FriendId.create(friendUser.getId());
-        FriendName friendName = FriendName.create(friendUser.getUserBasicInfo().getUsername());
+    private Friendship createFriendship(UserInfo user, UserInfo friendUserInfo) {
+        FriendId friendsId = FriendId.create(friendUserInfo.getId());
+        FriendName friendName = null;
 
         Friend friend = Friend.create(friendsId, friendName);
         
@@ -92,18 +94,18 @@ public class FriendShipService {
 
 
     public void deleteFriendShipRequest(Long inputId) {
-        User me = null;
+        UserInfo me = null;
 
-        User friendUser = userRepository.findUserById(inputId);
+        UserInfo friendUser = null;
         FriendId friendId = FriendId.create(inputId);
 
         FriendId myId = FriendId.create(me.getId());
 
         Friendship forwardFriendShip
-                = friendShipRepository.findFriendshipByUserAndFriend_FriendId(me, friendId);
+                = friendShipRepository.findFriendshipByUserInfoAndFriendAndFriend_FriendId(me, friendId);
 
         Friendship backwardFriendShip
-                = friendShipRepository.findFriendshipByUserAndFriend_FriendId(friendUser, myId);
+                = friendShipRepository.findFriendshipByUserInfoAndFriendAndFriend_FriendId(friendUser, myId);
 
         forwardFriendShip.deleteFriendShip();
         backwardFriendShip.deleteFriendShip();
@@ -111,9 +113,9 @@ public class FriendShipService {
     }
 
     public List<FriendDto>findRequestForMe(int page, int size) {
-        Username username = Username.create("jihwan");
-        User user = userRepository.findByUserBasicInfo_Username(username);
-        List<FriendDto> friendshipList = friendShipRepository.findAllByUser(user, PageRequest.of(page, size))
+        UserName username = UserName.create("jihwan");
+        UserInfo user = null;
+        List<FriendDto> friendshipList = friendShipRepository.findAllByUserInfo(user, PageRequest.of(page, size))
                 .stream()
                 .filter(friendship -> !friendship.getFriendState())
                 .map(Friendship::getFriend)

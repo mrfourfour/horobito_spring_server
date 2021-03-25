@@ -18,8 +18,8 @@ public class UserService  {
 
     @Transactional
     public void signup(SignupRequest signupRequest){
-        Username username = new Username(signupRequest.getUsername());
-        Password password = new Password(signupRequest.getPassword());
+        Username username = Username.create(signupRequest.getUsername());
+        Password password = Password.create(signupRequest.getPassword());
 
         Authority authority = new Authority(signupRequest.getAuthorities());
         User user = User.create(username, password);

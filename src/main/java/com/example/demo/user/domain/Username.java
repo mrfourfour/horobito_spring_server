@@ -16,7 +16,7 @@ public class Username {
     @Column(name = "user_name", unique = true)
     private String username;
 
-    public Username(String username){
+    private Username(String username){
         this.username = username;
     }
 
