@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Setter(AccessLevel.PACKAGE)
@@ -20,6 +22,9 @@ public class UserInfo {
 
     @Embedded
     private UserId userId;
+
+    @OneToMany(mappedBy = "user")
+    private List<Friendship> friendships = new ArrayList<>();
 
     @Embedded
     private UserName userName;

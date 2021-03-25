@@ -24,9 +24,6 @@ public class User {
     @Embedded
     private UserBasicInfo userBasicInfo;
 
-    @OneToMany(mappedBy = "user")
-    private List<Friendship> friendships = new ArrayList<>();
-
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
     private Set<Authority> authorities = new HashSet<>();
