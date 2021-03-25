@@ -20,7 +20,7 @@ public class Friendship {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private UserInfo userInfo;
 
     @ManyToOne
     @JoinColumn(name = "friend_id")
@@ -29,13 +29,13 @@ public class Friendship {
     @Column(name = "friend_state")
     private Boolean friendState;
 
-    private Friendship(User user, Friend friend){
-        this.user = user;
+    private Friendship(UserInfo userInfo, Friend friend){
+        this.userInfo = userInfo;
         this.friend = friend;
         this.friendState = false;
     }
 
-    public static Friendship create(User user, Friend friend) {
+    public static Friendship create(UserInfo user, Friend friend) {
         return new Friendship(user, friend);
     }
 
