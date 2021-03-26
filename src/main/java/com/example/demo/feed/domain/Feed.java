@@ -34,7 +34,6 @@ public class Feed {
     @Column(name = "wrt_time")
     private LocalDateTime wrtTime;
 
-    @Column(name = "deleted")
     private Boolean deleted;
 
     @OneToMany(mappedBy = "feed", cascade = {CascadeType.PERSIST})
