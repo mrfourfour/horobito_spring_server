@@ -19,7 +19,7 @@ public class FriendShipService {
 
     @Transactional
     public List<FriendDto> getMyFriends(int page, int size) {
-        UserName userName = UserName.create("jihwan");
+        UserName userName = null;
         Long id = Long.parseLong("3");
         UserId userId = UserId.create(id);
         UserInfo userInfo = UserInfo.create(userId, userName);
@@ -44,7 +44,7 @@ public class FriendShipService {
 
     @Transactional
     public FriendShipResult create(Long inputId) {
-        UserName username = UserName.create("jihwan");
+        UserName username = null;
 
         UserInfo user = null;
         FriendId myId = FriendId.create(inputId);
@@ -110,7 +110,7 @@ public class FriendShipService {
     }
 
     public List<FriendDto>findRequestForMe(int page, int size) {
-        UserName username = UserName.create("jihwan");
+        UserName username = null;
         UserInfo user = null;
         List<FriendDto> friendshipList = friendShipRepository.findAllByUserInfo(user, PageRequest.of(page, size))
                 .stream()
