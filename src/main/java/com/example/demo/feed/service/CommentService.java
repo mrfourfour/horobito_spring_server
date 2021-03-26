@@ -27,8 +27,13 @@ public class CommentService {
 
 
         User user = userRepository.findByUserBasicInfo_Username(username);
-        Writer writer = Writer.create(user);
+
+
         Content content = Content.create(insertedContent);
+
+        WriterId id = WriterId.create(user.getId());
+        WriterName wrtName = WriterName.create(user.getUserBasicInfo().getUsername());
+        Writer writer = Writer.create(id, wrtName);
 
         Comment comment = Comment.create(writer, content);
         feed.enrollComment(comment);

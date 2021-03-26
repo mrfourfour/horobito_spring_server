@@ -1,10 +1,7 @@
 package com.example.demo.feed.service;
 
 
-import com.example.demo.feed.domain.Content;
-import com.example.demo.feed.domain.Feed;
-import com.example.demo.feed.domain.FeedRepository;
-import com.example.demo.feed.domain.Writer;
+import com.example.demo.feed.domain.*;
 import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserRepository;
 import com.example.demo.user.domain.Username;
@@ -45,11 +42,12 @@ public class FeedService {
 
     public void makeFeedByContents(String InsertedContent) {
 //        User user = findUser();
-        Username username = Username.create("jihwan");
-        User user = userRepository.findByUserBasicInfo_Username(username);
+        Username username = null;
+        User user = null;
 
-
-        Writer writer = Writer.create(user);
+        WriterId id = WriterId.create(user.getId());
+        WriterName wrtName = WriterName.create(user.getUserBasicInfo().getUsername());
+        Writer writer = Writer.create(id, wrtName);
         Content content = Content.create(InsertedContent);
         Feed feed = Feed.create(writer, content);
 

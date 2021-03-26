@@ -15,17 +15,17 @@ import javax.persistence.Embeddable;
 public class Writer {
 
     @Column(name = "writer_id")
-    private Long id;
+    private WriterId id;
 
     @Column(name = "writer_name")
-    private String wrtName;
+    private WriterName wrtName;
 
-    public Writer(Long id, String wrtName) {
+    public Writer(WriterId id, WriterName wrtName) {
         this.id = id;
         this.wrtName = wrtName;
     }
 
-    public static Writer create(User user) {
-        return new Writer(user.getId(), user.getUserBasicInfo().getUsername());
+    public static Writer create(WriterId wrtId, WriterName wrtName) {
+        return new Writer(wrtId, wrtName);
     }
 }
