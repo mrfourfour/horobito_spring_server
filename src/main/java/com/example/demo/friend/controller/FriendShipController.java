@@ -27,7 +27,7 @@ public class FriendShipController {
     }
 
     @PostMapping("/{friendId}")
-    public void dealWithFriendShip(@PathVariable Long friendId){
+    public void createFriendShip(@PathVariable Long friendId){
         FriendShipResult friendShipResult = friendShipService.create(friendId);
 
         if (friendShipResult == FriendShipResult.Try_to_make_FriendShip || friendShipResult == FriendShipResult.Accept){

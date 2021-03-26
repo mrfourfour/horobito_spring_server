@@ -1,8 +1,6 @@
 package com.example.demo.friend.service;
 
 import com.example.demo.friend.domain.*;
-import com.example.demo.user.domain.UserRepository;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -18,7 +16,6 @@ public class FriendShipService {
 
     private final FriendShipRepository friendShipRepository;
 
-    private final UserRepository userRepository;
 
     @Transactional
     public List<FriendDto> getMyFriends(int page, int size) {
