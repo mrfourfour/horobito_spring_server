@@ -8,16 +8,17 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 
 @Embeddable
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Writer {
 
-    @Column(name = "writer_id")
+    @Embedded
     private WriterId id;
 
-    @Column(name = "writer_name")
+    @Embedded
     private WriterName wrtName;
 
     public Writer(WriterId id, WriterName wrtName) {
