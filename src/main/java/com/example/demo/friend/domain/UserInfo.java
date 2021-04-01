@@ -27,16 +27,24 @@ public class UserInfo {
     private List<Friendship> friendships = new ArrayList<>();
 
     @Embedded
-    private Name name;
+    private Name username;
 
     private UserInfo(Identfication userId, Name username){
         this.userId = userId;
-        this.name = username;
+        this.username = username;
     }
 
 
     public static UserInfo create(Identfication userId, Name userName){
         return new UserInfo(userId, userName);
+    }
+
+    public Long getUserId(){
+        return this.userId.getId();
+    }
+
+    public String getUsername(){
+        return this.username.getName();
     }
 
 

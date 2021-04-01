@@ -6,23 +6,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Getter
 @Setter(AccessLevel.PACKAGE)
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class FriendId {
+public class Name {
 
-    @Column(name = "friend_id")
-    private Long friendId;
+    private String name;
 
-    private FriendId(Long friendId) {
-        this.friendId = friendId;
+    private Name(String name) {
+        this.name = name;
     }
 
-    public static FriendId create(Long friendId){
-        return new FriendId(friendId);
+    public static Name create(String name){
+        return new Name(name);
     }
 }

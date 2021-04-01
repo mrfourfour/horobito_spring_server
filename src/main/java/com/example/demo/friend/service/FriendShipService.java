@@ -1,6 +1,8 @@
 package com.example.demo.friend.service;
 
 import com.example.demo.friend.domain.*;
+import com.example.demo.user.domain.User;
+import com.example.demo.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import java.util.stream.Collectors;
 public class FriendShipService {
 
     private final FriendShipRepository friendShipRepository;
+    private final UserRepository userRepository;
 
 
     @Transactional
@@ -44,18 +47,20 @@ public class FriendShipService {
 
     @Transactional
     public FriendShipResult create(Long inputedFriendId) {
+        User user = null;
 
-        UserInfo myInfo = UserInfo.create();
-        Identfication myId = Identfication.create(myInfo.getId());
-        Name myName = Name.create();
+        Name myName = Name.create(user.getUserBasicInfo().getUsername());
+        Identfication myId = Identfication.create(user.getId());
+        UserInfo myInfo = UserInfo.create(myId, myName);
+
+        User friend = userRepository.findUserById(inputedFriendId);
+
+        Identfication friendId = Identfication.create(inputedFriendId);
+        Name friendName = Name.create(friend.getUserBasicInfo().getUsername());
+        UserInfo friendInfo = UserInfo.create(friendId, friendName);
 
 
-
-        UserInfo friendInfo = UserInfo.create();
-
-
-
-        Friendship friendship = friendShipRepository.findFriendshipByUserInfoAndFriendAndFriend_FriendId();
+        Friendship friendship = friendShipRepository.findFriendshipByUserInfoAndFriendAndFriend_FriendId(myInfo, friendId);
 
         if (friendship==null){
 
