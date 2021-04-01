@@ -21,21 +21,21 @@ public class UserInfo {
     private Long id;
 
     @Embedded
-    private UserId userId;
+    private Identfication userId;
 
     @OneToMany(mappedBy = "user")
     private List<Friendship> friendships = new ArrayList<>();
 
     @Embedded
-    private UserName userName;
+    private Name name;
 
-    private UserInfo(UserId userId, UserName userName){
+    private UserInfo(Identfication userId, Name username){
         this.userId = userId;
-        this.userName = userName;
+        this.name = username;
     }
 
 
-    public static UserInfo create(UserId userId, UserName userName){
+    public static UserInfo create(Identfication userId, Name userName){
         return new UserInfo(userId, userName);
     }
 

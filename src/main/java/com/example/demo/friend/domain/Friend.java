@@ -1,7 +1,6 @@
 package com.example.demo.friend.domain;
 
 
-import com.example.demo.friend.service.FriendDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,18 +20,26 @@ public class Friend {
     private Long id;
 
     @Embedded
-    private FriendId friendId;
+    private Identfication friendId;
 
     @Embedded
-    private FriendName friendname;
+    private Name friendname;
 
-    private Friend(FriendId friendId, FriendName friendname){
+    private Friend(Identfication friendId, Name friendname){
         this.friendId = friendId;
         this.friendname = friendname;
     }
 
-    public static Friend create(FriendId friendId, FriendName friendname) {
+    public static Friend create(Identfication friendId, Name friendname) {
         return new Friend(friendId, friendname);
 
+    }
+
+    public Long getFriendId(){
+        return this.friendId.getId();
+    }
+
+    public String getFriendName(){
+        return this.friendname.getName();
     }
 }
