@@ -43,14 +43,14 @@ public class FriendShipService {
 
 
     @Transactional
-    public FriendShipResult create(Long inputId) {
+    public FriendShipResult create(Long inputedFriendId) {
         UserName username = null;
 
         UserInfo user = null;
-        FriendId myId = FriendId.create(inputId);
+        FriendId myId = FriendId.create(inputedFriendId);
 
         UserInfo friendUser = null;
-        FriendId friendId = FriendId.create(inputId);
+        FriendId friendId = FriendId.create(inputedFriendId);
 
         Friendship friendship = friendShipRepository.findFriendshipByUserInfoAndFriendAndFriend_FriendId(user, friendId);
 
@@ -60,6 +60,7 @@ public class FriendShipService {
             Friendship backwardFriendship = createFriendship(friendUser, user);
 
             friendShipRepository.save(forwardFriendship); // 저장할 때 터진다.
+
             friendShipRepository.save(backwardFriendship);
 
             return FriendShipResult.Try_to_make_FriendShip;
