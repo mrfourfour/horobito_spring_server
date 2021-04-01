@@ -58,7 +58,7 @@ public class Feed {
     }
 
     public void like(){
-        this.preferenceInfo.like();
+        this.preferenceInfo = this.preferenceInfo.like();
     }
 
     public void enrollComment(Comment comment) {

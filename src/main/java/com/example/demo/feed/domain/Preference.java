@@ -16,12 +16,16 @@ import javax.persistence.Embeddable;
 public class Preference {
 
     @Column(name = "preference")
-    private Long preference = 0L;
+    private long preference = 0L;
 
-    public void like(){
-        this.preference ++;
+    private Preference(long like){
+        this.preference = like;
     }
 
+
+    public Preference like(){
+        return new Preference(this.preference +1L);
+    }
 
 
     public static Preference create(){
