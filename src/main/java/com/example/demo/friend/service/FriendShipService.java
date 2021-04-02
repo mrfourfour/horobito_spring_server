@@ -124,16 +124,18 @@ public class FriendShipService {
             forwardFriendShip.deleteFriendShip();
 
             return FriendShipResult.SUCCESS;
-
-
         }
 
     }
 
     public List<FriendDto>findRequestForMe(int page, int size) {
-        Name username = null;
-        UserInfo user = null;
-        List<FriendDto> friendshipList = friendShipRepository.findAllByUserInfo(user, PageRequest.of(page, size))
+        User user = null;
+
+        Name myName = Name.create(user.getUserBasicInfo().getUsername());
+        Identfication myId = Identfication.create(user.getId());
+        UserInfo myInfo = UserInfo.create(myId, myName);
+
+        List<FriendDto> friendshipList = friendShipRepository.findAllByUserInfo(myInfo, PageRequest.of(page, size))
                 .stream()
                 .filter(friendship -> !friendship.getFriendState())
                 .map(Friendship::getFriend)
