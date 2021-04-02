@@ -37,12 +37,7 @@ public class FriendShipService {
         return friendshipList;
     }
 
-    private FriendDto toFriendDto(Friend friend) {
-        return new FriendDto(
-                friend.getFriendId(),
-                friend.getFriendName()
-        );
-    }
+
 
 
     @Transactional
@@ -92,7 +87,7 @@ public class FriendShipService {
 
     private Friendship createFriendship(UserInfo user, UserInfo friendUserInfo) {
         Identfication friendsId = Identfication.create(friendUserInfo.getId());
-        Name friendName = Name.create(friendUserInfo.getUsername());
+        Name friendName = Name.create(friendUserInfo.getName());
 
         Friend friend = Friend.create(friendsId, friendName);
         
@@ -135,13 +130,21 @@ public class FriendShipService {
         Identfication myId = Identfication.create(user.getId());
         UserInfo myInfo = UserInfo.create(myId, myName);
 
-        List<FriendDto> friendshipList = friendShipRepository.findAllByUserInfo(myInfo, PageRequest.of(page, size))
+        List<FriendDto> friendshipList = friendShipRepository.findAllByFriend_FriendId(myId, PageRequest.of(page, size))
                 .stream()
-                .filter(friendship -> !friendship.getFriendState())
-                .map(Friendship::getFriend)
+                .filter(Friendship::getFriendState)
+                .map(Friendship::getUserInfo)
                 .map(this::toFriendDto)
                 .collect(Collectors.toList());
 
         return friendshipList;
     }
+
+    private FriendDto toFriendDto(BasicInfo basicInfo) {
+        return new FriendDto(
+                basicInfo.getId(),
+                basicInfo.getName()
+        );
+    }
+
 }

@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Setter(AccessLevel.PACKAGE)
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Friend {
+public class Friend extends BasicInfo{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,12 +34,13 @@ public class Friend {
         return new Friend(friendId, friendname);
 
     }
-
-    public Long getFriendId(){
+    @Override
+    public Long getId(){
         return this.friendId.getId();
     }
 
-    public String getFriendName(){
+    @Override
+    public String getName(){
         return this.friendname.getName();
     }
 }

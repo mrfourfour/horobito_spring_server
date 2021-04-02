@@ -14,7 +14,7 @@ import java.util.List;
 @Setter(AccessLevel.PACKAGE)
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserInfo {
+public class UserInfo extends BasicInfo{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,11 +39,13 @@ public class UserInfo {
         return new UserInfo(userId, userName);
     }
 
-    public Long getUserId(){
+    @Override
+    public Long getId(){
         return this.userId.getId();
     }
 
-    public String getUsername(){
+    @Override
+    public String getName(){
         return this.username.getName();
     }
 
