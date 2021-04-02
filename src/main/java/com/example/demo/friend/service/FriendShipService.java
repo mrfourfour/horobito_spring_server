@@ -74,9 +74,12 @@ public class FriendShipService {
 
         }else if(friendship.getFriendState()){
 
-
             return FriendShipResult.Already_Accept;
         }else {
+            Friendship forwardFriendShip = friendShipRepository.findFriendshipByUserInfoAndFriendAndFriend_FriendId(myInfo, friendId);
+            Friendship backwardFriendShip = friendShipRepository.findFriendshipByUserInfoAndFriendAndFriend_FriendId(friendInfo, myId);
+            forwardFriendShip.acceptFriendShip();
+            backwardFriendShip.acceptFriendShip();
 
             return FriendShipResult.Accept;
 
