@@ -93,19 +93,24 @@ public class FriendShipService {
     }
 
 
-    public void deleteFriendShipRequest(Long inputId) {
-        UserInfo me = null;
+    public void deleteFriendShipRequest(Long inputedId) {
+        User user = null;
 
-        UserInfo friendUser = null;
-        Identfication friendId = Identfication.create(inputId);
+        Name myName = Name.create(user.getUserBasicInfo().getUsername());
+        Identfication myId = Identfication.create(user.getId());
+        UserInfo myInfo = UserInfo.create(myId, myName);
 
-        Identfication myId = Identfication.create(me.getId());
+        User friend = userRepository.findUserById(inputedId);
+
+        Identfication friendId = Identfication.create(inputedId);
+        Name friendName = Name.create(friend.getUserBasicInfo().getUsername());
+        UserInfo friendInfo = UserInfo.create(friendId, friendName);
 
         Friendship forwardFriendShip
-                = friendShipRepository.findFriendshipByUserInfoAndFriendAndFriend_FriendId(me, friendId);
+                = friendShipRepository.findFriendshipByUserInfoAndFriendAndFriend_FriendId(myInfo, friendId);
 
         Friendship backwardFriendShip
-                = friendShipRepository.findFriendshipByUserInfoAndFriendAndFriend_FriendId(friendUser, myId);
+                = friendShipRepository.findFriendshipByUserInfoAndFriendAndFriend_FriendId(friendInfo, myId);
 
         forwardFriendShip.deleteFriendShip();
         backwardFriendShip.deleteFriendShip();
