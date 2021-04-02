@@ -22,9 +22,9 @@ public class FriendShipService {
 
     @Transactional
     public List<FriendDto> getMyFriends(int page, int size) {
-        Name userName = null;
-        Long id = Long.parseLong("3");
-        Identfication userId = Identfication.create(id);
+        User user = null;
+        Name userName = Name.create(user.getUserBasicInfo().getUsername());
+        Identfication userId = Identfication.create(user.getId());
         UserInfo userInfo = UserInfo.create(userId, userName);
 
         List<FriendDto> friendshipList = friendShipRepository.findAllByUserInfo(userInfo, PageRequest.of(page, size))
@@ -63,20 +63,29 @@ public class FriendShipService {
         Friendship friendship = friendShipRepository.findFriendshipByUserInfoAndFriendAndFriend_FriendId(myInfo, friendId);
 
         if (friendship==null){
+            Friendship forwardFriendShip = createFriendship(myInfo, friendInfo);
+            Friendship backwardFriendShip = createFriendship(friendInfo, myInfo);
+
+            friendShipRepository.save(forwardFriendShip);
+            friendShipRepository.save(backwardFriendShip);
+
+            return FriendShipResult.Try_to_make_FriendShip;
 
 
         }else if(friendship.getFriendState()){
 
-            return FriendShipResult.Already_Accept;
 
+            return FriendShipResult.Already_Accept;
         }else {
+
+            return FriendShipResult.Accept;
 
         }
     }
 
     private Friendship createFriendship(UserInfo user, UserInfo friendUserInfo) {
         Identfication friendsId = Identfication.create(friendUserInfo.getId());
-        Name friendName = null;
+        Name friendName = Name.create(friendUserInfo.getUsername());
 
         Friend friend = Friend.create(friendsId, friendName);
         
