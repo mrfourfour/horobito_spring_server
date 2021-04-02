@@ -108,9 +108,9 @@ public class FriendShipService {
         Name friendName = Name.create(friend.getUserBasicInfo().getUsername());
         UserInfo friendInfo = UserInfo.create(friendId, friendName);
 
-        Friendship friendship;;
 
-        if ((friendship=friendShipRepository.findFriendshipByUserInfoAndFriend_FriendId(myInfo, friendId))==null){
+
+        if ((friendShipRepository.findFriendshipByUserInfoAndFriend_FriendId(myInfo, friendId))==null){
 
             return FriendShipResult.NEVER_REQUESTED;
 
