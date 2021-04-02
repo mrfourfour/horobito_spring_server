@@ -30,9 +30,9 @@ public class FriendShipController {
     public void createFriendShip(@PathVariable Long friendId){
         FriendShipResult friendShipResult = friendShipService.create(friendId);
 
-        if (friendShipResult == FriendShipResult.Try_to_make_FriendShip || friendShipResult == FriendShipResult.Accept){
+        if (friendShipResult == FriendShipResult.TRY_TO_MAKE_FRIENDSHIP || friendShipResult == FriendShipResult.SUCCESS){
             ResponseEntity.ok();
-        }else if(friendShipResult == FriendShipResult.Already_Accept){
+        }else if(friendShipResult == FriendShipResult.ALREADY_ACCEPT){
             ResponseEntity.status(HttpStatus.BAD_REQUEST);
         }else {
             ResponseEntity.status(HttpStatus.FORBIDDEN);

@@ -70,7 +70,7 @@ public class FriendShipService {
             friendShipRepository.save(forwardFriendShip);
             friendShipRepository.save(backwardFriendShip);
 
-            return FriendShipResult.Try_to_make_FriendShip;
+            return FriendShipResult.TRY_TO_MAKE_FRIENDSHIP;
 
 
 
@@ -78,13 +78,14 @@ public class FriendShipService {
             Friendship forwardFriendShip = friendShipRepository.findFriendshipByUserInfoAndFriend_FriendId(myInfo, friendId);
             Friendship backwardFriendShip = friendShipRepository.findFriendshipByUserInfoAndFriend_FriendId(friendInfo, myId);
 
-            if (forwardFriendShip.getFriendState() && !backwardFriendShip.getFriendState()){
-                return FriendShipResult.Already_Accept;
-            }else {
+            if (forwardFriendShip.getFriendState()){
+                return FriendShipResult.ALREADY_ACCEPT;
+            }else if (!forwardFriendShip.getFriendState() && backwardFriendShip.getFriendState()){
                 forwardFriendShip.acceptFriendShip();
-                return FriendShipResult.Accept;
+                return FriendShipResult.SUCCESS;
+            }else {
+                return FriendShipResult.DENIED;
             }
-
 
         }
     }
@@ -99,7 +100,7 @@ public class FriendShipService {
     }
 
 
-    public void deleteFriendShipRequest(Long inputedId) {
+    public FriendShipResult deleteFriendShipRequest(Long inputedId) {
         User user = null;
 
         Name myName = Name.create(user.getUserBasicInfo().getUsername());
@@ -112,14 +113,20 @@ public class FriendShipService {
         Name friendName = Name.create(friend.getUserBasicInfo().getUsername());
         UserInfo friendInfo = UserInfo.create(friendId, friendName);
 
-        Friendship forwardFriendShip
-                = friendShipRepository.findFriendshipByUserInfoAndFriend_FriendId(myInfo, friendId);
+        Friendship friendship;;
 
-        Friendship backwardFriendShip
-                = friendShipRepository.findFriendshipByUserInfoAndFriend_FriendId(friendInfo, myId);
+        if ((friendship=friendShipRepository.findFriendshipByUserInfoAndFriend_FriendId(myInfo, friendId))==null){
 
-        forwardFriendShip.deleteFriendShip();
-        backwardFriendShip.deleteFriendShip();
+            return FriendShipResult.NEVER_REQUESTED;
+
+        }else {
+            Friendship forwardFriendShip = friendShipRepository.findFriendshipByUserInfoAndFriend_FriendId(myInfo, friendId);
+            forwardFriendShip.deleteFriendShip();
+
+            return FriendShipResult.SUCCESS;
+
+
+        }
 
     }
 
