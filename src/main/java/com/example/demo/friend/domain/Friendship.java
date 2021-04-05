@@ -38,6 +38,10 @@ public class Friendship {
         return new Friendship(user, friend);
     }
 
+    public Long getFriendId(){
+        return this.friend.getId();
+    }
+
     public void acceptFriendShip() {
         this.friendState = true;
     }
