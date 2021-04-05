@@ -43,16 +43,12 @@ public class FriendShipService {
     @Transactional
     public FriendShipResult create(Long inputedFriendId) {
         User user = null;
-
-        Name myName = Name.create(user.getUserBasicInfo().getUsername());
         Identfication myId = Identfication.create(user.getId());
-        UserInfo myInfo = UserInfo.create(myId, myName);
+        UserInfo myInfo = createUserInfo(user, myId);
 
         User friend = userRepository.findUserById(inputedFriendId);
-
         Identfication friendId = Identfication.create(inputedFriendId);
-        Name friendName = Name.create(friend.getUserBasicInfo().getUsername());
-        UserInfo friendInfo = UserInfo.create(friendId, friendName);
+        UserInfo friendInfo = createUserInfo(friend, friendId);
 
 
         Friendship friendship;;
@@ -60,6 +56,7 @@ public class FriendShipService {
         if ((friendship=friendShipRepository.findFriendshipByUserInfoAndFriend_FriendId(myInfo, friendId))==null){
             Friendship forwardFriendShip = createFriendship(myInfo, friendInfo);
             forwardFriendShip.acceptFriendShip();
+
             Friendship backwardFriendShip = createFriendship(friendInfo, myInfo);
 
             friendShipRepository.save(forwardFriendShip);
@@ -97,18 +94,12 @@ public class FriendShipService {
 
     public FriendShipResult deleteFriendShipRequest(Long inputedId) {
         User user = null;
-
-        Name myName = Name.create(user.getUserBasicInfo().getUsername());
         Identfication myId = Identfication.create(user.getId());
-        UserInfo myInfo = UserInfo.create(myId, myName);
+        UserInfo myInfo = createUserInfo(user, myId);
+
 
         User friend = userRepository.findUserById(inputedId);
-
         Identfication friendId = Identfication.create(inputedId);
-        Name friendName = Name.create(friend.getUserBasicInfo().getUsername());
-        UserInfo friendInfo = UserInfo.create(friendId, friendName);
-
-
 
         if ((friendShipRepository.findFriendshipByUserInfoAndFriend_FriendId(myInfo, friendId))==null){
 
@@ -123,12 +114,17 @@ public class FriendShipService {
 
     }
 
-    public List<FriendDto>findRequestForMe(int page, int size) {
-        User user = null;
+    private UserInfo createUserInfo(User user, Identfication id) {
 
-        Name myName = Name.create(user.getUserBasicInfo().getUsername());
+        Name name = Name.create(user.getUserBasicInfo().getUsername());
+        return UserInfo.create(id, name);
+    }
+
+
+    public List<FriendDto>findRequestForMe(int page, int size) {
+
+        User user = null;
         Identfication myId = Identfication.create(user.getId());
-        UserInfo myInfo = UserInfo.create(myId, myName);
 
         List<FriendDto> friendshipList = friendShipRepository.findAllByFriend_FriendId(myId, PageRequest.of(page, size))
                 .stream()
