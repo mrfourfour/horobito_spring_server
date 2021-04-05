@@ -39,19 +39,19 @@ public class CommentService {
         feed.enrollComment(comment);
     }
 
-    @Transactional
-    public String likeOrDislikeCommentByFeedIdAndCommentId(Long feedId, int commentId) {
-        Username username = Username.create("jihwan");
-        User user = userRepository.findByUserBasicInfo_Username(username);
-        try {
-            Feed feed = feedRepository.findFeedByIdAndDeleted(feedId, false);
-            Comment comment = feed.getComment(commentId);
-            if(comment.checkPossibleOfLike(user)){
-                comment.likeOrDislike();
-            }
-        } catch (Exception e){
-
-        }
-        return null;
-    }
+//    @Transactional
+//    public String likeOrDislikeCommentByFeedIdAndCommentId(Long feedId, int commentId) {
+//        Username username = Username.create("jihwan");
+//        User user = userRepository.findByUserBasicInfo_Username(username);
+//        try {
+//            Feed feed = feedRepository.findFeedByIdAndDeleted(feedId, false);
+//            Comment comment = feed.getComment(commentId);
+//            if(comment.checkPossibleOfLike(user)){
+//                comment.likeOrDislike();
+//            }
+//        } catch (Exception e){
+//
+//        }
+//        return null;
+//    }
 }

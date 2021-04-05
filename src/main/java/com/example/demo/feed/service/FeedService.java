@@ -7,9 +7,7 @@ import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserRepository;
 import com.example.demo.user.domain.Username;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -54,6 +52,8 @@ public class FeedService {
         for (int i=0; i<length; i++){
             feedsList.addAll(feedRepository.findFeedsByWriter_Id(friendIds[i]));
         }
+
+//        Page<Feed> feeds = new PageImpl<Feed>(feedsList, new PageRequest(page, pageSize, Sort.sort()), feedsList.size());
 
 
 //        Page<Feed> feeds = feedRepository.findAll(PageRequest.of(page, pageSize));

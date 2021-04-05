@@ -44,8 +44,9 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
     // junit
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.7.1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.1")
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.7.1")
 
 
 

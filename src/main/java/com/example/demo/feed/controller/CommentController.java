@@ -18,10 +18,10 @@ public class CommentController {
         commentService.makeCommentByFeedIdAndContents(feedId, contents);
     }
 
-    @PostMapping("/feed/{feedId}/comments/{commentId}/like")
-    public void likeOrDislikeCommentById(@PathVariable Long feedId,
-                                         @PathVariable int commentId){
-        commentService.likeOrDislikeCommentByFeedIdAndCommentId(feedId, commentId);
-    }
+//    @PostMapping("/feed/{feedId}/comments/{commentId}/like")
+//    public void likeOrDislikeCommentById(@PathVariable Long feedId,
+//                                         @PathVariable int commentId){
+//        commentService.likeOrDislikeCommentByFeedIdAndCommentId(feedId, commentId);
+//    }
 
 }
