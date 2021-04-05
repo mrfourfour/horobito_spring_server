@@ -23,11 +23,13 @@ public class FriendShipService {
     @Transactional
     public List<FriendDto> getMyFriends(int page, int size) {
         User user = null;
-        Name userName = Name.create(user.getUserBasicInfo().getUsername());
         Identfication userId = Identfication.create(user.getId());
-        UserInfo userInfo = UserInfo.create(userId, userName);
+        UserInfo userInfo = createUserInfo(user, userId);
 
-        List<FriendDto> friendshipList = friendShipRepository.findAllByUserInfo(userInfo, PageRequest.of(page, size))
+
+        List<FriendDto> friendshipList
+                = friendShipRepository
+                .findAllByUserInfo(userInfo, PageRequest.of(page, size))
                 .stream()
                 .filter(Friendship::getFriendState)
                 .map(Friendship::getFriend)
@@ -67,8 +69,10 @@ public class FriendShipService {
 
 
         }else {
-            Friendship forwardFriendShip = friendShipRepository.findFriendshipByUserInfoAndFriend_FriendId(myInfo, friendId);
-            Friendship backwardFriendShip = friendShipRepository.findFriendshipByUserInfoAndFriend_FriendId(friendInfo, myId);
+            Friendship forwardFriendShip
+                    = friendShipRepository.findFriendshipByUserInfoAndFriend_FriendId(myInfo, friendId);
+            Friendship backwardFriendShip
+                    = friendShipRepository.findFriendshipByUserInfoAndFriend_FriendId(friendInfo, myId);
 
             if (forwardFriendShip.getFriendState()){
                 return FriendShipResult.ALREADY_ACCEPT;
@@ -97,8 +101,6 @@ public class FriendShipService {
         Identfication myId = Identfication.create(user.getId());
         UserInfo myInfo = createUserInfo(user, myId);
 
-
-        User friend = userRepository.findUserById(inputedId);
         Identfication friendId = Identfication.create(inputedId);
 
         if ((friendShipRepository.findFriendshipByUserInfoAndFriend_FriendId(myInfo, friendId))==null){
@@ -106,7 +108,8 @@ public class FriendShipService {
             return FriendShipResult.NEVER_REQUESTED;
 
         }else {
-            Friendship forwardFriendShip = friendShipRepository.findFriendshipByUserInfoAndFriend_FriendId(myInfo, friendId);
+            Friendship forwardFriendShip
+                    = friendShipRepository.findFriendshipByUserInfoAndFriend_FriendId(myInfo, friendId);
             forwardFriendShip.deleteFriendShip();
 
             return FriendShipResult.SUCCESS;
