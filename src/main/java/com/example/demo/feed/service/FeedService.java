@@ -3,20 +3,19 @@ package com.example.demo.feed.service;
 
 import com.example.demo.feed.domain.*;
 import com.example.demo.friend.domain.*;
-import com.example.demo.friend.service.FriendShipService;
 import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserRepository;
 import com.example.demo.user.domain.Username;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,7 +32,7 @@ public class FeedService {
         feed.delete();
     }
 
-    public Page<Feed> findMyTimeLine(int page, int pageSize) { // 친구 문제
+    public Feed[] findMyTimeLine(int page, int pageSize) { // 친구 문제
         User user = findUser();
         Identfication id = Identfication.create(user.getId());
         Name name = Name.create(user.getUserBasicInfo().getUsername());
@@ -48,12 +47,18 @@ public class FeedService {
                 .collect(Collectors.toList())
                 .toArray(WriterId[]::new);
 
+        int length = friendIds.length;
 
-        Page<Feed> feeds = feedRepository.findAll(PageRequest.of(page, pageSize));
+        List<Feed> feedsList = new ArrayList<Feed>();
+
+        for (int i=0; i<length; i++){
+            feedsList.addAll(feedRepository.findFeedsByWriter_Id(friendIds[i]));
+        }
 
 
+//        Page<Feed> feeds = feedRepository.findAll(PageRequest.of(page, pageSize));
 
-        return feeds;
+        return feedsList.toArray(Feed[]::new);
     }
 
     public Feed findFeedDetailByFeedId(Long id) {
