@@ -60,7 +60,7 @@ class FriendShipServiceTest {
                 .thenReturn(friendId);
 
         when(UserInfo.create(any(), any()))
-                .thenReturn(UserInfo.create(myId, myName))
+                .thenReturn(UserInfo.create(myId, myName));
 
 
 
