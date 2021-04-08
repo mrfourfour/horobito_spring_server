@@ -79,7 +79,9 @@ public class FeedService {
         Content content = Content.create(InsertedContent);
         Feed feed = Feed.create(writer, content);
 
+
         feedRepository.save(feed);
+        System.out.println("새로운 feed 생성 완료");
     }
 
     public User findUser(){

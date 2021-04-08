@@ -3,8 +3,11 @@ package com.example.demo.friend.service;
 import com.example.demo.friend.domain.*;
 import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserRepository;
+import com.example.demo.user.domain.Username;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -44,7 +47,7 @@ public class FriendShipService {
 
     @Transactional
     public FriendShipResult create(Long inputedFriendId) {
-        User user = null;
+        User user = findUser();
         Identfication myId = Identfication.create(user.getId());
         UserInfo myInfo = createUserInfo(user, myId);
 
@@ -84,6 +87,17 @@ public class FriendShipService {
             }
 
         }
+    }
+
+    public User findUser(){
+        Authentication authentication = findAuthentication();
+        Username username = Username.create(authentication.getName());
+        return userRepository.findByUserBasicInfo_Username(username);
+
+    }
+
+    public Authentication findAuthentication(){
+        return SecurityContextHolder.getContext().getAuthentication();
     }
 
     private Friendship createFriendship(UserInfo user, UserInfo friendUserInfo) {
