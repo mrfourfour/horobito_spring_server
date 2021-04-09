@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "comment")
 @Getter
-@Setter
+@Setter(AccessLevel.PACKAGE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Comment {
     @Id
@@ -32,29 +32,34 @@ public class Comment {
 
     private LocalDateTime wrtTime;
 
-    private String content;
+    @Embedded
+    private Content content;
 
-    private Long likeNum;
+    @Embedded
+    private Preference preferenceInfo;
 
-    private boolean isDelete;
+    private boolean deleted;
 
-    public Comment(Writer writer, String content){
+    public Comment(Writer writer, Content content){
         this.writer = writer;
         this.content = content;
+        this.preferenceInfo = Preference.create();
+        this.wrtTime = LocalDateTime.now();
+        this.deleted = false;
     }
 
 
-    public static Comment makeComment(Writer writer, String contents) {
-        return new Comment(writer, contents);
+    public static Comment create(Writer writer, Content content) {
+        return new Comment(writer, content);
     }
 
     public void likeOrDislike() {
 
     }
 
-    public boolean checkPossibleOfLike(User user) {
-        String writerId = this.getWriter().getWrtName();
-        String username = user.getUserId();
-        return !writerId.equals(username);
-    }
+//    public boolean checkPossibleOfLike(User user) {
+//        String writerId = this.getWriter().getWrtName();
+//        String username = user.getUserBasicInfo().getUsername();
+//        return !writerId.equals(username);
+//    }
 }

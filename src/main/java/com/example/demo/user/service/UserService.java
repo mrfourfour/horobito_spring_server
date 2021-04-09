@@ -3,45 +3,32 @@ package com.example.demo.user.service;
 
 
 
-import com.example.demo.login.service.CustomAuthenticationFilter;
 
-import com.example.demo.login.service.WebSecurityConfig;
-import com.example.demo.user.domain.User;
-import com.example.demo.user.domain.UserRepository;
+import com.example.demo.user.domain.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
 @RequiredArgsConstructor
 public class UserService  {
 
-    private final CustomAuthenticationFilter authenticationFilter;
     private final UserRepository userRepository;
 
+    @Transactional
+    public void signup(SignupRequest signupRequest){
+        Username username = Username.create(signupRequest.getUsername());
+        Password password = Password.create(signupRequest.getPassword());
 
-    public String signUp(SignUp signUp) {
-        User user = User.createUser(signUp);
-        if(!userRepository.existsByUserId(user.getUserId())){
-            userRepository.save(user);
-            return "201 Created";
-        }else {
-            return "400 Request";
-        }
-
-
+        Authority authority = new Authority(signupRequest.getAuthorities());
+        User user = User.create(username, password);
+        user.addAuthorities(authority);
+        userRepository.save(user);
     }
 
-    public HttpServletResponse signIn(HttpServletRequest request, HttpServletResponse response) {
-        Authentication authentication = authenticationFilter.attemptAuthentication(request, response);
-        UsernamePasswordAuthenticationToken token
-                = (UsernamePasswordAuthenticationToken) authentication;
-        authenticationFilter.conveyToken(token, response);
-        return response;
+    public void login(LoginRequest loginRequest) {
+
     }
 }
+

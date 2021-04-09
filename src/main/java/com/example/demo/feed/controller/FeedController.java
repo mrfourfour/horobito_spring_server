@@ -21,33 +21,35 @@ public class FeedController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/feeds")
-    public Page<Feed> findTimeline(@RequestParam int page,
+    public Feed[] findTimeline(@RequestParam int page,
                                    @RequestParam int pageSize){
         return feedService.findMyTimeLine(page, pageSize);
 
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/feeds/{feedID}")
-    public Feed  findFeedDetailByFeedId(@PathVariable Long FeedId){
-        return feedService.findFeedDetailByFeedId(FeedId);
+    @GetMapping("/feeds/{feedId}")
+    public Feed  findFeedDetailByFeedId(@PathVariable Long feedId){
+        return feedService.findFeedDetailByFeedId(feedId);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/feeds")
-    public void makeFeed(@RequestParam String contents){
+    public void makeFeed(@RequestBody String contents){
         feedService.makeFeedByContents(contents);
 
     }
 
-    @DeleteMapping("/feeds/{feedID}")
-    public void deleteFeedByFeedId(@PathVariable Long id){
-        feedService.deleteFeedByFeedId(id);
+    @DeleteMapping("/feeds/{feedId}")
+    public void deleteFeedByFeedId(@PathVariable Long feedId){
+        feedService.deleteFeedByFeedId(feedId);
 
     }
 
     @PostMapping("/feeds/{feedId}/likes")
-    public void likeFeedByFeedId(@PathVariable Long id){}
+    public void likeFeedByFeedId(@PathVariable Long feedId){
+        feedService.likeFeedByFeedID(feedId);
+    }
 
 
 }

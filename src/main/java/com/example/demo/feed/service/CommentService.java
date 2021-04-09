@@ -1,19 +1,13 @@
 package com.example.demo.feed.service;
 
 
-import com.example.demo.feed.domain.Comment;
-import com.example.demo.feed.domain.Feed;
-import com.example.demo.feed.domain.FeedRepository;
-import com.example.demo.feed.domain.Writer;
+import com.example.demo.feed.domain.*;
 import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserRepository;
+import com.example.demo.user.domain.Username;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 
 @Service
@@ -25,28 +19,39 @@ public class CommentService {
     private final UserRepository userRepository;
 
     @Transactional
-    public void makeCommentByFeedIdAndContents(Long feedId, String contents) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Feed feed = feedRepository.findFeedByIdAndIsDeleted(feedId, false);
-        User user = userRepository.findByUserId(authentication.getName());
-        Writer writer = Writer.makeWriter(user);
+    public void makeCommentByFeedIdAndContents(Long feedId, String insertedContent) {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Feed feed = feedRepository.findFeedByIdAndDeleted(feedId, false);
+//        Username username = Username.create(authentication.getName());
+        Username username = Username.create("jihwan");
 
-        Comment comment = Comment.makeComment(writer, contents);
+
+        User user = userRepository.findByUserBasicInfo_Username(username);
+
+
+        Content content = Content.create(insertedContent);
+
+        WriterId id = WriterId.create(user.getId());
+        WriterName wrtName = WriterName.create(user.getUserBasicInfo().getUsername());
+        Writer writer = Writer.create(id, wrtName);
+
+        Comment comment = Comment.create(writer, content);
         feed.enrollComment(comment);
     }
 
-    @Transactional
-    public String likeOrDislikeCommentByFeedIdAndCommentId(Long feedId, int commentId) {
-        User user = null;
-        try {
-            Feed feed = feedRepository.findFeedByIdAndIsDeleted(feedId, false);
-            Comment comment = feed.getComments().get(commentId);
-            if(comment.checkPossibleOfLike(user)){
-                comment.likeOrDislike();
-            }
-        } catch (Exception e){
-            return "400 Bad Request";
-        }
-        return null;
-    }
+//    @Transactional
+//    public String likeOrDislikeCommentByFeedIdAndCommentId(Long feedId, int commentId) {
+//        Username username = Username.create("jihwan");
+//        User user = userRepository.findByUserBasicInfo_Username(username);
+//        try {
+//            Feed feed = feedRepository.findFeedByIdAndDeleted(feedId, false);
+//            Comment comment = feed.getComment(commentId);
+//            if(comment.checkPossibleOfLike(user)){
+//                comment.likeOrDislike();
+//            }
+//        } catch (Exception e){
+//
+//        }
+//        return null;
+//    }
 }

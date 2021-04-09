@@ -2,6 +2,7 @@ package com.example.demo.feed.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,8 +14,8 @@ import java.util.List;
 @Entity
 @Table(name = "feed")
 @Getter
-@Setter
-@NoArgsConstructor
+@Setter(AccessLevel.PACKAGE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Feed {
 
     @Id
@@ -24,35 +25,49 @@ public class Feed {
     @Embedded
     private Writer writer;
 
-    private String content;
+    @Embedded
+    private Content content;
 
-    private Long likeNum;
+    @Column(name = "preference")
+    private Preference preferenceInfo;
 
+    @Column(name = "wrt_time")
     private LocalDateTime wrtTime;
 
-    @Column(name = "is_delete")
-    private Boolean isDeleted;
+    private Boolean deleted;
 
-    private Feed(Writer writer, String content){
-        this.writer = writer;
-        this.content = content;
-    }
-
-    public void delete(){
-        this.isDeleted =true;
-    }
     @OneToMany(mappedBy = "feed", cascade = {CascadeType.PERSIST})
     @JsonIgnoreProperties("feed")
     private List<Comment> comments;
 
+    private Feed(Writer writer, Content content){
+        this.writer = writer;
+        this.content = content;
+        this.wrtTime = LocalDateTime.now();
+        this.preferenceInfo = Preference.create();
+        this.deleted = false;
+    }
 
 
-    public static Feed createFeed(Writer writer, String contents) {
-        return new Feed(writer, contents);
+    public void delete(){
+        this.deleted =true;
+    }
+
+    public static Feed create(Writer writer, Content content) {
+        return new Feed(writer, content);
+    }
+
+    public void like(){
+        this.preferenceInfo = this.preferenceInfo.like();
     }
 
     public void enrollComment(Comment comment) {
         comment.setFeed(this);
         comments.add(comment);
+    }
+
+
+    public Comment getComment(int commentId) {
+        return comments.get(commentId);
     }
 }

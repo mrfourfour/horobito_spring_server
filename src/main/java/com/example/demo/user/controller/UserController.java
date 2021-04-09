@@ -1,49 +1,60 @@
 package com.example.demo.user.controller;
 
 
-import com.example.demo.login.service.CustomAuthenticationFilter;
-import com.example.demo.user.service.SignUp;
+
+import com.example.demo.user.service.LoginRequest;
+import com.example.demo.user.service.SignupRequest;
 import com.example.demo.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import lombok.Value;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Collection;
-import java.util.Locale;
+import org.springframework.web.bind.annotation.*;
 
+@RestController
+@RequestMapping("/account")
 @RequiredArgsConstructor
-@Controller
-
 public class UserController {
 
-    private final BCryptPasswordEncoder passwordEncoder;
     private final UserService userService;
 
 
+    @PostMapping("/signup")
+    public void signupWithNormalAccount(@RequestBody SignupParameter parameter){
+        SignupRequest signupRequest = new SignupRequest(
+                parameter.username,
+                parameter.password,
+                "ROLE_USER"
+        );
 
+        userService.signup(signupRequest);
+    }
 
-    @PostMapping("/account/signup")
-    public String signUp(@RequestBody SignUp signUp){
-        return userService.signUp(signUp);
+    @PostMapping("/signup/admin")
+    public void signupWithAdminAccount(@RequestBody SignupParameter parameter){
+        SignupRequest signupRequest = new SignupRequest(
+                parameter.username,
+                parameter.password,
+                "ROLE_ADMIN"
+        );
+
+        userService.signup(signupRequest);
+    }
+
+    @PostMapping("/login")
+    public void Login(@RequestBody SignupParameter parameter){
+        LoginRequest loginRequest = new LoginRequest(
+            parameter.username,
+            parameter.password
+        );
+        userService.login(loginRequest);
     }
 
 
-    @PostMapping("/account/login")
-    public HttpServletResponse login(HttpServletRequest request,
-                                     HttpServletResponse response){
-        return userService.signIn(request, response);
-
-
+    @Value
+    public static class SignupParameter {
+        String username;
+        String password;
     }
+
+
 }

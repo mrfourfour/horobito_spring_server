@@ -2,29 +2,31 @@ package com.example.demo.feed.domain;
 
 
 import com.example.demo.user.domain.User;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 
 @Embeddable
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Writer {
 
-    @Column(name = "writer_id")
-    private Long id;
+    @Embedded
+    private WriterId id;
 
-    @Column(name = "writer_name")
-    private String wrtName;
+    @Embedded
+    private WriterName wrtName;
 
-    public Writer(Long id, String wrtName) {
+    public Writer(WriterId id, WriterName wrtName) {
         this.id = id;
         this.wrtName = wrtName;
     }
 
-    public static Writer makeWriter(User user) {
-        return new Writer(user.getId(), user.getUserId());
+    public static Writer create(WriterId wrtId, WriterName wrtName) {
+        return new Writer(wrtId, wrtName);
     }
 }

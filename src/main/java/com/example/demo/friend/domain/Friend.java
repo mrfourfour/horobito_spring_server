@@ -1,7 +1,7 @@
 package com.example.demo.friend.domain;
 
 
-import com.example.demo.user.domain.User;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,29 +9,38 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "friend")
+@Setter(AccessLevel.PACKAGE)
 @Getter
-@Setter
-@NoArgsConstructor
-public class Friend {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Friend extends BasicInfo{
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "friend_pk")
     private Long id;
 
-    private Long frinedId;
+    @Embedded
+    private Identfication friendId;
 
     @Embedded
-    private Owner owner;
+    private Name friendname;
 
-    private String friendname;
-
-//
-
-
-    public Friend(User friendUser){
-        this.frinedId = friendUser.getId();
-        this.friendname = friendUser.getUserId();
+    private Friend(Identfication friendId, Name friendname){
+        this.friendId = friendId;
+        this.friendname = friendname;
     }
 
+    public static Friend create(Identfication friendId, Name friendname) {
+        return new Friend(friendId, friendname);
 
+    }
+    @Override
+    public Long getId(){
+        return this.friendId.getId();
+    }
+
+    @Override
+    public String getName(){
+        return this.friendname.getName();
+    }
 }
