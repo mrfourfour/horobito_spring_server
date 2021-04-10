@@ -4,6 +4,7 @@ import com.example.demo.friend.domain.*;
 import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserRepository;
 import com.example.demo.user.domain.Username;
+import com.example.demo.user.service.UserSessionService;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,11 +24,12 @@ public class FriendShipService {
 
     private final FriendShipRepository friendShipRepository;
     private final UserRepository userRepository;
+    private final UserSessionService userSessionService;
 
 
     @Transactional
-    public List<FriendDto> getMyFriends(int page, int size) {
-        User user = null;
+    public List<FriendDto> getMyFriends(int page, int size) throws AccessDeniedException {
+        User user = userSessionService.getLoginedUser();
         Identfication userId = Identfication.create(user.getId());
         UserInfo userInfo = createUserInfo(user, userId);
 
@@ -47,8 +50,8 @@ public class FriendShipService {
 
 
     @Transactional
-    public FriendShipResult create(Long inputedFriendId) {
-        User user = findUser();
+    public FriendShipResult create(Long inputedFriendId) throws AccessDeniedException {
+        User user = userSessionService.getLoginedUser();
         Identfication myId = Identfication.create(user.getId());
         UserInfo myInfo = createUserInfo(user, myId);
 
@@ -90,12 +93,6 @@ public class FriendShipService {
         }
     }
 
-    public User findUser(){
-        Authentication authentication = findAuthentication();
-        Username username = Username.create(authentication.getName());
-        return userRepository.findByUserBasicInfo_Username(username);
-
-    }
 
     public Authentication findAuthentication(){
         return SecurityContextHolder.getContext().getAuthentication();
@@ -111,8 +108,8 @@ public class FriendShipService {
     }
 
 
-    public FriendShipResult deleteFriendShipRequest(Long inputedId) {
-        User user = null;
+    public FriendShipResult deleteFriendShipRequest(Long inputedId) throws AccessDeniedException {
+        User user = userSessionService.getLoginedUser();
         Identfication myId = Identfication.create(user.getId());
         UserInfo myInfo = createUserInfo(user, myId);
 
@@ -139,9 +136,9 @@ public class FriendShipService {
     }
 
 
-    public List<FriendDto>findRequestForMe(int page, int size) {
+    public List<FriendDto>findRequestForMe(int page, int size) throws AccessDeniedException {
 
-        User user = null;
+        User user = userSessionService.getLoginedUser();
         Identfication myId = Identfication.create(user.getId());
 
         List<FriendDto> friendshipList = friendShipRepository.findAllByFriend_FriendId(myId, PageRequest.of(page, size))
