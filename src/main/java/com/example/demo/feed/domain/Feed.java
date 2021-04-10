@@ -37,8 +37,6 @@ public class Feed {
 
     private Boolean deleted;
 
-    @OneToMany
-    private List<PreferredPerson> preferredPeople;
 
     @OneToMany(mappedBy = "feed", cascade = {CascadeType.PERSIST})
     @JsonIgnoreProperties("feed")
