@@ -60,9 +60,9 @@ public class FriendShipService {
         UserInfo friendInfo = createUserInfo(friend, friendId);
 
 
-        Friendship friendship;;
 
-        if ((friendship=friendShipRepository.findFriendshipByUserInfoAndFriend_FriendId(myInfo, friendId))==null){
+
+        if ((friendShipRepository.findFriendshipByUserInfoAndFriend_FriendId(myInfo, friendId))==null){
             Friendship forwardFriendShip = createFriendship(myInfo, friendInfo);
             forwardFriendShip.acceptFriendShip();
 
@@ -94,9 +94,6 @@ public class FriendShipService {
     }
 
 
-    public Authentication findAuthentication(){
-        return SecurityContextHolder.getContext().getAuthentication();
-    }
 
     private Friendship createFriendship(UserInfo user, UserInfo friendUserInfo) {
         Identfication friendsId = Identfication.create(friendUserInfo.getId());
