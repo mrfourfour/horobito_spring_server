@@ -19,13 +19,6 @@ public class FeedController {
 
     private final FeedService feedService;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/feeds")
-    public Feed[] findTimeline(@RequestParam int page,
-                                   @RequestParam int pageSize){
-        return feedService.findMyTimeLine(page, pageSize);
-
-    }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/feeds/{feedId}")

@@ -30,36 +30,6 @@ public class FeedService {
         feed.delete();
     }
 
-    public Feed[] findMyTimeLine(int page, int pageSize) { // 친구 문제
-        User user = findUser();
-        Identfication id = Identfication.create(user.getId());
-        Name name = Name.create(user.getUserBasicInfo().getUsername());
-        UserInfo userInfo = UserInfo.create(id, name);
-
-        WriterId[] friendIds
-                = friendShipRepository
-                .findAllByUserInfo(userInfo)
-                .stream()
-                .map(Friendship::getFriendId)
-                .map(WriterId::create)
-                .collect(Collectors.toList())
-                .toArray(WriterId[]::new);
-
-        int length = friendIds.length;
-
-        List<Feed> feedsList = new ArrayList<Feed>();
-
-        for (int i=0; i<length; i++){
-            feedsList.addAll(feedRepository.findFeedsByWriter_Id(friendIds[i]));
-        }
-
-//        Page<Feed> feeds = new PageImpl<Feed>(feedsList, new PageRequest(page, pageSize, Sort.sort()), feedsList.size());
-
-
-//        Page<Feed> feeds = feedRepository.findAll(PageRequest.of(page, pageSize));
-
-        return feedsList.toArray(Feed[]::new);
-    }
 
     public Feed findFeedDetailByFeedId(Long id) {
         Feed feed = feedRepository.findFeedByIdAndDeleted(id, false);
