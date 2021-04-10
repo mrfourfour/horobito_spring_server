@@ -6,6 +6,7 @@ import com.example.demo.friend.domain.*;
 import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserRepository;
 import com.example.demo.user.domain.Username;
+import com.example.demo.user.service.UserSessionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.security.core.Authentication;
@@ -13,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,7 +24,8 @@ import java.util.stream.Collectors;
 public class FeedService {
     private final FeedRepository feedRepository;
     private final UserRepository userRepository;
-    private final FriendShipRepository friendShipRepository;
+    private final UserSessionService userSessionService;
+
 
     @Transactional
     public void deleteFeedByFeedId(Long id) {
@@ -38,10 +41,9 @@ public class FeedService {
 
 
 
-    public void makeFeedByContents(String InsertedContent) {
-//        User user = findUser();
-        Username username = null;
-        User user = null;
+    public void makeFeedByContents(String InsertedContent) throws AccessDeniedException {
+
+        User user = userSessionService.getLoginedUser();
 
         WriterId id = WriterId.create(user.getId());
         WriterName wrtName = WriterName.create(user.getUserBasicInfo().getUsername());
@@ -54,12 +56,7 @@ public class FeedService {
         System.out.println("새로운 feed 생성 완료");
     }
 
-    public User findUser(){
-        Authentication authentication = findAuthentication();
-        Username username = Username.create(authentication.getName());
-        return userRepository.findByUserBasicInfo_Username(username);
 
-    }
 
     public Authentication findAuthentication(){
         return SecurityContextHolder.getContext().getAuthentication();
