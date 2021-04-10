@@ -22,7 +22,7 @@ public class PreferredPerson {
 
     private PreferredPersonInfoLocation location;
 
-    private Long FeedOrCommentId;
+    private Long documentId;
 
     private PreferenceStatus preferenceStatus;
 
