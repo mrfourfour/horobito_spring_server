@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 
@@ -28,7 +29,7 @@ public class FeedController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/feeds")
-    public void makeFeed(@RequestBody String contents){
+    public void makeFeed(@RequestBody String contents) throws AccessDeniedException {
         feedService.makeFeedByContents(contents);
 
     }
@@ -39,10 +40,7 @@ public class FeedController {
 
     }
 
-    @PostMapping("/feeds/{feedId}/likes")
-    public void likeFeedByFeedId(@PathVariable Long feedId){
-        feedService.likeFeedByFeedID(feedId);
-    }
+
 
 
 }

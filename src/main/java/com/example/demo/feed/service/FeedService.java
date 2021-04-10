@@ -48,9 +48,5 @@ public class FeedService {
 
 
 
-    @Transactional
-    public void likeFeedByFeedID(Long id) {
-        Feed feed = feedRepository.findFeedByIdAndDeleted(id, false);
-        feed.like();
-    }
+
 }

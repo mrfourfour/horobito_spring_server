@@ -22,6 +22,8 @@ public class PreferredPerson {
 
     private PreferredPersonInfoLocation location;
 
+    private Long FeedOrCommentId;
+
     private PreferenceStatus preferenceStatus;
 
 
