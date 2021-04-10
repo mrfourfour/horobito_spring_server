@@ -49,6 +49,10 @@ public class Comment {
         this.deleted = false;
     }
 
+    public String getContent(){
+        return this.content.getContent();
+    }
+
 
     public static Comment create(Writer writer, Content content) {
         return new Comment(writer, content);

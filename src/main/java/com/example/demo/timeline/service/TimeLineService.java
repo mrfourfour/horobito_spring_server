@@ -1,10 +1,9 @@
 package com.example.demo.timeline.service;
 
 
-import com.example.demo.feed.domain.Feed;
-import com.example.demo.feed.domain.FeedRepository;
-import com.example.demo.feed.domain.Writer;
-import com.example.demo.feed.domain.WriterId;
+import com.example.demo.feed.domain.*;
+import com.example.demo.feed.service.CommentDto;
+import com.example.demo.feed.service.FeedDto;
 import com.example.demo.friend.domain.*;
 import com.example.demo.user.domain.User;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,7 @@ public class TimeLineService {
 
     private final FeedRepository feedRepository;
 
-    public Feed[] findMyTimeLine(int page, int pageSize){
+    public List<FeedDto> findMyTimeLine(int page, int pageSize){
         User user = null;
         Identfication userId = Identfication.create(user.getId());
         UserInfo userInfo = createUserInfo(user, userId);
@@ -35,10 +34,33 @@ public class TimeLineService {
                          .collect(Collectors.toList());
         writerList.add(WriterId.create(user.getId()));
 
-        Feed[] myTimeLine = (Feed[]) feedRepository.findAllByWriter_IdIn(writerList, PageRequest.of(page, pageSize))
-                .stream().toArray();
+        List<FeedDto> myTimeLine = feedRepository.findAllByWriter_IdIn(writerList, PageRequest.of(page, pageSize))
+                .stream().map(this::toFeedDto).collect(Collectors.toList());
 
         return myTimeLine;
+    }
+
+    public FeedDto toFeedDto(Feed feed){
+        return new FeedDto(
+                feed.getId()
+                ,feed.getWriter().getId()
+                ,feed.getWriter().getName()
+                ,feed.getContent().getContent()
+                ,feed.getComments().stream().map(this::toCommentDto).collect(Collectors.toList())
+                ,feed.getPreferenceInfo().getPreference()
+                ,feed.getWrtTime()
+        );
+    }
+
+    public CommentDto toCommentDto(Comment comment){
+        return new CommentDto(
+                comment.getId()
+                ,comment.getWriter().getId()
+                ,comment.getWriter().getName()
+                ,comment.getContent()
+                ,comment.getPreferenceInfo().getPreference()
+                ,comment.getWrtTime()
+        );
     }
 
     private UserInfo createUserInfo(User user, Identfication id) {

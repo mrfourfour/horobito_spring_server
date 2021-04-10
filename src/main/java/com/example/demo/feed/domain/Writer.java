@@ -26,6 +26,14 @@ public class Writer {
         this.wrtName = wrtName;
     }
 
+    public Long getId(){
+        return this.id.getWriterId();
+    }
+
+    public String getName(){
+        return this.wrtName.getWriterName();
+    }
+
     public static Writer create(WriterId wrtId, WriterName wrtName) {
         return new Writer(wrtId, wrtName);
     }
