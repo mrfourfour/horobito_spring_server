@@ -1,6 +1,7 @@
 package com.example.demo.feed.domain;
 
 
+import com.example.demo.preperredPerson.domain.PreferredPerson;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -9,7 +10,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -36,6 +36,9 @@ public class Feed {
     private Instant wrtTime;
 
     private Boolean deleted;
+
+    @OneToMany
+    private List<PreferredPerson> preferredPeople;
 
     @OneToMany(mappedBy = "feed", cascade = {CascadeType.PERSIST})
     @JsonIgnoreProperties("feed")

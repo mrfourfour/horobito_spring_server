@@ -1,7 +1,7 @@
 package com.example.demo.feed.domain;
 
 
-import com.example.demo.user.domain.User;
+import com.example.demo.preperredPerson.domain.PreferredPerson;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "comment")
@@ -27,6 +27,9 @@ public class Comment {
     @JoinColumn(name = "feed_id")
     @JsonIgnoreProperties("feed")
     private Feed feed;
+
+    @OneToMany
+    private List<PreferredPerson> preferredPeople;
 
     @Embedded
     private Writer writer;
