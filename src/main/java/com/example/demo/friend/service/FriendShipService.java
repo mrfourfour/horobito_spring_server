@@ -5,6 +5,7 @@ import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserRepository;
 import com.example.demo.user.domain.Username;
 import lombok.RequiredArgsConstructor;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
