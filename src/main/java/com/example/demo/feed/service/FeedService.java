@@ -2,28 +2,17 @@ package com.example.demo.feed.service;
 
 
 import com.example.demo.feed.domain.*;
-import com.example.demo.friend.domain.*;
 import com.example.demo.user.domain.User;
-import com.example.demo.user.domain.UserRepository;
-import com.example.demo.user.domain.Username;
 import com.example.demo.user.service.UserSessionService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.*;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.nio.file.AccessDeniedException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class FeedService {
     private final FeedRepository feedRepository;
-    private final UserRepository userRepository;
     private final UserSessionService userSessionService;
 
 
@@ -57,10 +46,6 @@ public class FeedService {
     }
 
 
-
-    public Authentication findAuthentication(){
-        return SecurityContextHolder.getContext().getAuthentication();
-    }
 
 
     @Transactional
