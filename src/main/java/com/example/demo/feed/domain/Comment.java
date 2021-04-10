@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Entity
@@ -30,7 +31,7 @@ public class Comment {
     @Embedded
     private Writer writer;
 
-    private LocalDateTime wrtTime;
+    private Instant wrtTime;
 
     @Embedded
     private Content content;
@@ -44,7 +45,7 @@ public class Comment {
         this.writer = writer;
         this.content = content;
         this.preferenceInfo = Preference.create();
-        this.wrtTime = LocalDateTime.now();
+        this.wrtTime = Instant.now();
         this.deleted = false;
     }
 

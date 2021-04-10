@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class Feed {
     private Preference preferenceInfo;
 
     @Column(name = "wrt_time")
-    private LocalDateTime wrtTime;
+    private Instant wrtTime;
 
     private Boolean deleted;
 
@@ -43,7 +44,7 @@ public class Feed {
     private Feed(Writer writer, Content content){
         this.writer = writer;
         this.content = content;
-        this.wrtTime = LocalDateTime.now();
+        this.wrtTime = Instant.now();
         this.preferenceInfo = Preference.create();
         this.deleted = false;
     }
