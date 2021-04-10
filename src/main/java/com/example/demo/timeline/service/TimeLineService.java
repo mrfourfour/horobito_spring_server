@@ -6,10 +6,12 @@ import com.example.demo.feed.service.CommentDto;
 import com.example.demo.feed.service.FeedDto;
 import com.example.demo.friend.domain.*;
 import com.example.demo.user.domain.User;
+import com.example.demo.user.service.UserSessionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,10 +22,12 @@ public class TimeLineService {
 
     private final FeedRepository feedRepository;
 
-    public List<FeedDto> findMyTimeLine(int page, int pageSize){
-        User user = null;
-        Identfication userId = Identfication.create(user.getId());
-        UserInfo userInfo = createUserInfo(user, userId);
+    private final UserSessionService userSessionService;
+
+    public List<FeedDto> findMyTimeLine(int page, int pageSize) throws AccessDeniedException {
+
+        User user = userSessionService.getLoginedUser();
+        UserInfo userInfo = createUserInfo(user);
 
         List<WriterId> writerList =
                  friendShipRepository
@@ -63,10 +67,11 @@ public class TimeLineService {
         );
     }
 
-    private UserInfo createUserInfo(User user, Identfication id) {
+    private UserInfo createUserInfo(User user) throws AccessDeniedException {
 
+        Identfication userId = Identfication.create(user.getId());
         Name name = Name.create(user.getUserBasicInfo().getUsername());
-        return UserInfo.create(id, name);
+        return UserInfo.create(userId, name);
     }
 
 }
