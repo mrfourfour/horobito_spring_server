@@ -38,6 +38,7 @@ public class PreferredPerson {
     }
 
 
-
-
+    public void like() {
+        this.preferenceStatus = PreferenceStatus.LIKE;
+    }
 }

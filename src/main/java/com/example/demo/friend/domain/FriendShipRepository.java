@@ -16,5 +16,7 @@ public interface FriendShipRepository  extends JpaRepository<Friendship, Long> {
 
     Friendship findFriendshipByUserInfoAndFriend_FriendId(UserInfo user, Identfication id);
 
+    Friendship findFriendshipByFriend_FriendIdAndUserInfo_UserId(Identfication friendId, Identfication userId);
+
     Page<Friendship> findAllByFriend_FriendId(Identfication friendId, Pageable pageable);
 }
