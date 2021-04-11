@@ -26,6 +26,17 @@ public class PreferredPerson {
 
     private PreferenceStatus preferenceStatus;
 
+    private PreferredPerson(Long preferredPersonId, Long documentId, PreferredPersonInfoLocation location  ){
+        this.preferredPersonId = preferredPersonId;
+        this.documentId = documentId;
+        this.location = location;
+        this.preferenceStatus = PreferenceStatus.DISLIKE;
+    }
+
+    public static PreferredPerson create(Long preferredPersonId, Long documentId, PreferredPersonInfoLocation location ){
+        return new PreferredPerson(preferredPersonId, documentId, location );
+    }
+
 
 
 

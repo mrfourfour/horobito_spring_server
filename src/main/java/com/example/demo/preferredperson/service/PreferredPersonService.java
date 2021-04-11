@@ -28,8 +28,7 @@ public class PreferredPersonService {
         Feed feed = feedRepository.findFeedByIdAndDeleted(id, false);
         if (preferredPersonRepository
                 .findByDocumentIdAndPreferredPersonId(feed.getId(), user.getId())==null){
-
-
+            PreferredPerson preferredPerson = PreferredPerson.
 
         }else {
             PreferredPerson preferredPerson
