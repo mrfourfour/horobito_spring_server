@@ -5,10 +5,12 @@ import com.example.demo.feed.domain.*;
 import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserRepository;
 import com.example.demo.user.domain.Username;
+import com.example.demo.user.service.UserSessionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 
@@ -19,16 +21,14 @@ public class CommentService {
     private final FeedRepository feedRepository;
 
     private final UserRepository userRepository;
+    private final UserSessionService userSessionService;
 
     @Transactional
-    public void makeCommentByFeedIdAndContents(Long feedId, String insertedContent) {
+    public void makeCommentByFeedIdAndContents(Long feedId, String insertedContent) throws AccessDeniedException {
 //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Feed feed = feedRepository.findFeedByIdAndDeleted(feedId, false);
 //        Username username = Username.create(authentication.getName());
-        Username username = Username.create("jihwan");
-
-
-        User user = userRepository.findByUserBasicInfo_Username(username);
+        User user = userSessionService.getLoggeddUser();
 
 
         Content content = Content.create(insertedContent);
