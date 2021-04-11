@@ -41,4 +41,8 @@ public class PreferredPerson {
     public void like() {
         this.preferenceStatus = PreferenceStatus.LIKE;
     }
+
+    public void locate(PreferredPersonInfoLocation location) {
+        this.location = location;
+    }
 }
