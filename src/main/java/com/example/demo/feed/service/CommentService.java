@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +39,17 @@ public class CommentService {
 
         Comment comment = Comment.create(writer, content);
         feed.enrollComment(comment);
+    }
+
+    public Comment findCommentById(List<Comment> commentList, Long commentId){
+        Comment result = null;
+        for (Comment comment : commentList){
+            if (comment.getId().equals(commentId)){
+                return comment;
+
+            }
+        }
+        return result;
     }
 
 //    @Transactional
