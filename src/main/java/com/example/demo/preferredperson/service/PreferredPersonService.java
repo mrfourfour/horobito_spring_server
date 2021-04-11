@@ -1,10 +1,10 @@
-package com.example.demo.preperredPerson.service;
+package com.example.demo.preferredperson.service;
 
 
 import com.example.demo.feed.domain.Feed;
 import com.example.demo.feed.domain.FeedRepository;
-import com.example.demo.preperredPerson.domain.PreferredPerson;
-import com.example.demo.preperredPerson.domain.PreferredPersonRepository;
+import com.example.demo.preferredperson.domain.PreferredPerson;
+import com.example.demo.preferredperson.domain.PreferredPersonRepository;
 import com.example.demo.user.domain.User;
 import com.example.demo.user.service.UserSessionService;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,7 @@
 package com.example.demo.feed.domain;
 
 
-import com.example.demo.preperredPerson.domain.PreferredPerson;
+import com.example.demo.preferredperson.domain.PreferredPerson;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AccessLevel;
 import lombok.Getter;

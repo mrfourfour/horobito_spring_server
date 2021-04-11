@@ -1,4 +1,4 @@
-package com.example.demo.preperredPerson.domain;
+package com.example.demo.preferredperson.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

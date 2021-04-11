@@ -1,6 +1,6 @@
-package com.example.demo.preperredPerson.controller;
+package com.example.demo.preferredperson.controller;
 
-import com.example.demo.preperredPerson.service.PreferredPersonService;
+import com.example.demo.preferredperson.service.PreferredPersonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
