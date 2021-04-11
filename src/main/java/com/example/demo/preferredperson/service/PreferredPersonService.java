@@ -76,7 +76,6 @@ public class PreferredPersonService {
         }
         return PreferenceResult.SUCCESS;
 
-
     }
 
 
