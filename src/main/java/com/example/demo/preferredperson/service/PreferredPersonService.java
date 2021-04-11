@@ -29,6 +29,8 @@ public class PreferredPersonService {
         if (preferredPersonRepository
                 .findByDocumentIdAndPreferredPersonId(feed.getId(), user.getId())==null){
 
+
+
         }else {
             PreferredPerson preferredPerson
                     = preferredPersonRepository
