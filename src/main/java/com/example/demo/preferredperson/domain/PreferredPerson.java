@@ -49,4 +49,8 @@ public class PreferredPerson {
     public PreferenceStatus findState() {
         return this.preferenceStatus;
     }
+
+    public void disLike() {
+        this.preferenceStatus = PreferenceStatus.INDIFFERENCE;
+    }
 }
