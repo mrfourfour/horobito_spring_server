@@ -3,7 +3,6 @@ package com.example.demo.preferredperson.service;
 
 import com.example.demo.feed.domain.Feed;
 import com.example.demo.feed.domain.FeedRepository;
-import com.example.demo.feed.domain.WriterId;
 import com.example.demo.friend.domain.FriendShipRepository;
 import com.example.demo.friend.domain.Identfication;
 import com.example.demo.preferredperson.domain.PreferenceStatus;
@@ -30,7 +29,7 @@ public class PreferredPersonService {
 
     @Transactional
     public PreferenceResult likeFeedByFeedId(Long id) throws AccessDeniedException {
-        User user = userSessionService.getLoginedUser();
+        User user = getLoggedUser();
         Feed feed;
 
         if ((feed=feedRepository.findFeedByIdAndDeleted(id, false))==null){
@@ -78,6 +77,25 @@ public class PreferredPersonService {
 
     }
 
+    @Transactional
+    public PreferenceResult likeCommentByFeedIdAndCommentId(Long feedId, Long commentId) throws AccessDeniedException {
+        User user = getLoggedUser();
+        Feed feed;
+
+        if ((feed=feedRepository.findFeedByIdAndDeleted(feedId, false))==null){
+            return PreferenceResult.FEED_NOT_FOUND;
+        }
+
+        if (friendShipRepository.findFriendshipByFriend_FriendIdAndUserInfo_UserId(
+                Identfication.create(user.getId()), Identfication.create(feed.getWriter().getId()))==null){
+            return PreferenceResult.NOT_MY_FRIEND;
+        }
+
+    }
+
+    private User getLoggedUser() throws AccessDeniedException {
+        return userSessionService.getLoggeddUser();
+    }
 
 
 }
