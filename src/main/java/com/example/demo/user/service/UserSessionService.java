@@ -17,7 +17,7 @@ public class UserSessionService {
     private final UserRepository userRepository;
 
 
-    public User getLoginedUser() throws AccessDeniedException {
+    public User getLoggeddUser() throws AccessDeniedException {
         SecurityUser securityUser = UserSessionUtils.getSessionUser();
         Long userId = securityUser.getId();
 

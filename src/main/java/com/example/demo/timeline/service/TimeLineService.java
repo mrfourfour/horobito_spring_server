@@ -26,7 +26,7 @@ public class TimeLineService {
 
     public List<FeedDto> findMyTimeLine(int page, int pageSize) throws AccessDeniedException {
 
-        User user = userSessionService.getLoginedUser();
+        User user = userSessionService.getLoggeddUser();
         UserInfo userInfo = createUserInfo(user);
 
         List<WriterId> writerList =

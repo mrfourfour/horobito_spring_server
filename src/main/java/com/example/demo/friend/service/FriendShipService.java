@@ -3,13 +3,9 @@ package com.example.demo.friend.service;
 import com.example.demo.friend.domain.*;
 import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserRepository;
-import com.example.demo.user.domain.Username;
 import com.example.demo.user.service.UserSessionService;
 import lombok.RequiredArgsConstructor;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -29,7 +25,7 @@ public class FriendShipService {
 
     @Transactional
     public List<FriendDto> getMyFriends(int page, int size) throws AccessDeniedException {
-        User user = userSessionService.getLoginedUser();
+        User user = userSessionService.getLoggeddUser();
         Identfication userId = Identfication.create(user.getId());
         UserInfo userInfo = createUserInfo(user, userId);
 
@@ -51,7 +47,7 @@ public class FriendShipService {
 
     @Transactional
     public FriendShipResult create(Long inputedFriendId) throws AccessDeniedException {
-        User user = userSessionService.getLoginedUser();
+        User user = userSessionService.getLoggeddUser();
         Identfication myId = Identfication.create(user.getId());
         UserInfo myInfo = createUserInfo(user, myId);
 
@@ -106,7 +102,7 @@ public class FriendShipService {
 
 
     public FriendShipResult deleteFriendShipRequest(Long inputedId) throws AccessDeniedException {
-        User user = userSessionService.getLoginedUser();
+        User user = userSessionService.getLoggeddUser();
         Identfication myId = Identfication.create(user.getId());
         UserInfo myInfo = createUserInfo(user, myId);
 
@@ -135,7 +131,7 @@ public class FriendShipService {
 
     public List<FriendDto>findRequestForMe(int page, int size) throws AccessDeniedException {
 
-        User user = userSessionService.getLoginedUser();
+        User user = userSessionService.getLoggeddUser();
         Identfication myId = Identfication.create(user.getId());
 
         List<FriendDto> friendshipList = friendShipRepository.findAllByFriend_FriendId(myId, PageRequest.of(page, size))

@@ -32,7 +32,7 @@ public class FeedService {
 
     public void makeFeedByContents(String InsertedContent) throws AccessDeniedException {
 
-        User user = userSessionService.getLoginedUser();
+        User user = userSessionService.getLoggeddUser();
 
         WriterId id = WriterId.create(user.getId());
         WriterName wrtName = WriterName.create(user.getUserBasicInfo().getUsername());
