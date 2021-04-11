@@ -96,7 +96,7 @@ public class PreferredPersonService {
         }
 
         if(commentService.findCommentById(feed.getComments(), commentId)==null){
-            return PreferenceResult.
+            return PreferenceResult.COMMENT_NOT_FOUND;
         }
 
     }
