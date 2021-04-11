@@ -1,8 +1,10 @@
 package com.example.demo.preferredperson.service;
 
 
+import com.example.demo.feed.domain.Comment;
 import com.example.demo.feed.domain.Feed;
 import com.example.demo.feed.domain.FeedRepository;
+import com.example.demo.feed.service.CommentService;
 import com.example.demo.friend.domain.FriendShipRepository;
 import com.example.demo.friend.domain.Identfication;
 import com.example.demo.preferredperson.domain.PreferenceStatus;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.file.AccessDeniedException;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +28,7 @@ public class PreferredPersonService {
     private final UserSessionService userSessionService;
     private final PreferredPersonRepository preferredPersonRepository;
     private final FriendShipRepository friendShipRepository;
+    private final CommentService commentService;
 
 
     @Transactional
@@ -91,11 +95,17 @@ public class PreferredPersonService {
             return PreferenceResult.NOT_MY_FRIEND;
         }
 
+        if(commentService.findCommentById(feed.getComments(), commentId)==null){
+            return PreferenceResult.
+        }
+
     }
 
     private User getLoggedUser() throws AccessDeniedException {
         return userSessionService.getLoggeddUser();
     }
+
+
 
 
 }
