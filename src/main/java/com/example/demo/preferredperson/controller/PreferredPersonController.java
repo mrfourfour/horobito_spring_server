@@ -17,6 +17,6 @@ public class PreferredPersonController {
 
     @PostMapping("/feeds/{feedId}/likes")
     public void likeFeedByFeedId(@PathVariable Long feedId) throws AccessDeniedException {
-        preferredPersonService.likeFeedByFeedID(feedId);
+        preferredPersonService.likeFeedByFeedId(feedId);
     }
 }
