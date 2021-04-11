@@ -45,4 +45,8 @@ public class PreferredPerson {
     public void locate(PreferredPersonInfoLocation location) {
         this.location = location;
     }
+
+    public PreferenceStatus findState() {
+        return this.preferenceStatus;
+    }
 }
