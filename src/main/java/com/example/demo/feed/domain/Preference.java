@@ -28,7 +28,13 @@ public class Preference {
     }
 
 
+
+
     public static Preference create(){
+        return new Preference();
+    }
+
+    public static Preference create(long preference){
         return new Preference();
     }
 

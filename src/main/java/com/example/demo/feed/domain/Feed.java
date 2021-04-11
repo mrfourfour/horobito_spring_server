@@ -71,4 +71,8 @@ public class Feed {
     public Comment getComment(int commentId) {
         return comments.get(commentId);
     }
+
+    public void disLike() {
+        this.preferenceInfo = Preference.create(this.preferenceInfo.getPreference()-1L);
+    }
 }
