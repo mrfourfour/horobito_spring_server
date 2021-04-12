@@ -49,7 +49,7 @@ public class PreferenceInfoService {
         }
 
         if (preferenceInfoRepository
-                .findByDocumentIdAndPreferredPersonId(feed.getId(), user.getId())==null){
+                .findByDocumentIdAndPreferredPersonIdAndLocation(feed.getId(), user.getId(), PreferenceLocation.FEED)==null){
             PreferenceInfo preferenceInfo = PreferenceInfo.create(user.getId(), feed.getId(), PreferenceLocation.FEED);
             preferenceInfo.locate(PreferenceLocation.FEED);
             preferenceInfo.like();
@@ -63,7 +63,7 @@ public class PreferenceInfoService {
 
         PreferenceInfo preferenceInfo
                     = preferenceInfoRepository
-                    .findByDocumentIdAndPreferredPersonId(feed.getId(), user.getId());
+                    .findByDocumentIdAndPreferredPersonIdAndLocation(feed.getId(), user.getId(), PreferenceLocation.FEED);
 
         if (preferenceInfo.findState()==PreferenceStatus.LIKE){
                 preferenceInfo.disLike();
