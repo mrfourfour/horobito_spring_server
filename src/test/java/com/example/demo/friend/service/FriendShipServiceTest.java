@@ -1,14 +1,23 @@
 package com.example.demo.friend.service;
 
 import com.example.demo.feed.domain.FeedRepository;
-import com.example.demo.friend.domain.FriendShipRepository;
+import com.example.demo.friend.domain.*;
+import com.example.demo.user.domain.Password;
+import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserRepository;
+import com.example.demo.user.domain.Username;
 import com.example.demo.user.service.UserSessionService;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.mockito.ArgumentMatchers.any;
+import java.nio.file.AccessDeniedException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -26,40 +35,48 @@ class FriendShipServiceTest {
     @Mock
     UserSessionService userSessionService;
 
+    User user;
+    PersonId personId;
+    Friendee friendee;
+    Friender friender;
 
 
-//    @Test
-//    void createFriendShip(){
-//
-//        FriendShipService friendShipService = new FriendShipService(friendShipRepository, userRepository);
-//
-//        Username myName = Username.create("MyName");
-//        Password myPassword = Password.create("MyPassword");
-//
-//        User me = User.create(myName, myPassword);
-//
-//        Identfication myId = Identfication.create(1L);
-//
-//        Username friendName = Username.create("FriendName");
-//        Password friendPassword = Password.create("FriendPassword");
-//
-//        User friend = User.create(friendName, friendPassword);
-//
-//        Identfication friendId = Identfication.create(2L);
-//
-//        when(friendShipService.findUser()).thenReturn(me).thenReturn(friend);
-//
-//
-//
-//        when(Identfication.create(any()))
-//                .thenReturn(myId)
-//                .thenReturn(friendId);
-//
-//        when(UserInfo.create(any(), any()))
-//                .thenReturn(UserInfo.create(myId, myName));
-//
-//
-//
-//    }
+    @DisplayName("친구관계 맺기 테스트 1. 처음 신청")
+    @Test
+    void createFriendShip() throws AccessDeniedException {
+        FriendShipService friendShipService
+                = new FriendShipService(friendShipRepository,
+                userRepository,
+                userSessionService);
+        //given
+        PersonName myName = PersonName.create("jihwan");
+        Password myPassword = Password.create("1234");
+
+        Friender me = Friender.create(PersonId.create(1L), myName);
+
+
+        PersonName friendName = PersonName.create("jihwan");
+        Password friendPassword = Password.create("1234");
+
+        when(userSessionService.getLoggeddUser())
+                .thenReturn(null);
+
+        when(userRepository.findUserById(anyLong()))
+                .thenReturn(null);
+
+        when(PersonId.create(anyLong()))
+                .thenReturn(null);
+
+        when(friendShipService.creat)
+
+
+        //when
+        FriendShipResult result = friendShipService.create(any());
+
+        //then
+        assertEquals(FriendShipResult.SUCCESS, result);
+
+    }
+
 
 }
