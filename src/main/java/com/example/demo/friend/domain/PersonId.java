@@ -9,18 +9,21 @@ import lombok.Setter;
 import javax.persistence.Embeddable;
 
 @Getter
-@Setter(AccessLevel.PACKAGE)
+@Setter(AccessLevel.PROTECTED)
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Name {
+public class PersonId {
 
-    private String name;
 
-    private Name(String name) {
-        this.name = name;
+    private Long id;
+
+    private PersonId(Long id) {
+        this.id = id;
     }
 
-    public static Name create(String name){
-        return new Name(name);
+    public static PersonId create(Long id){
+        return new PersonId(id);
     }
+
+
 }

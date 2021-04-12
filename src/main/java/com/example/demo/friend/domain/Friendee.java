@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Setter(AccessLevel.PACKAGE)
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Friend extends BasicInfo{
+public class Friendee extends BasicInfo{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,18 +20,18 @@ public class Friend extends BasicInfo{
     private Long id;
 
     @Embedded
-    private Identfication friendId;
+    private PersonId friendId;
 
     @Embedded
-    private Name friendname;
+    private PersonName friendname;
 
-    private Friend(Identfication friendId, Name friendname){
+    private Friendee(PersonId friendId, PersonName friendname){
         this.friendId = friendId;
         this.friendname = friendname;
     }
 
-    public static Friend create(Identfication friendId, Name friendname) {
-        return new Friend(friendId, friendname);
+    public static Friendee create(PersonId friendId, PersonName friendname) {
+        return new Friendee(friendId, friendname);
 
     }
     @Override

@@ -2,21 +2,13 @@ package com.example.demo.friend.service;
 
 import com.example.demo.feed.domain.FeedRepository;
 import com.example.demo.friend.domain.FriendShipRepository;
-import com.example.demo.friend.domain.Identfication;
-import com.example.demo.friend.domain.UserInfo;
-import com.example.demo.user.domain.Password;
-import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserRepository;
-import com.example.demo.user.domain.Username;
 import com.example.demo.user.service.UserSessionService;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)

@@ -14,29 +14,29 @@ import java.util.List;
 @Setter(AccessLevel.PACKAGE)
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserInfo extends BasicInfo{
+public class Friender extends BasicInfo{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Embedded
-    private Identfication userId;
+    private PersonId userId;
 
     @OneToMany(mappedBy = "user")
     private List<Friendship> friendships = new ArrayList<>();
 
     @Embedded
-    private Name username;
+    private PersonName username;
 
-    private UserInfo(Identfication userId, Name username){
+    private Friender(PersonId userId, PersonName username){
         this.userId = userId;
         this.username = username;
     }
 
 
-    public static UserInfo create(Identfication userId, Name userName){
-        return new UserInfo(userId, userName);
+    public static Friender create(PersonId userId, PersonName userName){
+        return new Friender(userId, userName);
     }
 
     @Override

@@ -6,7 +6,7 @@ import com.example.demo.feed.domain.Feed;
 import com.example.demo.feed.domain.FeedRepository;
 import com.example.demo.feed.service.CommentService;
 import com.example.demo.friend.domain.FriendShipRepository;
-import com.example.demo.friend.domain.Identfication;
+import com.example.demo.friend.domain.PersonId;
 import com.example.demo.preferenceinfo.domain.PreferenceStatus;
 import com.example.demo.preferenceinfo.domain.PreferenceInfo;
 import com.example.demo.preferenceinfo.domain.PreferenceLocation;
@@ -40,7 +40,7 @@ public class PreferenceInfoService {
         }
 
         if (friendShipRepository.findFriendshipByFriend_FriendIdAndUserInfo_UserId(
-                Identfication.create(user.getId()), Identfication.create(feed.getWriter().getId()))==null){
+                PersonId.create(user.getId()), PersonId.create(feed.getWriter().getId()))==null){
             return PreferenceResult.NOT_MY_FRIEND;
         }
 
@@ -92,7 +92,7 @@ public class PreferenceInfoService {
         }
 
         if (friendShipRepository.findFriendshipByFriend_FriendIdAndUserInfo_UserId(
-                Identfication.create(user.getId()), Identfication.create(feed.getWriter().getId()))==null){
+                PersonId.create(user.getId()), PersonId.create(feed.getWriter().getId()))==null){
             return PreferenceResult.NOT_MY_FRIEND;
         }
 

@@ -19,22 +19,22 @@ public class Friendship {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private UserInfo userInfo;
+    private Friender userInfo;
 
     @ManyToOne
     @JoinColumn(name = "friend_id")
-    private Friend friend;
+    private Friendee friend;
 
     @Column(name = "friend_state")
     private Boolean friendState;
 
-    private Friendship(UserInfo userInfo, Friend friend){
+    private Friendship(Friender userInfo, Friendee friend){
         this.userInfo = userInfo;
         this.friend = friend;
         this.friendState = false;
     }
 
-    public static Friendship create(UserInfo user, Friend friend) {
+    public static Friendship create(Friender user, Friendee friend) {
         return new Friendship(user, friend);
     }
 

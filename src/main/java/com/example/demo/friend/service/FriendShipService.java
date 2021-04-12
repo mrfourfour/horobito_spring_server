@@ -26,8 +26,8 @@ public class FriendShipService {
     @Transactional
     public List<FriendDto> getMyFriends(int page, int size) throws AccessDeniedException {
         User user = userSessionService.getLoggeddUser();
-        Identfication userId = Identfication.create(user.getId());
-        UserInfo userInfo = createUserInfo(user, userId);
+        PersonId userId = PersonId.create(user.getId());
+        Friender userInfo = createUserInfo(user, userId);
 
 
         List<FriendDto> friendshipList
@@ -48,12 +48,12 @@ public class FriendShipService {
     @Transactional
     public FriendShipResult create(Long inputedFriendId) throws AccessDeniedException {
         User user = userSessionService.getLoggeddUser();
-        Identfication myId = Identfication.create(user.getId());
-        UserInfo myInfo = createUserInfo(user, myId);
+        PersonId myId = PersonId.create(user.getId());
+        Friender myInfo = createUserInfo(user, myId);
 
         User friend = userRepository.findUserById(inputedFriendId);
-        Identfication friendId = Identfication.create(inputedFriendId);
-        UserInfo friendInfo = createUserInfo(friend, friendId);
+        PersonId friendId = PersonId.create(inputedFriendId);
+        Friender friendInfo = createUserInfo(friend, friendId);
 
 
 
@@ -91,11 +91,11 @@ public class FriendShipService {
 
 
 
-    private Friendship createFriendship(UserInfo user, UserInfo friendUserInfo) {
-        Identfication friendsId = Identfication.create(friendUserInfo.getId());
-        Name friendName = Name.create(friendUserInfo.getName());
+    private Friendship createFriendship(Friender user, Friender friendUserInfo) {
+        PersonId friendsId = PersonId.create(friendUserInfo.getId());
+        PersonName friendName = PersonName.create(friendUserInfo.getName());
 
-        Friend friend = Friend.create(friendsId, friendName);
+        Friendee friend = Friendee.create(friendsId, friendName);
         
         return Friendship.create(user, friend);
     }
@@ -103,10 +103,10 @@ public class FriendShipService {
 
     public FriendShipResult deleteFriendShipRequest(Long inputedId) throws AccessDeniedException {
         User user = userSessionService.getLoggeddUser();
-        Identfication myId = Identfication.create(user.getId());
-        UserInfo myInfo = createUserInfo(user, myId);
+        PersonId myId = PersonId.create(user.getId());
+        Friender myInfo = createUserInfo(user, myId);
 
-        Identfication friendId = Identfication.create(inputedId);
+        PersonId friendId = PersonId.create(inputedId);
 
         if ((friendShipRepository.findFriendshipByUserInfoAndFriend_FriendId(myInfo, friendId))==null){
 
@@ -122,17 +122,17 @@ public class FriendShipService {
 
     }
 
-    private UserInfo createUserInfo(User user, Identfication id) {
+    private Friender createUserInfo(User user, PersonId id) {
 
-        Name name = Name.create(user.getUserBasicInfo().getUsername());
-        return UserInfo.create(id, name);
+        PersonName name = PersonName.create(user.getUserBasicInfo().getUsername());
+        return Friender.create(id, name);
     }
 
 
     public List<FriendDto>findRequestForMe(int page, int size) throws AccessDeniedException {
 
         User user = userSessionService.getLoggeddUser();
-        Identfication myId = Identfication.create(user.getId());
+        PersonId myId = PersonId.create(user.getId());
 
         List<FriendDto> friendshipList = friendShipRepository.findAllByFriend_FriendId(myId, PageRequest.of(page, size))
                 .stream()

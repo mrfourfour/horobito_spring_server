@@ -27,7 +27,7 @@ public class TimeLineService {
     public List<FeedDto> findMyTimeLine(int page, int pageSize) throws AccessDeniedException {
 
         User user = userSessionService.getLoggeddUser();
-        UserInfo userInfo = createUserInfo(user);
+        Friender userInfo = createUserInfo(user);
 
         List<WriterId> writerList =
                  friendShipRepository
@@ -67,11 +67,11 @@ public class TimeLineService {
         );
     }
 
-    private UserInfo createUserInfo(User user) throws AccessDeniedException {
+    private Friender createUserInfo(User user) throws AccessDeniedException {
 
-        Identfication userId = Identfication.create(user.getId());
-        Name name = Name.create(user.getUserBasicInfo().getUsername());
-        return UserInfo.create(userId, name);
+        PersonId userId = PersonId.create(user.getId());
+        PersonName name = PersonName.create(user.getUserBasicInfo().getUsername());
+        return Friender.create(userId, name);
     }
 
 }
