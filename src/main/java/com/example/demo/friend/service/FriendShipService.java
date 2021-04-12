@@ -22,6 +22,13 @@ public class FriendShipService {
     private final UserRepository userRepository;
     private final UserSessionService userSessionService;
 
+    String[] userInfo = findUser();
+
+    public String findUser() throws AccessDeniedException {
+        String[] answer =
+        return userSessionService.getLoggeddUser();
+    }
+
 
 
     @Transactional
