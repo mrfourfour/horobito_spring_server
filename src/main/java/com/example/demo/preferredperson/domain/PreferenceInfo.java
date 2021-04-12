@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Setter(AccessLevel.PACKAGE)
 @Entity
 @NoArgsConstructor
-public class PreferredPerson {
+public class PreferenceInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,15 +26,15 @@ public class PreferredPerson {
 
     private PreferenceStatus preferenceStatus;
 
-    private PreferredPerson(Long preferredPersonId, Long documentId, PreferredPersonInfoLocation location  ){
+    private PreferenceInfo(Long preferredPersonId, Long documentId, PreferredPersonInfoLocation location  ){
         this.preferredPersonId = preferredPersonId;
         this.documentId = documentId;
         this.location = location;
         this.preferenceStatus = PreferenceStatus.DISLIKE;
     }
 
-    public static PreferredPerson create(Long preferredPersonId, Long documentId, PreferredPersonInfoLocation location ){
-        return new PreferredPerson(preferredPersonId, documentId, location );
+    public static PreferenceInfo create(Long preferredPersonId, Long documentId, PreferredPersonInfoLocation location ){
+        return new PreferenceInfo(preferredPersonId, documentId, location );
     }
 
 

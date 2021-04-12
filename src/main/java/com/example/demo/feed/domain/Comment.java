@@ -1,7 +1,7 @@
 package com.example.demo.feed.domain;
 
 
-import com.example.demo.preferredperson.domain.PreferredPerson;
+import com.example.demo.preferredperson.domain.PreferenceInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -28,8 +28,6 @@ public class Comment {
     @JsonIgnoreProperties("feed")
     private Feed feed;
 
-    @OneToMany
-    private List<PreferredPerson> preferredPeople;
 
     @Embedded
     private Writer writer;
@@ -61,9 +59,7 @@ public class Comment {
         return new Comment(writer, content);
     }
 
-    public void likeOrDislike() {
 
-    }
 
 //    public boolean checkPossibleOfLike(User user) {
 //        String writerId = this.getWriter().getWrtName();

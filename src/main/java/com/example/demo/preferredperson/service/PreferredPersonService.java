@@ -8,7 +8,7 @@ import com.example.demo.feed.service.CommentService;
 import com.example.demo.friend.domain.FriendShipRepository;
 import com.example.demo.friend.domain.Identfication;
 import com.example.demo.preferredperson.domain.PreferenceStatus;
-import com.example.demo.preferredperson.domain.PreferredPerson;
+import com.example.demo.preferredperson.domain.PreferenceInfo;
 import com.example.demo.preferredperson.domain.PreferredPersonInfoLocation;
 import com.example.demo.preferredperson.domain.PreferredPersonRepository;
 import com.example.demo.user.domain.User;
@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.file.AccessDeniedException;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -51,10 +50,10 @@ public class PreferredPersonService {
 
         if (preferredPersonRepository
                 .findByDocumentIdAndPreferredPersonId(feed.getId(), user.getId())==null){
-            PreferredPerson preferredPerson = PreferredPerson.create(user.getId(), feed.getId(), PreferredPersonInfoLocation.FEED);
-            preferredPerson.locate(PreferredPersonInfoLocation.FEED);
-            preferredPerson.like();
-            preferredPersonRepository.save(preferredPerson);
+            PreferenceInfo preferenceInfo = PreferenceInfo.create(user.getId(), feed.getId(), PreferredPersonInfoLocation.FEED);
+            preferenceInfo.locate(PreferredPersonInfoLocation.FEED);
+            preferenceInfo.like();
+            preferredPersonRepository.save(preferenceInfo);
 
             feed.like();
 
@@ -62,19 +61,19 @@ public class PreferredPersonService {
 
         }
 
-        PreferredPerson preferredPerson
+        PreferenceInfo preferenceInfo
                     = preferredPersonRepository
                     .findByDocumentIdAndPreferredPersonId(feed.getId(), user.getId());
 
-        if (preferredPerson.findState()==PreferenceStatus.LIKE){
-                preferredPerson.disLike();
+        if (preferenceInfo.findState()==PreferenceStatus.LIKE){
+                preferenceInfo.disLike();
                 feed.disLike();
 
                 return PreferenceResult.SUCCESS;
         }
 
-        if (preferredPerson.findState()==PreferenceStatus.INDIFFERENCE){
-                preferredPerson.like();
+        if (preferenceInfo.findState()==PreferenceStatus.INDIFFERENCE){
+                preferenceInfo.like();
                 feed.like();
         }
         return PreferenceResult.SUCCESS;
@@ -85,6 +84,7 @@ public class PreferredPersonService {
     public PreferenceResult likeCommentByFeedIdAndCommentId(Long feedId, Long commentId) throws AccessDeniedException {
         User user = getLoggedUser();
         Feed feed;
+        Comment comment;
 
         if ((feed=feedRepository.findFeedByIdAndDeleted(feedId, false))==null){
             return PreferenceResult.FEED_NOT_FOUND;
@@ -95,7 +95,7 @@ public class PreferredPersonService {
             return PreferenceResult.NOT_MY_FRIEND;
         }
 
-        if(commentService.findCommentById(feed.getComments(), commentId)==null){
+        if((comment = commentService.findCommentById(feed.getComments(), commentId))==null){
             return PreferenceResult.COMMENT_NOT_FOUND;
         }
 
