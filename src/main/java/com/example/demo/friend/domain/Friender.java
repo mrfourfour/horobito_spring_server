@@ -21,17 +21,17 @@ public class Friender extends BasicInfo{
     private Long id;
 
     @Embedded
-    private PersonId userId;
+    private PersonId frienderId;
 
     @OneToMany(mappedBy = "user")
     private List<Friendship> friendships = new ArrayList<>();
 
     @Embedded
-    private PersonName username;
+    private PersonName frienderName;
 
-    private Friender(PersonId userId, PersonName username){
-        this.userId = userId;
-        this.username = username;
+    private Friender(PersonId frienderId, PersonName frienderName){
+        this.frienderId = frienderId;
+        this.frienderName = frienderName;
     }
 
 
@@ -41,12 +41,12 @@ public class Friender extends BasicInfo{
 
     @Override
     public Long getId(){
-        return this.userId.getId();
+        return this.frienderId.getId();
     }
 
     @Override
     public String getName(){
-        return this.username.getName();
+        return this.frienderName.getName();
     }
 
 
