@@ -19,18 +19,18 @@ public class Friendship {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private Friender userInfo;
+    private Friender friender;
 
     @ManyToOne
     @JoinColumn(name = "friend_id")
-    private Friendee friend;
+    private Friendee friendee;
 
     @Column(name = "friend_state")
     private Boolean friendState;
 
-    private Friendship(Friender userInfo, Friendee friend){
-        this.userInfo = userInfo;
-        this.friend = friend;
+    private Friendship(Friender friender, Friendee friendee){
+        this.friender = friender;
+        this.friendee = friendee;
         this.friendState = false;
     }
 
@@ -38,8 +38,8 @@ public class Friendship {
         return new Friendship(user, friend);
     }
 
-    public Long getFriendId(){
-        return this.friend.getId();
+    public Long getFriendeeId(){
+        return this.friendee.getId();
     }
 
     public void acceptFriendShip() {

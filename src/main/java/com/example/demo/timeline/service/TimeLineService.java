@@ -33,7 +33,7 @@ public class TimeLineService {
                  friendShipRepository
                          .findAllByUserInfo(userInfo)
                          .stream()
-                         .map(Friendship::getFriendId)
+                         .map(Friendship::getFriendeeId)
                          .map(WriterId::create)
                          .collect(Collectors.toList());
         writerList.add(WriterId.create(user.getId()));

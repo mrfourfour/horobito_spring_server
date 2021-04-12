@@ -20,14 +20,14 @@ public class Friendee extends BasicInfo{
     private Long id;
 
     @Embedded
-    private PersonId friendId;
+    private PersonId friendeeId;
 
     @Embedded
-    private PersonName friendname;
+    private PersonName friendeeName;
 
-    private Friendee(PersonId friendId, PersonName friendname){
-        this.friendId = friendId;
-        this.friendname = friendname;
+    private Friendee(PersonId friendeeId, PersonName friendeeName){
+        this.friendeeId = friendeeId;
+        this.friendeeName = friendeeName;
     }
 
     public static Friendee create(PersonId friendId, PersonName friendname) {
@@ -36,11 +36,11 @@ public class Friendee extends BasicInfo{
     }
     @Override
     public Long getId(){
-        return this.friendId.getId();
+        return this.friendeeId.getId();
     }
 
     @Override
     public String getName(){
-        return this.friendname.getName();
+        return this.friendeeName.getName();
     }
 }
