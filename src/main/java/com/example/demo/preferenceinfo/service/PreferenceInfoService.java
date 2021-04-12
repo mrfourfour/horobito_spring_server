@@ -39,7 +39,7 @@ public class PreferenceInfoService {
             return PreferenceResult.FEED_NOT_FOUND;
         }
 
-        if (friendShipRepository.findFriendshipByFriender_FrienderIdAndAndFriendee_FriendeeId(
+        if (friendShipRepository.findFriendshipByFriender_FrienderIdAndFriendee_FriendeeId(
                 PersonId.create(user.getId()), PersonId.create(feed.getWriter().getId()))==null){
             return PreferenceResult.NOT_MY_FRIEND;
         }
@@ -91,7 +91,7 @@ public class PreferenceInfoService {
             return PreferenceResult.FEED_NOT_FOUND;
         }
 
-        if (friendShipRepository.findFriendshipByFriender_FrienderIdAndAndFriendee_FriendeeId(
+        if (friendShipRepository.findFriendshipByFriender_FrienderIdAndFriendee_FriendeeId(
                 PersonId.create(user.getId()), PersonId.create(feed.getWriter().getId()))==null){
             return PreferenceResult.NOT_MY_FRIEND;
         }
