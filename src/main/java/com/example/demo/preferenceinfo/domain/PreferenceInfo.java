@@ -1,4 +1,4 @@
-package com.example.demo.preferredperson.domain;
+package com.example.demo.preferenceinfo.domain;
 
 
 import lombok.AccessLevel;
@@ -20,20 +20,20 @@ public class PreferenceInfo {
 
     private Long preferredPersonId;
 
-    private PreferredPersonInfoLocation location;
+    private PreferenceDocument location;
 
     private Long documentId;
 
     private PreferenceStatus preferenceStatus;
 
-    private PreferenceInfo(Long preferredPersonId, Long documentId, PreferredPersonInfoLocation location  ){
+    private PreferenceInfo(Long preferredPersonId, Long documentId, PreferenceDocument location  ){
         this.preferredPersonId = preferredPersonId;
         this.documentId = documentId;
         this.location = location;
         this.preferenceStatus = PreferenceStatus.DISLIKE;
     }
 
-    public static PreferenceInfo create(Long preferredPersonId, Long documentId, PreferredPersonInfoLocation location ){
+    public static PreferenceInfo create(Long preferredPersonId, Long documentId, PreferenceDocument location ){
         return new PreferenceInfo(preferredPersonId, documentId, location );
     }
 
@@ -42,7 +42,7 @@ public class PreferenceInfo {
         this.preferenceStatus = PreferenceStatus.LIKE;
     }
 
-    public void locate(PreferredPersonInfoLocation location) {
+    public void locate(PreferenceDocument location) {
         this.location = location;
     }
 

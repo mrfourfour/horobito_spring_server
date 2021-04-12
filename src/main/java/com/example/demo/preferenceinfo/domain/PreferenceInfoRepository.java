@@ -1,8 +1,8 @@
-package com.example.demo.preferredperson.domain;
+package com.example.demo.preferenceinfo.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PreferredPersonRepository extends JpaRepository<PreferenceInfo, Long> {
+public interface PreferenceInfoRepository extends JpaRepository<PreferenceInfo, Long> {
 
     PreferenceInfo findByDocumentIdAndPreferredPersonId(Long documentId, Long PreferredPersonId);
 }

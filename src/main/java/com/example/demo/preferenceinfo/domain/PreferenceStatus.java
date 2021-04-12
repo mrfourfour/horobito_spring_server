@@ -1,4 +1,4 @@
-package com.example.demo.preferredperson.domain;
+package com.example.demo.preferenceinfo.domain;
 
 public enum PreferenceStatus {
     LIKE,

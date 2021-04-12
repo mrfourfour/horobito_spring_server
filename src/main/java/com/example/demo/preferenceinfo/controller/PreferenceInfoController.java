@@ -1,7 +1,7 @@
-package com.example.demo.preferredperson.controller;
+package com.example.demo.preferenceinfo.controller;
 
-import com.example.demo.preferredperson.service.PreferenceResult;
-import com.example.demo.preferredperson.service.PreferredPersonService;
+import com.example.demo.preferenceinfo.service.PreferenceResult;
+import com.example.demo.preferenceinfo.service.PreferenceInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +14,13 @@ import java.nio.file.AccessDeniedException;
 
 @RestController
 @RequiredArgsConstructor
-public class PreferredPersonController {
+public class PreferenceInfoController {
 
-    private final PreferredPersonService preferredPersonService;
+    private final PreferenceInfoService preferenceInfoService;
 
     @PostMapping("/feeds/{feedId}/likes")
     public void likeFeedByFeedId(@PathVariable Long feedId) throws AccessDeniedException {
-        PreferenceResult result = preferredPersonService.likeFeedByFeedId(feedId);
+        PreferenceResult result = preferenceInfoService.likeFeedByFeedId(feedId);
 
         switch (result){
             case SUCCESS:

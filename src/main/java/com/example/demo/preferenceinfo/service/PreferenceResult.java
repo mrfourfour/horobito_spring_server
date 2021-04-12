@@ -1,4 +1,4 @@
-package com.example.demo.preferredperson.service;
+package com.example.demo.preferenceinfo.service;
 
 public enum PreferenceResult {
     FEED_NOT_FOUND,

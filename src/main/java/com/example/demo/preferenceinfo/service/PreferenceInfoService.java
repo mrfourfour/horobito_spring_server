@@ -1,4 +1,4 @@
-package com.example.demo.preferredperson.service;
+package com.example.demo.preferenceinfo.service;
 
 
 import com.example.demo.feed.domain.Comment;
@@ -7,10 +7,10 @@ import com.example.demo.feed.domain.FeedRepository;
 import com.example.demo.feed.service.CommentService;
 import com.example.demo.friend.domain.FriendShipRepository;
 import com.example.demo.friend.domain.Identfication;
-import com.example.demo.preferredperson.domain.PreferenceStatus;
-import com.example.demo.preferredperson.domain.PreferenceInfo;
-import com.example.demo.preferredperson.domain.PreferredPersonInfoLocation;
-import com.example.demo.preferredperson.domain.PreferredPersonRepository;
+import com.example.demo.preferenceinfo.domain.PreferenceStatus;
+import com.example.demo.preferenceinfo.domain.PreferenceInfo;
+import com.example.demo.preferenceinfo.domain.PreferenceDocument;
+import com.example.demo.preferenceinfo.domain.PreferenceInfoRepository;
 import com.example.demo.user.domain.User;
 import com.example.demo.user.service.UserSessionService;
 import lombok.RequiredArgsConstructor;
@@ -21,11 +21,11 @@ import java.nio.file.AccessDeniedException;
 
 @Service
 @RequiredArgsConstructor
-public class PreferredPersonService {
+public class PreferenceInfoService {
 
     private final FeedRepository feedRepository;
     private final UserSessionService userSessionService;
-    private final PreferredPersonRepository preferredPersonRepository;
+    private final PreferenceInfoRepository preferenceInfoRepository;
     private final FriendShipRepository friendShipRepository;
     private final CommentService commentService;
 
@@ -48,12 +48,12 @@ public class PreferredPersonService {
             return PreferenceResult.MY_FEED_ERROR;
         }
 
-        if (preferredPersonRepository
+        if (preferenceInfoRepository
                 .findByDocumentIdAndPreferredPersonId(feed.getId(), user.getId())==null){
-            PreferenceInfo preferenceInfo = PreferenceInfo.create(user.getId(), feed.getId(), PreferredPersonInfoLocation.FEED);
-            preferenceInfo.locate(PreferredPersonInfoLocation.FEED);
+            PreferenceInfo preferenceInfo = PreferenceInfo.create(user.getId(), feed.getId(), PreferenceDocument.FEED);
+            preferenceInfo.locate(PreferenceDocument.FEED);
             preferenceInfo.like();
-            preferredPersonRepository.save(preferenceInfo);
+            preferenceInfoRepository.save(preferenceInfo);
 
             feed.like();
 
@@ -62,7 +62,7 @@ public class PreferredPersonService {
         }
 
         PreferenceInfo preferenceInfo
-                    = preferredPersonRepository
+                    = preferenceInfoRepository
                     .findByDocumentIdAndPreferredPersonId(feed.getId(), user.getId());
 
         if (preferenceInfo.findState()==PreferenceStatus.LIKE){
