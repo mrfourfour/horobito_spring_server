@@ -9,7 +9,7 @@ import com.example.demo.friend.domain.FriendShipRepository;
 import com.example.demo.friend.domain.Identfication;
 import com.example.demo.preferenceinfo.domain.PreferenceStatus;
 import com.example.demo.preferenceinfo.domain.PreferenceInfo;
-import com.example.demo.preferenceinfo.domain.PreferenceDocument;
+import com.example.demo.preferenceinfo.domain.PreferenceLocation;
 import com.example.demo.preferenceinfo.domain.PreferenceInfoRepository;
 import com.example.demo.user.domain.User;
 import com.example.demo.user.service.UserSessionService;
@@ -50,8 +50,8 @@ public class PreferenceInfoService {
 
         if (preferenceInfoRepository
                 .findByDocumentIdAndPreferredPersonId(feed.getId(), user.getId())==null){
-            PreferenceInfo preferenceInfo = PreferenceInfo.create(user.getId(), feed.getId(), PreferenceDocument.FEED);
-            preferenceInfo.locate(PreferenceDocument.FEED);
+            PreferenceInfo preferenceInfo = PreferenceInfo.create(user.getId(), feed.getId(), PreferenceLocation.FEED);
+            preferenceInfo.locate(PreferenceLocation.FEED);
             preferenceInfo.like();
             preferenceInfoRepository.save(preferenceInfo);
 

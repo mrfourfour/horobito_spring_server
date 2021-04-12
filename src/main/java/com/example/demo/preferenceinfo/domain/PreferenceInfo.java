@@ -20,20 +20,20 @@ public class PreferenceInfo {
 
     private Long preferredPersonId;
 
-    private PreferenceDocument location;
+    private PreferenceLocation location;
 
     private Long documentId;
 
     private PreferenceStatus preferenceStatus;
 
-    private PreferenceInfo(Long preferredPersonId, Long documentId, PreferenceDocument location  ){
+    private PreferenceInfo(Long preferredPersonId, Long documentId, PreferenceLocation location  ){
         this.preferredPersonId = preferredPersonId;
         this.documentId = documentId;
         this.location = location;
         this.preferenceStatus = PreferenceStatus.DISLIKE;
     }
 
-    public static PreferenceInfo create(Long preferredPersonId, Long documentId, PreferenceDocument location ){
+    public static PreferenceInfo create(Long preferredPersonId, Long documentId, PreferenceLocation location ){
         return new PreferenceInfo(preferredPersonId, documentId, location );
     }
 
@@ -42,7 +42,7 @@ public class PreferenceInfo {
         this.preferenceStatus = PreferenceStatus.LIKE;
     }
 
-    public void locate(PreferenceDocument location) {
+    public void locate(PreferenceLocation location) {
         this.location = location;
     }
 

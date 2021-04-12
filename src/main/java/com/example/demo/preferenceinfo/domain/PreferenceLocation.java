@@ -1,6 +1,6 @@
 package com.example.demo.preferenceinfo.domain;
 
-public enum PreferenceDocument {
+public enum PreferenceLocation {
     FEED,
     COMMENT
 }
