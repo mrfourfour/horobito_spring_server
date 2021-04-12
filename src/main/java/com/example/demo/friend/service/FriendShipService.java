@@ -23,11 +23,12 @@ public class FriendShipService {
     private final UserSessionService userSessionService;
 
 
+
     @Transactional
     public List<FriendDto> getMyFriends(int page, int size) throws AccessDeniedException {
-        User user = userSessionService.getLoggeddUser();
+        User user =
         PersonId userId = PersonId.create(user.getId());
-        Friender userInfo = createUserInfo(user, userId);
+        PersonName userName = PersonName.create(user.getUserBasicInfo().getUsername());
 
 
         List<FriendDto> friendshipList
@@ -48,14 +49,13 @@ public class FriendShipService {
     @Transactional
     public FriendShipResult create(Long inputedFriendId) throws AccessDeniedException {
         User user = userSessionService.getLoggeddUser();
-        PersonId myId = PersonId.create(user.getId());
-        Friender myInfo = createUserInfo(user, myId);
-
         User friend = userRepository.findUserById(inputedFriendId);
+
+        PersonId myId = PersonId.create(user.getId());
         PersonId friendId = PersonId.create(inputedFriendId);
-        Friender friendInfo = createUserInfo(friend, friendId);
 
-
+        PersonName myName = PersonName.create(user.getUserBasicInfo().getUsername());
+        PersonName friendName = PersonName.create(friend.getUserBasicInfo().getUsername());
 
 
         if ((friendShipRepository.findFriendshipByFrienderAndFriendee_FriendeeId(myInfo, friendId))==null){
@@ -91,7 +91,7 @@ public class FriendShipService {
 
 
 
-    private Friendship createFriendship(Friender user, Friender friendUserInfo) {
+    public Friendship createFriendship(Friender user, Friendee friendUserInfo) {
         PersonId friendsId = PersonId.create(friendUserInfo.getId());
         PersonName friendName = PersonName.create(friendUserInfo.getName());
 
@@ -122,10 +122,16 @@ public class FriendShipService {
 
     }
 
-    private Friender createUserInfo(User user, PersonId id) {
+    private Friender createFriender(User user, PersonId id) {
 
         PersonName name = PersonName.create(user.getUserBasicInfo().getUsername());
         return Friender.create(id, name);
+    }
+
+    private Friendee createFriendee(User user, PersonId id) {
+
+        PersonName name = PersonName.create(user.getUserBasicInfo().getUsername());
+        return Friendee.create(id, name);
     }
 
 
