@@ -10,9 +10,8 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+@Embeddable
 @Setter(AccessLevel.PACKAGE)
-@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Friender extends BasicInfo{
 

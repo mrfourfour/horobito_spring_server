@@ -8,16 +8,11 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@Entity
+@Embeddable
 @Setter(AccessLevel.PACKAGE)
-@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Friendee extends BasicInfo{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "friend_pk")
-    private Long id;
 
     @Embedded
     private PersonId friendeeId;

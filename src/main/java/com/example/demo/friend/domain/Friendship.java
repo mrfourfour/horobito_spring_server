@@ -17,12 +17,11 @@ public class Friendship {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @Embedded
     private Friender friender;
 
-    @ManyToOne
-    @JoinColumn(name = "friend_id")
+
+    @Embedded
     private Friendee friendee;
 
     @Column(name = "friend_state")
