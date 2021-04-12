@@ -51,7 +51,7 @@ public class TimeLineService {
                 ,feed.getWriter().getName()
                 ,feed.getContent().getContent()
                 ,feed.getComments().stream().map(this::toCommentDto).collect(Collectors.toList())
-                ,feed.getPreferenceInfo().getPreference()
+                ,feed.getPreferenceCountInfo().getPreference()
                 ,feed.getWrtTime()
         );
     }
@@ -62,7 +62,7 @@ public class TimeLineService {
                 ,comment.getWriter().getId()
                 ,comment.getWriter().getName()
                 ,comment.getContent()
-                ,comment.getPreferenceInfo().getPreference()
+                ,comment.getPreferenceCountInfo().getPreference()
                 ,comment.getWrtTime()
         );
     }

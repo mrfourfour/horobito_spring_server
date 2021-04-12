@@ -29,7 +29,7 @@ public class Feed {
     private Content content;
 
     @Column(name = "preference")
-    private Preference preferenceInfo;
+    private PreferenceCount preferenceCountInfo;
 
     @Column(name = "wrt_time")
     private Instant wrtTime;
@@ -45,7 +45,7 @@ public class Feed {
         this.writer = writer;
         this.content = content;
         this.wrtTime = Instant.now();
-        this.preferenceInfo = Preference.create();
+        this.preferenceCountInfo = PreferenceCount.create();
         this.deleted = false;
     }
 
@@ -59,7 +59,7 @@ public class Feed {
     }
 
     public void like(){
-        this.preferenceInfo = this.preferenceInfo.like();
+        this.preferenceCountInfo = this.preferenceCountInfo.like();
     }
 
     public void enrollComment(Comment comment) {
@@ -73,6 +73,6 @@ public class Feed {
     }
 
     public void disLike() {
-        this.preferenceInfo = Preference.create(this.preferenceInfo.getPreference()-1L);
+        this.preferenceCountInfo = PreferenceCount.create(this.preferenceCountInfo.getPreference()-1L);
     }
 }

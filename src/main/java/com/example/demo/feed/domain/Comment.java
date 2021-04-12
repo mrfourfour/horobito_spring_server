@@ -36,14 +36,14 @@ public class Comment {
     private Content content;
 
     @Embedded
-    private Preference preferenceInfo;
+    private PreferenceCount preferenceCountInfo;
 
     private boolean deleted;
 
     public Comment(Writer writer, Content content){
         this.writer = writer;
         this.content = content;
-        this.preferenceInfo = Preference.create();
+        this.preferenceCountInfo = PreferenceCount.create();
         this.wrtTime = Instant.now();
         this.deleted = false;
     }
