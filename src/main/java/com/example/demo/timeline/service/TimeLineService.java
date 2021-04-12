@@ -31,7 +31,7 @@ public class TimeLineService {
 
         List<WriterId> writerList =
                  friendShipRepository
-                         .findAllByUserInfo(userInfo)
+                         .findAllByFriender(userInfo)
                          .stream()
                          .map(Friendship::getFriendeeId)
                          .map(WriterId::create)

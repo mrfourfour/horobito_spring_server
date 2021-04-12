@@ -32,10 +32,10 @@ public class FriendShipService {
 
         List<FriendDto> friendshipList
                 = friendShipRepository
-                .findAllByUserInfo(userInfo, PageRequest.of(page, size))
+                .findAllByFriender(userInfo, PageRequest.of(page, size))
                 .stream()
                 .filter(Friendship::getFriendState)
-                .map(Friendship::getFriend)
+                .map(Friendship::getFriendee)
                 .map(this::toFriendDto)
                 .collect(Collectors.toList());
 
@@ -58,7 +58,7 @@ public class FriendShipService {
 
 
 
-        if ((friendShipRepository.findFriendshipByUserInfoAndFriend_FriendId(myInfo, friendId))==null){
+        if ((friendShipRepository.findFriendshipByFrienderAndFriendee_FriendeeId(myInfo, friendId))==null){
             Friendship forwardFriendShip = createFriendship(myInfo, friendInfo);
             forwardFriendShip.acceptFriendShip();
 
@@ -73,9 +73,9 @@ public class FriendShipService {
 
         }else {
             Friendship forwardFriendShip
-                    = friendShipRepository.findFriendshipByUserInfoAndFriend_FriendId(myInfo, friendId);
+                    = friendShipRepository.findFriendshipByFrienderAndFriendee_FriendeeId(myInfo, friendId);
             Friendship backwardFriendShip
-                    = friendShipRepository.findFriendshipByUserInfoAndFriend_FriendId(friendInfo, myId);
+                    = friendShipRepository.findFriendshipByFrienderAndFriendee_FriendeeId(friendInfo, myId);
 
             if (forwardFriendShip.getFriendState()){
                 return FriendShipResult.ALREADY_ACCEPT;
@@ -108,13 +108,13 @@ public class FriendShipService {
 
         PersonId friendId = PersonId.create(inputedId);
 
-        if ((friendShipRepository.findFriendshipByUserInfoAndFriend_FriendId(myInfo, friendId))==null){
+        if ((friendShipRepository.findFriendshipByFrienderAndFriendee_FriendeeId(myInfo, friendId))==null){
 
             return FriendShipResult.NEVER_REQUESTED;
 
         }else {
             Friendship forwardFriendShip
-                    = friendShipRepository.findFriendshipByUserInfoAndFriend_FriendId(myInfo, friendId);
+                    = friendShipRepository.findFriendshipByFrienderAndFriendee_FriendeeId(myInfo, friendId);
             forwardFriendShip.deleteFriendShip();
 
             return FriendShipResult.SUCCESS;
@@ -134,10 +134,10 @@ public class FriendShipService {
         User user = userSessionService.getLoggeddUser();
         PersonId myId = PersonId.create(user.getId());
 
-        List<FriendDto> friendshipList = friendShipRepository.findAllByFriend_FriendId(myId, PageRequest.of(page, size))
+        List<FriendDto> friendshipList = friendShipRepository.findAllByFriendee_FriendeeId(myId, PageRequest.of(page, size))
                 .stream()
                 .filter(Friendship::getFriendState)
-                .map(Friendship::getUserInfo)
+                .map(Friendship::getFriender)
                 .map(this::toFriendDto)
                 .collect(Collectors.toList());
 
