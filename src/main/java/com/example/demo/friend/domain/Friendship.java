@@ -20,7 +20,6 @@ public class Friendship {
     @Embedded
     private Friender friender;
 
-
     @Embedded
     private Friendee friendee;
 
