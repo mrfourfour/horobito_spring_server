@@ -57,6 +57,13 @@ public class Comment {
         return new Comment(writer, content);
     }
 
+    public void disLike() {
+        this.preferenceCountInfo = PreferenceCount.create(this.preferenceCountInfo.getPreference()-1L);
+    }
+
+    public void like() {
+        this.preferenceCountInfo = PreferenceCount.create(this.preferenceCountInfo.getPreference()+1L);
+    }
 
 
 //    public boolean checkPossibleOfLike(User user) {

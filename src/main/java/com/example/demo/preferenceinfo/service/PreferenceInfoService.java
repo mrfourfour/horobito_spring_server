@@ -85,6 +85,7 @@ public class PreferenceInfoService {
         User user = getLoggedUser();
         Feed feed;
         Comment comment;
+        PreferenceInfo preferenceInfo;
 
         if ((feed=feedRepository.findFeedByIdAndDeleted(feedId, false))==null){
             return PreferenceResult.FEED_NOT_FOUND;
@@ -98,6 +99,33 @@ public class PreferenceInfoService {
         if((comment = commentService.findCommentById(feed.getComments(), commentId))==null){
             return PreferenceResult.COMMENT_NOT_FOUND;
         }
+
+        if ((preferenceInfo = preferenceInfoRepository
+                .findByDocumentIdAndPreferredPersonIdAndLocation(feed.getId(), user.getId(), PreferenceLocation.COMMENT))==null){
+            preferenceInfo = PreferenceInfo.create(user.getId(), feed.getId(), PreferenceLocation.COMMENT);
+            preferenceInfo.locate(PreferenceLocation.COMMENT);
+            preferenceInfo.like();
+            preferenceInfoRepository.save(preferenceInfo);
+
+            feed.like();
+
+            return PreferenceResult.SUCCESS;
+
+        }
+
+
+        if (preferenceInfo.findState()==PreferenceStatus.LIKE){
+            preferenceInfo.disLike();
+            comment.disLike();
+
+            return PreferenceResult.SUCCESS;
+        }
+
+        if (preferenceInfo.findState()==PreferenceStatus.INDIFFERENCE){
+            preferenceInfo.like();
+            comment.like();
+        }
+        return PreferenceResult.SUCCESS;
 
 
 
