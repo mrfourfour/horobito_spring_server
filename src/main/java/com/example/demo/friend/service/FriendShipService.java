@@ -22,20 +22,18 @@ public class FriendShipService {
     private final UserRepository userRepository;
     private final UserSessionService userSessionService;
 
-    String[] userInfo = findUser();
 
-    public String findUser() throws AccessDeniedException {
-        String[] answer =
-        return userSessionService.getLoggeddUser();
+    public Object[] findUser() throws AccessDeniedException {
+        return new Object[]{userSessionService.getLoggeddUser().getId(), userSessionService.getLoggeddUser().getUserBasicInfo().getUsername()};
     }
 
 
 
     @Transactional
     public List<FriendDto> getMyFriends(int page, int size) throws AccessDeniedException {
-        User user =
-        PersonId userId = PersonId.create(user.getId());
-        PersonName userName = PersonName.create(user.getUserBasicInfo().getUsername());
+        Object[] userInfo = findUser();
+        PersonId userId = PersonId.create((Long)userInfo[0]);
+        PersonName userName = PersonName.create((String)userInfo[1]);
 
 
         List<FriendDto> friendshipList
