@@ -104,13 +104,9 @@ public class FriendShipService {
 
 
 
-    public Friendship createFriendship(Friender user, Friendee friendUserInfo) {
-        PersonId friendsId = PersonId.create(friendUserInfo.getId());
-        PersonName friendName = PersonName.create(friendUserInfo.getName());
+    public Friendship createFriendship(Friender friender, Friendee friendee) {
 
-        Friendee friend = Friendee.create(friendsId, friendName);
-        
-        return Friendship.create(user, friend);
+        return Friendship.create(friender, friendee);
     }
 
 
