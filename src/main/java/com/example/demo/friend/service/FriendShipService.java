@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 public class FriendShipService {
 
     private final FriendShipRepository friendShipRepository;
-    private final UserRepository userRepository;
     private final UserSessionService userSessionService;
     private final UserService userService;
 
@@ -137,17 +136,6 @@ public class FriendShipService {
 
     }
 
-    private Friender createFriender(User user, PersonId id) {
-
-        PersonName name = PersonName.create(user.getUserBasicInfo().getUsername());
-        return Friender.create(id, name);
-    }
-
-    private Friendee createFriendee(User user, PersonId id) {
-
-        PersonName name = PersonName.create(user.getUserBasicInfo().getUsername());
-        return Friendee.create(id, name);
-    }
 
 
     public List<FriendDto>findRequestForMe(int page, int size) throws AccessDeniedException {
