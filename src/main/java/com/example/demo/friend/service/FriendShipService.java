@@ -3,6 +3,7 @@ package com.example.demo.friend.service;
 import com.example.demo.friend.domain.*;
 import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserRepository;
+import com.example.demo.user.service.UserService;
 import com.example.demo.user.service.UserSessionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -21,24 +22,25 @@ public class FriendShipService {
     private final FriendShipRepository friendShipRepository;
     private final UserRepository userRepository;
     private final UserSessionService userSessionService;
+    private final UserService userService;
 
 
-    public Object[] findUser() throws AccessDeniedException {
-        return new Object[]{userSessionService.getLoggeddUser().getId(), userSessionService.getLoggeddUser().getUserBasicInfo().getUsername()};
-    }
+
 
 
 
     @Transactional
     public List<FriendDto> getMyFriends(int page, int size) throws AccessDeniedException {
-        Object[] userInfo = findUser();
+        Object[] userInfo = userService.findUserInfo();
         PersonId userId = PersonId.create((Long)userInfo[0]);
         PersonName userName = PersonName.create((String)userInfo[1]);
+
+        Friender friender = Friender.create(userId, userName);
 
 
         List<FriendDto> friendshipList
                 = friendShipRepository
-                .findAllByFriender(userInfo, PageRequest.of(page, size))
+                .findAllByFriender(friender, PageRequest.of(page, size))
                 .stream()
                 .filter(Friendship::getFriendState)
                 .map(Friendship::getFriendee)
@@ -53,14 +55,14 @@ public class FriendShipService {
 
     @Transactional
     public FriendShipResult create(Long inputedFriendId) throws AccessDeniedException {
-        User user = userSessionService.getLoggeddUser();
-        User friend = userRepository.findUserById(inputedFriendId);
+        Object[] user = userService.findUserInfo();
+        Object[] friend = userService.findUserInfo(inputedFriendId);
 
-        PersonId myId = PersonId.create(user.getId());
-        PersonId friendId = PersonId.create(inputedFriendId);
+        PersonId myId = PersonId.create((Long) user[0]);
+        PersonId friendId = PersonId.create((Long) friend[0]);
 
-        PersonName myName = PersonName.create(user.getUserBasicInfo().getUsername());
-        PersonName friendName = PersonName.create(friend.getUserBasicInfo().getUsername());
+        PersonName myName = PersonName.create(user[1]);
+        PersonName friendName = PersonName.create(friend[1]);
 
 
         if ((friendShipRepository.findFriendshipByFrienderAndFriendee_FriendeeId(myInfo, friendId))==null){

@@ -9,12 +9,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.file.AccessDeniedException;
+
 
 @Service
 @RequiredArgsConstructor
 public class UserService  {
 
     private final UserRepository userRepository;
+    private final UserSessionService userSessionService;
 
     @Transactional
     public void signup(SignupRequest signupRequest){
@@ -29,6 +32,17 @@ public class UserService  {
 
     public void login(LoginRequest loginRequest) {
 
+    }
+
+    public Object[] findUserInfo() throws AccessDeniedException {
+        User user = userSessionService.getLoggeddUser();
+        return new Object[]{user.getId(), user.getUserBasicInfo().getUsername()};
+    }
+
+    public Object[] findUserInfo(Long id) throws AccessDeniedException {
+        User user = userRepository.findUserById(id);
+        return new Object[]{user.getId(),
+                user.getUserBasicInfo().getUsername()};
     }
 }
 
