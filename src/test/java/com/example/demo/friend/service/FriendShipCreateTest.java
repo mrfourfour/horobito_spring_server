@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
-class FriendShipServiceTest {
+class FriendShipCreateTest {
 
 
     @Mock
@@ -47,6 +47,39 @@ class FriendShipServiceTest {
 
         String[] friender = { "1", "jihwan"};
         String [] friendee = { "2", "friendee"};
+
+        //when
+        when(userService.findUserInfo())
+                .thenReturn(friender);
+
+        when(userService.findUserInfo(any()))
+                .thenReturn(friendee);
+
+
+
+        //then
+        FriendShipResult result = friendShipService.create(1L);
+        System.out.println(result);
+        assertEquals(FriendShipResult.TRY_TO_MAKE_FRIENDSHIP, result);
+
+    }
+
+    @DisplayName("친구관계 맺기 테스트 2. 이미 신청 또는 수락된 경우 ")
+    @Test
+    void testForAlreadyAccept() throws AccessDeniedException {
+
+        FriendShipService friendShipService
+                = new FriendShipService(friendShipRepository,
+                userSessionService, userService);
+
+        //given
+
+        String[] friender = { "1", "jihwan"};
+        String [] friendee = { "2", "friendee"};
+
+        Friender friender1 = Friender.create(PersonId.create(1L), )
+
+        Friendee friendee1;
 
         //when
         when(userService.findUserInfo())
