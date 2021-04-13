@@ -34,14 +34,14 @@ public class UserService  {
 
     }
 
-    public Object[] findUserInfo() throws AccessDeniedException {
+    public String[] findUserInfo() throws AccessDeniedException {
         User user = userSessionService.getLoggeddUser();
-        return new Object[]{user.getId(), user.getUserBasicInfo().getUsername()};
+        return new String[]{String.valueOf(user.getId()), user.getUserBasicInfo().getUsername()};
     }
 
-    public Object[] findUserInfo(Long id) throws AccessDeniedException {
+    public String[] findUserInfo(Long id) throws AccessDeniedException {
         User user = userRepository.findUserById(id);
-        return new Object[]{user.getId(),
+        return new String[]{String.valueOf(user.getId()),
                 user.getUserBasicInfo().getUsername()};
     }
 }

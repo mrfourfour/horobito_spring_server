@@ -54,11 +54,11 @@ public class FriendShipService {
 
     @Transactional
     public FriendShipResult create(Long inputedFriendId) throws AccessDeniedException {
-        Object[] user = userService.findUserInfo();
-        Object[] friend = userService.findUserInfo(inputedFriendId);
+        String[] user = userService.findUserInfo();
+        String [] friend = userService.findUserInfo(inputedFriendId);
 
-        PersonId myId = PersonId.create((Long) user[0]);
-        PersonId friendId = PersonId.create((Long) friend[0]);
+        PersonId myId = PersonId.create(Long.parseLong(user[0]) );
+        PersonId friendId = PersonId.create(Long.parseLong(friend[0]));
 
         PersonName myName = PersonName.create((String) user[1]);
         PersonName friendName = PersonName.create((String) friend[1]);

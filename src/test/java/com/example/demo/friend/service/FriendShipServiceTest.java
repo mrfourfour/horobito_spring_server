@@ -6,6 +6,7 @@ import com.example.demo.user.domain.Password;
 import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserRepository;
 import com.example.demo.user.domain.Username;
+import com.example.demo.user.service.UserService;
 import com.example.demo.user.service.UserSessionService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,11 +24,6 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class FriendShipServiceTest {
 
-    @Mock
-    FeedRepository feedRepository;
-
-    @Mock
-    UserRepository userRepository;
 
     @Mock
     FriendShipRepository friendShipRepository;
@@ -35,46 +31,38 @@ class FriendShipServiceTest {
     @Mock
     UserSessionService userSessionService;
 
-    User user;
-    PersonId personId;
-    Friendee friendee;
-    Friender friender;
+    @Mock
+    UserService userService;
+
 
 
     @DisplayName("친구관계 맺기 테스트 1. 처음 신청")
     @Test
     void createFriendShip() throws AccessDeniedException {
+
         FriendShipService friendShipService
                 = new FriendShipService(friendShipRepository,
-                userRepository,
-                userSessionService);
+                userSessionService, userService);
         //given
-        PersonName myName = PersonName.create("jihwan");
-        Password myPassword = Password.create("1234");
 
-        Friender me = Friender.create(PersonId.create(1L), myName);
-
-
-        PersonName friendName = PersonName.create("jihwan");
-        Password friendPassword = Password.create("1234");
-
-        when(userSessionService.getLoggeddUser())
-                .thenReturn(null);
-
-        when(userRepository.findUserById(anyLong()))
-                .thenReturn(null);
-
-        when(PersonId.create(anyLong()))
-                .thenReturn(null);
-
-        when(friendShipService.creat)
+        String[] friender = { "1", "jihwan"};
+        String [] friendee = { "2", "friendee"};
 
 
         //when
-        FriendShipResult result = friendShipService.create(any());
+        when(userService.findUserInfo())
+                .thenReturn(friender);
+
+        when(userService.findUserInfo(any()))
+                .thenReturn(friendee);
+
+
+        FriendShipResult result = friendShipService.create(1L);
+
+        System.out.println(result);
 
         //then
-        assertEquals(FriendShipResult.SUCCESS, result);
+        assertEquals(FriendShipResult.TRY_TO_MAKE_FRIENDSHIP, result);
 
     }
 
