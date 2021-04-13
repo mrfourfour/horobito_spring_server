@@ -77,9 +77,25 @@ class FriendShipCreateTest {
         String[] friender = { "1", "jihwan"};
         String [] friendee = { "2", "friendee"};
 
-        Friender friender1 = Friender.create(PersonId.create(1L), )
+        PersonId myId = PersonId.create(Long.parseLong(friender[0]) );
+        PersonId friendId = PersonId.create(Long.parseLong(friendee[0]));
 
-        Friendee friendee1;
+        PersonName myName = PersonName.create((String) friender[1]);
+        PersonName friendName = PersonName.create((String) friendee[1]);
+
+        Friender frienderMe = Friender.create(myId, myName);
+        Friendee friendeeYou = Friendee.create(friendId, friendName);
+
+        Friender frienderYou = Friender.create(friendId, friendName);
+        Friendee friendeeMe = Friendee.create(myId, myName);
+
+        Friendship forwardFriendShip
+                = Friendship.create(frienderMe, friendeeYou);
+        forwardFriendShip.acceptFriendShip();
+
+        Friendship backwardFriendShip
+                = Friendship.create(frienderYou, friendeeMe);
+
 
         //when
         when(userService.findUserInfo())
@@ -88,15 +104,19 @@ class FriendShipCreateTest {
         when(userService.findUserInfo(any()))
                 .thenReturn(friendee);
 
-
-
+        when(friendShipRepository
+                .findFriendshipByFrienderAndFriendee_FriendeeId(
+                        any(), any()
+                )).thenReturn(forwardFriendShip)
+                .thenReturn(forwardFriendShip)
+                .thenReturn(backwardFriendShip);
 
 
 
         //then
         FriendShipResult result = friendShipService.create(1L);
         System.out.println(result);
-        assertEquals(FriendShipResult.TRY_TO_MAKE_FRIENDSHIP, result);
+        assertEquals(FriendShipResult.ALREADY_ACCEPT, result);
 
     }
 
