@@ -61,15 +61,22 @@ public class FriendShipService {
         PersonId myId = PersonId.create((Long) user[0]);
         PersonId friendId = PersonId.create((Long) friend[0]);
 
-        PersonName myName = PersonName.create(user[1]);
-        PersonName friendName = PersonName.create(friend[1]);
+        PersonName myName = PersonName.create((String) user[1]);
+        PersonName friendName = PersonName.create((String) friend[1]);
+
+        Friender frienderMe = Friender.create(myId, myName);
+        Friendee friendeeYou = Friendee.create(friendId, friendName);
+
+        Friender frienderYou = Friender.create(friendId, friendName);
+        Friendee friendeeMe = Friendee.create(myId, myName);
 
 
-        if ((friendShipRepository.findFriendshipByFrienderAndFriendee_FriendeeId(myInfo, friendId))==null){
-            Friendship forwardFriendShip = createFriendship(myInfo, friendInfo);
+
+        if ((friendShipRepository.findFriendshipByFrienderAndFriendee_FriendeeId(frienderMe, friendId))==null){
+            Friendship forwardFriendShip = createFriendship(frienderMe, friendeeYou);
             forwardFriendShip.acceptFriendShip();
 
-            Friendship backwardFriendShip = createFriendship(friendInfo, myInfo);
+            Friendship backwardFriendShip = createFriendship(frienderYou, friendeeMe);
 
             friendShipRepository.save(forwardFriendShip);
             friendShipRepository.save(backwardFriendShip);
@@ -80,9 +87,9 @@ public class FriendShipService {
 
         }else {
             Friendship forwardFriendShip
-                    = friendShipRepository.findFriendshipByFrienderAndFriendee_FriendeeId(myInfo, friendId);
+                    = friendShipRepository.findFriendshipByFrienderAndFriendee_FriendeeId(frienderMe, friendId);
             Friendship backwardFriendShip
-                    = friendShipRepository.findFriendshipByFrienderAndFriendee_FriendeeId(friendInfo, myId);
+                    = friendShipRepository.findFriendshipByFrienderAndFriendee_FriendeeId(frienderYou, myId);
 
             if (forwardFriendShip.getFriendState()){
                 return FriendShipResult.ALREADY_ACCEPT;
@@ -109,9 +116,10 @@ public class FriendShipService {
 
 
     public FriendShipResult deleteFriendShipRequest(Long inputedId) throws AccessDeniedException {
-        User user = userSessionService.getLoggeddUser();
-        PersonId myId = PersonId.create(user.getId());
-        Friender myInfo = createUserInfo(user, myId);
+        Object[] userInfo = userService.findUserInfo();
+        PersonId myId = PersonId.create((Long) userInfo[0]);
+        PersonName myName = PersonName.create((String) userInfo[1]);
+        Friender myInfo = Friender.create(myId, myName);
 
         PersonId friendId = PersonId.create(inputedId);
 
