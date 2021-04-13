@@ -120,7 +120,7 @@ class FriendShipCreateTest {
 
     }
 
-    @DisplayName("친구관계 맺기 테스트 2. 이미 신청 또는 수락된 경우 ")
+    @DisplayName("친구관계 맺기 테스트 3. 요청 수락  ")
     @Test
     void testForAccept() throws AccessDeniedException {
 
