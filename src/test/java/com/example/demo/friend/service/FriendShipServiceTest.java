@@ -48,7 +48,6 @@ class FriendShipServiceTest {
         String[] friender = { "1", "jihwan"};
         String [] friendee = { "2", "friendee"};
 
-
         //when
         when(userService.findUserInfo())
                 .thenReturn(friender);
@@ -57,11 +56,13 @@ class FriendShipServiceTest {
                 .thenReturn(friendee);
 
 
-        FriendShipResult result = friendShipService.create(1L);
 
-        System.out.println(result);
+
+
 
         //then
+        FriendShipResult result = friendShipService.create(1L);
+        System.out.println(result);
         assertEquals(FriendShipResult.TRY_TO_MAKE_FRIENDSHIP, result);
 
     }
