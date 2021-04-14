@@ -6,6 +6,7 @@ import com.example.demo.feed.service.CommentDto;
 import com.example.demo.feed.service.FeedDto;
 import com.example.demo.friend.domain.*;
 import com.example.demo.user.domain.User;
+import com.example.demo.user.service.UserService;
 import com.example.demo.user.service.UserSessionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -22,17 +23,23 @@ public class TimeLineService {
 
     private final FeedRepository feedRepository;
 
-    private final UserSessionService userSessionService;
+    private final UserService userService;
 
-    public List<FeedDto> findMyTimeLine(int page, int pageSize) throws AccessDeniedException {
+    public Object findMyTimeLine(int page, int pageSize) throws AccessDeniedException {
+        if (page<0 || pageSize<0){
+            return TimeLineFindResult.BAD_REQUEST;
+        }
 
-        User user = userSessionService.getLoggeddUser();
-        Friender userInfo = createUserInfo(user);
+        String [] userInfo = userService.findUserInfo();
+        PersonId myId = PersonId.create(Long.parseLong(userInfo[0]));
+        PersonName myName = PersonName.create(userInfo[1]);
+        Friender user = Friender.create(myId, myName);
 
         List<WriterId> writerList =
                  friendShipRepository
-                         .findAllByFriender(userInfo)
+                         .findAllByFriender(user)
                          .stream()
+                         .filter(friendship -> friendship.getFriendState()==FriendShipState.ACCEPT)
                          .map(Friendship::getFriendeeId)
                          .map(WriterId::create)
                          .collect(Collectors.toList());
