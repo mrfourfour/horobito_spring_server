@@ -76,7 +76,7 @@ public class FriendShipFindTest {
 
 
         //then
-        List<FriendDto> friendList = friendShipService.getMyFriends(0, 2);
+
         System.out.println(friendList.toString());
 
     }
