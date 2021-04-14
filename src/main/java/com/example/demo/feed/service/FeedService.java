@@ -97,10 +97,10 @@ public class FeedService {
             return RequestResult.BAD_REQUEST;
         }
 
-        User user = userSessionService.getLoggeddUser();
+        String[] userInfo = userService.findUserInfo();
 
-        WriterId id = WriterId.create(user.getId());
-        WriterName wrtName = WriterName.create(user.getUserBasicInfo().getUsername());
+        WriterId id = WriterId.create(Long.parseLong(userInfo[0]));
+        WriterName wrtName = WriterName.create(userInfo[1]);
         Writer writer = Writer.create(id, wrtName);
         Content content = Content.create(insertedContent);
         Feed feed = Feed.create(writer, content);
