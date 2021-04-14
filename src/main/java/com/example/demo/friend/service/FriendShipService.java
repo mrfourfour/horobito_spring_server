@@ -1,13 +1,9 @@
 package com.example.demo.friend.service;
 
 import com.example.demo.friend.domain.*;
-import com.example.demo.user.domain.User;
-import com.example.demo.user.domain.UserRepository;
 import com.example.demo.user.service.UserService;
-import com.example.demo.user.service.UserSessionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
