@@ -77,7 +77,7 @@ public class FriendShipFindTest {
 
         //then
 
-        System.out.println(friendList.toString());
+
 
     }
 
