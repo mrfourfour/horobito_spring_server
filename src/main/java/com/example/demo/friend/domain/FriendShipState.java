@@ -4,4 +4,5 @@ public enum FriendShipState {
     REQUEST,
     REQUESTED,
     ACCEPT,
+    DELETED
 }

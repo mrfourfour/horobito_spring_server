@@ -41,7 +41,7 @@ public class FriendShipService {
                 = friendShipRepository
                 .findAllByFriender(friender, PageRequest.of(page, size))
                 .stream()
-                .filter(Friendship::getFriendState)
+                .filter(friendship -> friendship.getFriendState()==FriendShipState.ACCEPT)
                 .map(Friendship::getFriendee)
                 .map(this::toFriendDto)
                 .collect(Collectors.toList());
@@ -60,8 +60,8 @@ public class FriendShipService {
         PersonId myId = PersonId.create(Long.parseLong(user[0]) );
         PersonId friendId = PersonId.create(Long.parseLong(friend[0]));
 
-        PersonName myName = PersonName.create((String) user[1]);
-        PersonName friendName = PersonName.create((String) friend[1]);
+        PersonName myName = PersonName.create(user[1]);
+        PersonName friendName = PersonName.create( friend[1]);
 
         Friender frienderMe = Friender.create(myId, myName);
         Friendee friendeeYou = Friendee.create(friendId, friendName);
@@ -73,7 +73,7 @@ public class FriendShipService {
 
         if ((friendShipRepository.findFriendshipByFrienderAndFriendee_FriendeeId(frienderMe, friendId))==null){
             Friendship forwardFriendShip = createFriendship(frienderMe, friendeeYou);
-            forwardFriendShip.acceptFriendShip();
+            forwardFriendShip.requestFriendShip();
 
             Friendship backwardFriendShip = createFriendship(frienderYou, friendeeMe);
 
@@ -90,9 +90,11 @@ public class FriendShipService {
             Friendship backwardFriendShip
                     = friendShipRepository.findFriendshipByFrienderAndFriendee_FriendeeId(frienderYou, myId);
 
-            if (forwardFriendShip.getFriendState()){
+            if (forwardFriendShip.getFriendState()==FriendShipState.ACCEPT
+                    || forwardFriendShip.getFriendState()==FriendShipState.REQUEST){
                 return FriendShipResult.ALREADY_ACCEPT;
-            }else if (!forwardFriendShip.getFriendState() && backwardFriendShip.getFriendState()){
+            }else if (forwardFriendShip.getFriendState()==FriendShipState.REQUESTED
+                    && backwardFriendShip.getFriendState()==FriendShipState.REQUEST){
                 forwardFriendShip.acceptFriendShip();
                 return FriendShipResult.SUCCESS;
             }else {
@@ -141,7 +143,7 @@ public class FriendShipService {
 
         List<FriendDto> friendshipList = friendShipRepository.findAllByFriendee_FriendeeId(myId, PageRequest.of(page, size))
                 .stream()
-                .filter(Friendship::getFriendState)
+                .filter(friendship -> friendship.getFriendState()==FriendShipState.REQUEST)
                 .map(Friendship::getFriender)
                 .map(this::toFriendDto)
                 .collect(Collectors.toList());

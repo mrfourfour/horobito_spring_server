@@ -24,12 +24,12 @@ public class Friendship {
     private Friendee friendee;
 
     @Column(name = "friend_state")
-    private Boolean friendState;
+    private FriendShipState friendState;
 
     private Friendship(Friender friender, Friendee friendee){
         this.friender = friender;
         this.friendee = friendee;
-        this.friendState = false;
+        this.friendState = FriendShipState.REQUESTED;
     }
 
     public static Friendship create(Friender user, Friendee friend) {
@@ -41,10 +41,14 @@ public class Friendship {
     }
 
     public void acceptFriendShip() {
-        this.friendState = true;
+        this.friendState = FriendShipState.ACCEPT;
+    }
+
+    public void requestFriendShip(){
+        this.friendState = FriendShipState.REQUEST;
     }
 
     public void deleteFriendShip() {
-        this.friendState = false;
+        this.friendState = FriendShipState.DELETED;
     }
 }
