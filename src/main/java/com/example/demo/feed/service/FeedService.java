@@ -10,14 +10,11 @@ import com.example.demo.user.domain.User;
 import com.example.demo.user.service.UserService;
 import com.example.demo.user.service.UserSessionService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.HttpClientErrorException;
-
-import java.net.http.HttpResponse;
 import java.nio.file.AccessDeniedException;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -49,26 +46,69 @@ public class FeedService {
     }
 
 
-    public Feed findFeedDetailByFeedId(Long id) {
+    public Object findFeedDetailByFeedId(Long id) throws AccessDeniedException {
         Feed feed = feedRepository.findFeedByIdAndDeleted(id, false);
-        return feed;
+        PersonId myId = PersonId.create(Long.parseLong(userService.findUserInfo()[0]));
+        PersonId friendId = PersonId.create(feed.getId());
+        Friendship friendship;
+
+        if ((friendship=friendShipRepository.findFriendshipByFriender_FrienderIdAndFriendee_FriendeeId(myId, friendId))==null){
+            return RequestResult.BAD_REQUEST;
+        }
+        if (myId.getId().equals(friendId.getId())){
+
+        }else if (friendship.getFriendState()!= FriendShipState.ACCEPT){
+            return RequestResult.UNAUTHORIZED;
+        }
+
+        FeedDto feedDto = toFriendDto(feed);
+        return feedDto;
+    }
+
+    private FeedDto toFriendDto(Feed feed) {
+        return new FeedDto(
+                feed.getId(),
+                feed.getWriter().getId(),
+                feed.getWriter().getName(),
+                feed.getContent().getContent(),
+                feed.getComments().stream()
+                        .map(this::toCommentDto).collect(Collectors.toList()),
+                feed.getPreferenceCountInfo().getPreference(),
+                feed.getWrtTime()
+        );
+    }
+
+    private CommentDto toCommentDto(Comment comment){
+        return new CommentDto(
+                comment.getId(),
+                comment.getWriter().getId(),
+                comment.getWriter().getName(),
+                comment.getContent(),
+                comment.getPreferenceCountInfo().getPreference(),
+                comment.getWrtTime()
+        );
+
     }
 
 
+    public Object makeFeedByContents(String insertedContent) throws AccessDeniedException {
 
-    public void makeFeedByContents(String InsertedContent) throws AccessDeniedException {
+        if (insertedContent.length()==0){
+            return RequestResult.BAD_REQUEST;
+        }
 
         User user = userSessionService.getLoggeddUser();
 
         WriterId id = WriterId.create(user.getId());
         WriterName wrtName = WriterName.create(user.getUserBasicInfo().getUsername());
         Writer writer = Writer.create(id, wrtName);
-        Content content = Content.create(InsertedContent);
+        Content content = Content.create(insertedContent);
         Feed feed = Feed.create(writer, content);
-
-
         feedRepository.save(feed);
-        System.out.println("새로운 feed 생성 완료");
+
+        FeedDto feedDto = toFriendDto(feed);
+        return feedDto;
+
     }
 
 

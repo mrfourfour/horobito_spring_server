@@ -3,6 +3,7 @@ package com.example.demo.feed.controller;
 
 import com.example.demo.feed.domain.Feed;
 import com.example.demo.feed.domain.RequestResult;
+import com.example.demo.feed.service.FeedDto;
 import com.example.demo.feed.service.FeedService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,16 +25,41 @@ public class FeedController {
     private final FeedService feedService;
 
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/feeds/{feedId}")
-    public Feed  findFeedDetailByFeedId(@PathVariable Long feedId){
-        return feedService.findFeedDetailByFeedId(feedId);
+    public Object findFeedDetailByFeedId(@PathVariable Long feedId) throws AccessDeniedException {
+        Object result =  feedService.findFeedDetailByFeedId(feedId);
+        if (result instanceof FeedDto){
+            ResponseEntity.ok();
+            return result;
+        }else {
+            switch ((RequestResult)result){
+                case BAD_REQUEST:
+                    ResponseEntity.status(HttpStatus.BAD_REQUEST);
+                    break;
+                case UNAUTHORIZED:
+                    ResponseEntity.status(HttpStatus.UNAUTHORIZED);
+                    break;
+            }
+            return result;
+        }
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+
     @PostMapping("/feeds")
-    public void makeFeed(@RequestBody String contents) throws AccessDeniedException {
-        feedService.makeFeedByContents(contents);
+    public Object makeFeed(@RequestBody String contents) throws AccessDeniedException {
+        Object result = feedService.makeFeedByContents(contents);
+
+        if (result instanceof FeedDto){
+            ResponseEntity.ok();
+            return result;
+        }else {
+            switch ((RequestResult)result){
+                case BAD_REQUEST:
+                    ResponseEntity.status(HttpStatus.BAD_REQUEST);
+                    break;
+            }
+            return result;
+        }
 
     }
 
