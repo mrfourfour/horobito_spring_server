@@ -31,9 +31,9 @@ public class FriendShipService {
 
     @Transactional
     public List<FriendDto> getMyFriends(int page, int size) throws AccessDeniedException {
-        Object[] userInfo = userService.findUserInfo();
-        PersonId userId = PersonId.create((Long)userInfo[0]);
-        PersonName userName = PersonName.create((String)userInfo[1]);
+        String[] userInfo = userService.findUserInfo();
+        PersonId userId = PersonId.create(Long.parseLong(userInfo[0]));
+        PersonName userName = PersonName.create(userInfo[1]);
 
         Friender friender = Friender.create(userId, userName);
 
