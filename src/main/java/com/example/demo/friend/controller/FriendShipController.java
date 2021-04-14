@@ -23,6 +23,9 @@ public class FriendShipController {
     // request query로 받는 값들
     public List<FriendDto> getMyFriends(@RequestParam(value="page") int page,
                                         @RequestParam(value = "size") int size) throws AccessDeniedException {
+        if (page<0 || size<0){
+            ResponseEntity.status(HttpStatus.BAD_REQUEST);
+        }
         return friendShipService.getMyFriends(page, size);
 
     }

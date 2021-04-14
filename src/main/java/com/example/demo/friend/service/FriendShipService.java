@@ -7,6 +7,7 @@ import com.example.demo.user.service.UserService;
 import com.example.demo.user.service.UserSessionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -35,6 +36,7 @@ public class FriendShipService {
         PersonName userName = PersonName.create((String)userInfo[1]);
 
         Friender friender = Friender.create(userId, userName);
+
 
 
         List<FriendDto> friendshipList
