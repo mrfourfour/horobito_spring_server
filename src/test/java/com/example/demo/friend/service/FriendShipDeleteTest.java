@@ -28,7 +28,35 @@ public class FriendShipDeleteTest {
     @Mock
     UserService userService;
 
-    @DisplayName("친구관계 삭제 테스트 3. 요청 수락  ")
+    @DisplayName("친구관계 삭제 테스트 1. 친구 관계가 없는 경우  ")
+    @Test
+    void testForDeleteFail() throws AccessDeniedException {
+
+        FriendShipService friendShipService
+                = new FriendShipService(friendShipRepository,
+                userSessionService, userService);
+
+        //given
+
+        String[] friender = { "1", "jihwan"};
+        String [] friendee = { "2", "friendee"};
+
+
+        //when
+        when(userService.findUserInfo())
+                .thenReturn(friender);
+
+
+        //then
+        FriendShipResult result = friendShipService.deleteFriendShipRequest(1L);
+        System.out.println(result);
+        assertEquals(FriendShipResult.NEVER_REQUESTED, result);
+
+    }
+
+    
+
+    @DisplayName("친구관계 삭제 테스트 1. 친구 관계 삭제  ")
     @Test
     void testForAccept() throws AccessDeniedException {
 
