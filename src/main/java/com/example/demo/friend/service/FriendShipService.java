@@ -136,8 +136,8 @@ public class FriendShipService {
 
     public List<FriendDto>findRequestForMe(int page, int size) throws AccessDeniedException {
 
-        User user = userSessionService.getLoggeddUser();
-        PersonId myId = PersonId.create(user.getId());
+
+        PersonId myId = PersonId.create(Long.parseLong(userService.findUserInfo()[0]));
 
         List<FriendDto> friendshipList = friendShipRepository.findAllByFriendee_FriendeeId(myId, PageRequest.of(page, size))
                 .stream()
