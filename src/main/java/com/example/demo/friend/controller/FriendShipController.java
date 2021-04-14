@@ -53,7 +53,14 @@ public class FriendShipController {
 
     @DeleteMapping("/{friendId}")
     public void deleteFriendShip(@PathVariable Long friendId) throws AccessDeniedException {
-        friendShipService.deleteFriendShipRequest(friendId);
+        FriendShipResult result = friendShipService.deleteFriendShipRequest(friendId);
+        switch ((FriendShipResult)result){
+            case NEVER_REQUESTED:
+                ResponseEntity.status(HttpStatus.BAD_REQUEST);
+                break;
+            case SUCCESS:
+                ResponseEntity.ok();
+        }
     }
 
     @GetMapping("/request")

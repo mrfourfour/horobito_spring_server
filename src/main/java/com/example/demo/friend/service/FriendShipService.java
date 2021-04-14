@@ -21,12 +21,7 @@ import java.util.stream.Collectors;
 public class FriendShipService {
 
     private final FriendShipRepository friendShipRepository;
-    private final UserSessionService userSessionService;
     private final UserService userService;
-
-
-
-
 
 
     @Transactional
@@ -112,11 +107,6 @@ public class FriendShipService {
 
 
 
-    public Friendship createFriendship(Friender friender, Friendee friendee) {
-
-        return Friendship.create(friender, friendee);
-    }
-
 
     public FriendShipResult deleteFriendShipRequest(Long inputedId) throws AccessDeniedException {
         String[] userInfo = userService.findUserInfo();
@@ -155,6 +145,11 @@ public class FriendShipService {
                 .collect(Collectors.toList());
 
         return friendshipList;
+    }
+
+    public Friendship createFriendship(Friender friender, Friendee friendee) {
+
+        return Friendship.create(friender, friendee);
     }
 
     private FriendDto toFriendDto(BasicInfo basicInfo) {
