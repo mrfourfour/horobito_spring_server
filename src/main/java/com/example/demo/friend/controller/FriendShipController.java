@@ -64,8 +64,18 @@ public class FriendShipController {
     }
 
     @GetMapping("/request")
-    public List<FriendDto> findRequestToMe(@RequestParam(value="page") int page,
+    public Object findRequestToMe(@RequestParam(value="page") int page,
                                 @RequestParam(value = "size") int size) throws AccessDeniedException {
-        return friendShipService.findRequestForMe(page, size);
+        Object result = friendShipService.findRequestForMe(page, size);
+
+        if (result instanceof FriendShipResult){
+            switch ((FriendShipResult) result){
+                case DENIED:
+                    ResponseEntity.status(HttpStatus.BAD_REQUEST);
+            }
+        }else {
+            ResponseEntity.ok();
+        }
+        return result;
     }
 }

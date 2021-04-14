@@ -132,7 +132,10 @@ public class FriendShipService {
 
 
 
-    public List<FriendDto>findRequestForMe(int page, int size) throws AccessDeniedException {
+    public  Object findRequestForMe(int page, int size) throws AccessDeniedException {
+        if (page<0 || size<0){
+            return FriendShipResult.DENIED;
+        }
 
 
         PersonId myId = PersonId.create(Long.parseLong(userService.findUserInfo()[0]));
