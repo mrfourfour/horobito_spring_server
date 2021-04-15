@@ -7,6 +7,10 @@ import java.nio.file.AccessDeniedException;
 
 public class UserSessionUtils {
 
+    private UserSessionUtils(){
+
+    }
+
     public static SecurityUser getSessionUser() throws AccessDeniedException {
         Object detais = SecurityContextHolder.getContext().getAuthentication().getDetails();
 

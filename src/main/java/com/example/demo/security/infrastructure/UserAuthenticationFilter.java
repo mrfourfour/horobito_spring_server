@@ -102,4 +102,12 @@ public class UserAuthenticationFilter extends BasicAuthenticationFilter {
         // AnonymousAuthenticationToken). See SEC-610.
         return (existingAuth instanceof AnonymousAuthenticationToken);
     }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        if(request.getRequestURI().startsWith("/account/**")){
+            return true;
+        }
+        return false;
+    }
 }
