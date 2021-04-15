@@ -22,5 +22,9 @@ public class ReadableRequestBodyWrapper extends HttpServletRequestWrapper {
         this.requestBody = new String(bytes);
     }
 
+    public String getRequestBody() {
+        return requestBody;
+    }
+
 
 }
