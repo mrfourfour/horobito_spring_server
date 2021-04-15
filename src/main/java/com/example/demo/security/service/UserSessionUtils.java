@@ -1,4 +1,4 @@
-package com.example.demo.security;
+package com.example.demo.security.service;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.SecurityUser;
