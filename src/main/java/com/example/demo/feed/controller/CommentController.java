@@ -36,10 +36,5 @@ public class CommentController {
 
     }
 
-//    @PostMapping("/feed/{feedId}/comments/{commentId}/like")
-//    public void likeOrDislikeCommentById(@PathVariable Long feedId,
-//                                         @PathVariable int commentId){
-//        commentService.likeOrDislikeCommentByFeedIdAndCommentId(feedId, commentId);
-//    }
 
 }
