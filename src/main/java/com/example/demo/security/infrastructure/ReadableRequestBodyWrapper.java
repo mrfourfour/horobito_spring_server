@@ -9,6 +9,7 @@ import java.io.IOException;
 public class ReadableRequestBodyWrapper extends HttpServletRequestWrapper {
 
     private final String requestBody;
+    private final byte[] bytes;
     /**
      * Constructs a request object wrapping the given request.
      *
@@ -17,7 +18,9 @@ public class ReadableRequestBodyWrapper extends HttpServletRequestWrapper {
      */
     public ReadableRequestBodyWrapper(HttpServletRequest request) throws IOException {
         super(request);
-        byte[] bytes = ByteStreams.toByteArray(super.getInputStream());
+        this.bytes = ByteStreams.toByteArray(super.getInputStream());
         this.requestBody = new String(bytes);
     }
+
+
 }
