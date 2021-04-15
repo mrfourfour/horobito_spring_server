@@ -10,6 +10,7 @@ import javax.persistence.*;
 
 @Getter
 @Setter(AccessLevel.PACKAGE)
+@Table(name = "preference_info")
 @Entity
 @NoArgsConstructor
 public class PreferenceInfo {
@@ -17,6 +18,7 @@ public class PreferenceInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
 
     private Long preferredPersonId;
 

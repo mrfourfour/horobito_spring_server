@@ -22,9 +22,6 @@ public class Friender extends BasicInfo{
     @Embedded
     private PersonId frienderId;
 
-    @OneToMany(mappedBy = "user")
-    private List<Friendship> friendships = new ArrayList<>();
-
     @Embedded
     private PersonName frienderName;
 
