@@ -2,6 +2,7 @@ package com.example.demo.security.infrastructure;
 
 
 import com.example.demo.security.service.UserDetailsService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +25,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final ObjectMapper objectMapper;
+
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -44,7 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .authenticated()
         .and()
-                .addFilter(new UserAuthenticationFilter(authenticationManagerBean(), objectMapper))
+                .addFilter(new UserAuthenticationFilter(authenticationManagerBean(), objectMapper));
 
     }
 
