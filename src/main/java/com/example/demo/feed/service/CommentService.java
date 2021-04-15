@@ -2,9 +2,12 @@ package com.example.demo.feed.service;
 
 
 import com.example.demo.feed.domain.*;
+import com.example.demo.friend.domain.FriendShipRepository;
+import com.example.demo.friend.domain.PersonId;
 import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserRepository;
 import com.example.demo.user.domain.Username;
+import com.example.demo.user.service.UserService;
 import com.example.demo.user.service.UserSessionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,26 +22,51 @@ import java.util.List;
 public class CommentService {
 
     private final FeedRepository feedRepository;
-
-    private final UserRepository userRepository;
-    private final UserSessionService userSessionService;
+    private final UserService userService;
+    private final FriendShipRepository friendShipRepository;
 
     @Transactional
-    public void makeCommentByFeedIdAndContents(Long feedId, String insertedContent) throws AccessDeniedException {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    public CommentDto makeCommentByFeedIdAndContents(Long feedId, String insertedContent) throws AccessDeniedException, IllegalAccessException {
+
+        if (insertedContent.length()==0 || feedId<1){
+            throw new IllegalArgumentException();
+        }
+
         Feed feed = feedRepository.findFeedByIdAndDeleted(feedId, false);
-//        Username username = Username.create(authentication.getName());
-        User user = userSessionService.getLoggeddUser();
+        String[] userInfo = userService.findUserInfo();
+        Long friendId = feed.getWriter().getId();
+
+        if (friendShipRepository.findFriendshipByFriender_FrienderIdAndFriendee_FriendeeId(
+                PersonId.create(friendId),
+                PersonId.create(Long.parseLong(userInfo[0]))
+        )==null){
+            throw new IllegalAccessException();
+        }
 
 
         Content content = Content.create(insertedContent);
 
-        WriterId id = WriterId.create(user.getId());
-        WriterName wrtName = WriterName.create(user.getUserBasicInfo().getUsername());
+        WriterId id = WriterId.create(Long.parseLong(userInfo[0]));
+        WriterName wrtName = WriterName.create(userInfo[1]);
         Writer writer = Writer.create(id, wrtName);
 
         Comment comment = Comment.create(writer, content);
         feed.enrollComment(comment);
+
+        CommentDto commentDto = toCommentDto(comment);
+
+        return commentDto;
+    }
+
+    private CommentDto toCommentDto(Comment comment) {
+        return new CommentDto(
+                comment.getId(),
+                comment.getWriter().getId(),
+                comment.getWriter().getName(),
+                comment.getContent(),
+                comment.getPreferenceCountInfo().getPreference(),
+                comment.getWrtTime()
+        );
     }
 
     public Comment findCommentById(List<Comment> commentList, Long commentId){
@@ -52,19 +80,5 @@ public class CommentService {
         return result;
     }
 
-//    @Transactional
-//    public String likeOrDislikeCommentByFeedIdAndCommentId(Long feedId, int commentId) {
-//        Username username = Username.create("jihwan");
-//        User user = userRepository.findByUserBasicInfo_Username(username);
-//        try {
-//            Feed feed = feedRepository.findFeedByIdAndDeleted(feedId, false);
-//            Comment comment = feed.getComment(commentId);
-//            if(comment.checkPossibleOfLike(user)){
-//                comment.likeOrDislike();
-//            }
-//        } catch (Exception e){
-//
-//        }
-//        return null;
-//    }
+
 }
