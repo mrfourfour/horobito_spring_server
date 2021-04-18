@@ -21,20 +21,16 @@ public class FriendShipController {
 
     @GetMapping
     // request query로 받는 값들
-    public Object getMyFriends(@RequestParam(value="page") int page,
+    public ResponseEntity<List<FriendDto>> getMyFriends(@RequestParam(value="page") int page,
                                         @RequestParam(value = "size") int size) throws AccessDeniedException {
 
-        Object result = friendShipService.getMyFriends(page, size);
-
-        if (result instanceof FriendShipResult){
-            switch ((FriendShipResult)result){
-                case DENIED:
-                    ResponseEntity.status(HttpStatus.BAD_REQUEST);
-            }
-        }else {
-            ResponseEntity.ok();
+        try {
+            List<FriendDto> result = friendShipService.getMyFriends(page, size);
+            return ResponseEntity.ok().body(result);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().build();
         }
-        return result;
+
 
     }
 

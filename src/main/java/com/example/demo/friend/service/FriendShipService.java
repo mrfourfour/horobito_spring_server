@@ -21,9 +21,9 @@ public class FriendShipService {
 
 
     @Transactional
-    public Object getMyFriends(int page, int size) throws AccessDeniedException {
+    public List<FriendDto> getMyFriends(int page, int size) throws AccessDeniedException {
         if (page<0 || size<0){
-            return FriendShipResult.DENIED;
+            throw new IllegalArgumentException();
         }
 
         String[] userInfo = userService.findUserInfo();
@@ -31,8 +31,6 @@ public class FriendShipService {
         PersonName userName = PersonName.create(userInfo[1]);
 
         Friender friender = Friender.create(userId, userName);
-
-
 
         List<FriendDto> friendshipList
                 = friendShipRepository
