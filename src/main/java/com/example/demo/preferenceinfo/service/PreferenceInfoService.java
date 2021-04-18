@@ -77,23 +77,23 @@ public class PreferenceInfoService {
     }
 
     @Transactional
-    public PreferenceResult likeCommentByFeedIdAndCommentId(Long feedId, Long commentId) throws AccessDeniedException {
+    public void likeCommentByFeedIdAndCommentId(Long feedId, Long commentId) throws AccessDeniedException {
         User user = getLoggedUser();
         Feed feed;
         Comment comment;
         PreferenceInfo preferenceInfo;
 
         if ((feed=feedRepository.findFeedByIdAndDeleted(feedId, false))==null){
-            return PreferenceResult.FEED_NOT_FOUND;
+            throw new NullPointerException();
         }
 
         if (friendShipRepository.findFriendshipByFriender_FrienderIdAndFriendee_FriendeeId(
                 PersonId.create(user.getId()), PersonId.create(feed.getWriter().getId()))==null){
-            return PreferenceResult.NOT_MY_FRIEND;
+            throw new IllegalStateException();
         }
 
         if((comment = commentService.findCommentById(feed.getComments(), commentId))==null){
-            return PreferenceResult.COMMENT_NOT_FOUND;
+            throw new NullPointerException();
         }
 
         if ((preferenceInfo = preferenceInfoRepository
@@ -105,7 +105,7 @@ public class PreferenceInfoService {
 
             feed.like();
 
-            return PreferenceResult.SUCCESS;
+
 
         }
 
@@ -114,14 +114,12 @@ public class PreferenceInfoService {
             preferenceInfo.disLike();
             comment.disLike();
 
-            return PreferenceResult.SUCCESS;
         }
 
         if (preferenceInfo.findState()==PreferenceStatus.INDIFFERENCE){
             preferenceInfo.like();
             comment.like();
         }
-        return PreferenceResult.SUCCESS;
 
 
 
