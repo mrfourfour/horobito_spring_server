@@ -19,19 +19,17 @@ public class PreferenceInfoController {
     private final PreferenceInfoService preferenceInfoService;
 
     @PostMapping("/feeds/{feedId}/likes")
-    public void likeFeedByFeedId(@PathVariable Long feedId) throws AccessDeniedException {
+    public ResponseEntity<Void> likeFeedByFeedId(@PathVariable Long feedId) throws AccessDeniedException {
         PreferenceResult result = preferenceInfoService.likeFeedByFeedId(feedId);
 
         switch (result){
             case SUCCESS:
-                ResponseEntity.ok();
-                break;
+                return ResponseEntity.ok().build();
             case MY_FEED_ERROR:
             case FEED_NOT_FOUND:
-                ResponseEntity.status(HttpStatus.BAD_REQUEST);
-                break;
-            case NOT_MY_FRIEND:
-                ResponseEntity.status(HttpStatus.UNAUTHORIZED);
+                return ResponseEntity.badRequest().build();
+            default:
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
     }
