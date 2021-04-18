@@ -31,21 +31,21 @@ public class PreferenceInfoService {
 
 
     @Transactional
-    public PreferenceResult likeFeedByFeedId(Long id) throws AccessDeniedException {
+    public void likeFeedByFeedId(Long id) throws AccessDeniedException, IllegalAccessException {
         User user = getLoggedUser();
         Feed feed;
 
         if ((feed=feedRepository.findFeedByIdAndDeleted(id, false))==null){
-            return PreferenceResult.FEED_NOT_FOUND;
+            throw new NullPointerException();
         }
 
         if (friendShipRepository.findFriendshipByFriender_FrienderIdAndFriendee_FriendeeId(
                 PersonId.create(user.getId()), PersonId.create(feed.getWriter().getId()))==null){
-            return PreferenceResult.NOT_MY_FRIEND;
+            throw new IllegalStateException();
         }
 
         if (feed.getWriter().getId().equals(user.getId())){
-            return PreferenceResult.MY_FEED_ERROR;
+            throw new IllegalAccessException();
         }
 
         if (preferenceInfoRepository
@@ -57,8 +57,6 @@ public class PreferenceInfoService {
 
             feed.like();
 
-            return PreferenceResult.SUCCESS;
-
         }
 
         PreferenceInfo preferenceInfo
@@ -69,14 +67,12 @@ public class PreferenceInfoService {
                 preferenceInfo.disLike();
                 feed.disLike();
 
-                return PreferenceResult.SUCCESS;
         }
 
         if (preferenceInfo.findState()==PreferenceStatus.INDIFFERENCE){
                 preferenceInfo.like();
                 feed.like();
         }
-        return PreferenceResult.SUCCESS;
 
     }
 

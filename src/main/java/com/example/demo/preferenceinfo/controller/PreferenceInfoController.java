@@ -20,16 +20,15 @@ public class PreferenceInfoController {
 
     @PostMapping("/feeds/{feedId}/likes")
     public ResponseEntity<Void> likeFeedByFeedId(@PathVariable Long feedId) throws AccessDeniedException {
-        PreferenceResult result = preferenceInfoService.likeFeedByFeedId(feedId);
 
-        switch (result){
-            case SUCCESS:
-                return ResponseEntity.ok().build();
-            case MY_FEED_ERROR:
-            case FEED_NOT_FOUND:
-                return ResponseEntity.badRequest().build();
-            default:
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        try {
+            preferenceInfoService.likeFeedByFeedId(feedId);
+            return ResponseEntity.ok().build();
+        }catch (NullPointerException | IllegalAccessException e){
+            return ResponseEntity.badRequest().build();
+        }catch (IllegalStateException ise){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
     }
