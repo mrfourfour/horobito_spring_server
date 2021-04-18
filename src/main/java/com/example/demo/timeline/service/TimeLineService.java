@@ -75,11 +75,5 @@ public class TimeLineService {
         );
     }
 
-    private Friender createUserInfo(User user) throws AccessDeniedException {
-
-        PersonId userId = PersonId.create(user.getId());
-        PersonName name = PersonName.create(user.getUserBasicInfo().getUsername());
-        return Friender.create(userId, name);
-    }
 
 }
