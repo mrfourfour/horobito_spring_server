@@ -30,9 +30,12 @@ public class UserService  {
         userRepository.save(user);
     }
 
+
+
     public void login(LoginRequest loginRequest) {
 
     }
+
 
     public String[] findUserInfo() throws AccessDeniedException {
         User user = userSessionService.getLoggeddUser();

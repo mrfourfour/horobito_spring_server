@@ -35,4 +35,23 @@ public class PreferenceInfoController {
         }
 
     }
+
+    @PostMapping("/feed/{feedId}/comments/{commentId}/likes")
+    public void likeCommentByFeedId(@PathVariable(value = "feedId") Long feedId,
+                                    @PathVariable(value = "commentId") Long commentId) throws AccessDeniedException {
+        PreferenceResult result = preferenceInfoService.likeCommentByFeedIdAndCommentId(feedId, commentId);
+
+        switch (result){
+            case SUCCESS:
+                ResponseEntity.ok();
+                break;
+            case MY_FEED_ERROR:
+            case FEED_NOT_FOUND:
+                ResponseEntity.status(HttpStatus.BAD_REQUEST);
+                break;
+            case NOT_MY_FRIEND:
+                ResponseEntity.status(HttpStatus.UNAUTHORIZED);
+        }
+
+    }
 }

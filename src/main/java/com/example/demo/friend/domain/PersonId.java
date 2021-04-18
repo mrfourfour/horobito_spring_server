@@ -15,6 +15,7 @@ import javax.persistence.Embeddable;
 public class PersonId {
 
 
+
     private Long id;
 
     private PersonId(Long id) {

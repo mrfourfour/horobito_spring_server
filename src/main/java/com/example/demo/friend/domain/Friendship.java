@@ -24,6 +24,7 @@ public class Friendship {
     private Friendee friendee;
 
     @Column(name = "friend_state")
+    @Enumerated(EnumType.STRING)
     private FriendShipState friendState;
 
     private Friendship(Friender friender, Friendee friendee){
@@ -36,6 +37,7 @@ public class Friendship {
         return new Friendship(user, friend);
     }
 
+    @Transient
     public Long getFriendeeId(){
         return this.friendee.getId();
     }

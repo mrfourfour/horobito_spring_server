@@ -20,9 +20,6 @@ public interface FeedRepository extends JpaRepository<Feed, Long> {
 
     Feed findFeedByIdAndDeleted(Long id, Boolean deleted);
 
-    List<Feed> findFeedsByWriter_Id(WriterId id);
-
-    Page<Feed> findAllByWriter(Writer writer);
 
     Page<Feed> findAllByWriter_IdIn(List<WriterId> writerIds, Pageable pageable);
 

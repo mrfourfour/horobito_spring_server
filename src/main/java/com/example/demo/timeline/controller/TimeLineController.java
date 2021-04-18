@@ -21,18 +21,15 @@ public class TimeLineController {
     private final TimeLineService timeLineService;
 
     @GetMapping("/feeds")
-    public List<FeedDto> findMyTimeLine(@RequestParam(value="page") int page,
+    public ResponseEntity<List<FeedDto>> findMyTimeLine(@RequestParam(value="page") int page,
                                         @RequestParam(value = "size") int size) throws AccessDeniedException {
 
 
         try {
             List<FeedDto> result = timeLineService.findMyTimeLine(page, size);
-            ResponseEntity.ok();
-            return result;
+            return ResponseEntity.ok().body(result);
         }catch (IllegalArgumentException ae){
-            List<FeedDto> failedList = null;
-            ResponseEntity.status(HttpStatus.BAD_REQUEST);
-            return failedList;
+            return ResponseEntity.badRequest().build();
         }
 
 

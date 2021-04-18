@@ -15,14 +15,18 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Friender extends BasicInfo{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+
 
     @Embedded
+    @AttributeOverride(
+            name = "id", column = @Column(name = "friender_id")
+    )
     private PersonId frienderId;
 
     @Embedded
+    @AttributeOverride(
+            name = "name", column = @Column(name = "friender_name")
+    )
     private PersonName frienderName;
 
     private Friender(PersonId frienderId, PersonName frienderName){
@@ -36,11 +40,13 @@ public class Friender extends BasicInfo{
     }
 
     @Override
+    @Transient
     public Long getId(){
         return this.frienderId.getId();
     }
 
     @Override
+    @Transient
     public String getName(){
         return this.frienderName.getName();
     }
