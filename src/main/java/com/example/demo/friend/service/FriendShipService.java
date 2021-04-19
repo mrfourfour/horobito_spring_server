@@ -83,14 +83,10 @@ public class FriendShipService {
 
             if (forwardFriendShip.getFriendState()==FriendShipState.ACCEPT
                     || forwardFriendShip.getFriendState()==FriendShipState.REQUEST){
-                return FriendShipResult.ALREADY_ACCEPT;
             }else if (forwardFriendShip.getFriendState()==FriendShipState.REQUESTED
                     && backwardFriendShip.getFriendState()==FriendShipState.REQUEST){
                 forwardFriendShip.acceptFriendShip();
                 backwardFriendShip.acceptFriendShip();
-            }else {
-                throw new               
-                return FriendShipResult.DENIED;
             }
 
         }

@@ -36,15 +36,13 @@ public class FriendShipController {
 
     @PostMapping("/{friendId}")
     public void createFriendShip(@PathVariable Long friendId) throws AccessDeniedException {
-        FriendShipResult friendShipResult = friendShipService.create(friendId);
+        try {
+            friendShipService.create(friendId);
+        }catch (Exception e){
 
-        if (friendShipResult == FriendShipResult.TRY_TO_MAKE_FRIENDSHIP || friendShipResult == FriendShipResult.SUCCESS){
-            ResponseEntity.ok();
-        }else if(friendShipResult == FriendShipResult.ALREADY_ACCEPT){
-            ResponseEntity.status(HttpStatus.BAD_REQUEST);
-        }else {
-            ResponseEntity.status(HttpStatus.FORBIDDEN);
         }
+
+
     }
 
     @DeleteMapping("/{friendId}")

@@ -13,8 +13,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import java.net.http.HttpRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -24,7 +29,18 @@ public class UserDetailsService implements org.springframework.security.core.use
 
     private final UserRepository userRepository;
 
+    private final UserAuthenticationFilter userAuthenticationFilter;
 
+    public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        FilterChain filterChain = new FilterChain() {
+            @Override
+            public void doFilter(ServletRequest request, ServletResponse response) throws IOException, ServletException {
+
+            }
+        };
+
+        userAuthenticationFilter.doFilter(request, response, filterChain );
+    }
 
 
 

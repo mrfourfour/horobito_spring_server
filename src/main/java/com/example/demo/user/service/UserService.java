@@ -8,6 +8,7 @@ import com.example.demo.security.infrastructure.UserAuthenticationFilter;
 import com.example.demo.security.service.UserDetailsService;
 import com.example.demo.user.domain.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,17 +43,6 @@ public class UserService  {
     }
 
 
-
-    public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        FilterChain filterChain = new FilterChain() {
-            @Override
-            public void doFilter(ServletRequest request, ServletResponse response) throws IOException, ServletException {
-
-            }
-        };
-
-        userAuthenticationFilter.doFilter(request, response, filterChain );
-    }
 
 
     public String[] findUserInfo() throws AccessDeniedException {
