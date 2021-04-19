@@ -34,7 +34,7 @@ public class FriendShipDeleteTest {
     @Mock
     UserService userService;
 
-    @DisplayName("친구관계 삭제 테스트 1. 친구 관계가 없는 경우  ")
+    @DisplayName("친구관계 삭제 테스트 1. 친구 관계가 없는 경우  ")// 성공
     @Test
     void testForDeleteFail() throws AccessDeniedException {
 
@@ -62,7 +62,7 @@ public class FriendShipDeleteTest {
     }
 
 
-    @DisplayName("친구관계 삭제 테스트 2. 친구 관계 삭제  ")
+    @DisplayName("친구관계 삭제 테스트 2. 친구 관계 삭제  ") // 성공
     @Test
     void testForAccept() throws AccessDeniedException {
 
@@ -103,7 +103,7 @@ public class FriendShipDeleteTest {
         //then
         FriendShipResult result = friendShipService.deleteFriendShipRequest(1L);
         System.out.println(forwardFriendShip.getFriendState());
-        assertEquals(false, forwardFriendShip.getFriendState());
+        assertEquals(FriendShipState.DELETED, forwardFriendShip.getFriendState());
 
     }
 }
