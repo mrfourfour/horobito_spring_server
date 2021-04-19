@@ -1,6 +1,7 @@
 package com.example.demo.security.service;
 
 
+import com.example.demo.security.infrastructure.UserAuthenticationFilter;
 import com.example.demo.user.domain.Authority;
 import com.example.demo.user.domain.UserRepository;
 import com.example.demo.user.domain.Username;
@@ -12,6 +13,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import java.net.http.HttpRequest;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -20,6 +23,11 @@ import java.util.stream.Collectors;
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
     private final UserRepository userRepository;
+
+
+
+
+
 
     @Override
     public UserDetails loadUserByUsername(String username){

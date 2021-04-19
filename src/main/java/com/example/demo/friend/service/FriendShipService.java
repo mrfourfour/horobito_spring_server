@@ -48,7 +48,7 @@ public class FriendShipService {
 
 
     @Transactional
-    public FriendShipResult create(Long inputedFriendId) throws AccessDeniedException {
+    public void create(Long inputedFriendId) throws AccessDeniedException {
         String[] user = userService.findUserInfo();
         String [] friend = userService.findUserInfo(inputedFriendId);
 
@@ -75,10 +75,6 @@ public class FriendShipService {
             friendShipRepository.save(forwardFriendShip);
             friendShipRepository.save(backwardFriendShip);
 
-            return FriendShipResult.TRY_TO_MAKE_FRIENDSHIP;
-
-
-
         }else {
             Friendship forwardFriendShip
                     = friendShipRepository.findFriendshipByFrienderAndFriendee_FriendeeId(frienderMe, friendId);
@@ -92,8 +88,8 @@ public class FriendShipService {
                     && backwardFriendShip.getFriendState()==FriendShipState.REQUEST){
                 forwardFriendShip.acceptFriendShip();
                 backwardFriendShip.acceptFriendShip();
-                return FriendShipResult.SUCCESS;
             }else {
+                throw new               
                 return FriendShipResult.DENIED;
             }
 
