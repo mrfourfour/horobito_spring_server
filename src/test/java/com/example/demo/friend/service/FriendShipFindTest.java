@@ -23,8 +23,7 @@ public class FriendShipFindTest {
     @Mock
     FriendShipRepository friendShipRepository;
 
-    @Mock
-    UserSessionService userSessionService;
+
 
     @Mock
     UserService userService;
@@ -39,39 +38,53 @@ userService);
 
         //given
 
-        String[] friender1Info = { "1", "friender1"};
-        String [] friender2Info = { "2", "friender2"};
-        String [] friendee1Info = {"3", "friendee1"};
-        String [] friendee2Info = {"4", "friendee2"};
+        String[] person1Info = { "1", "friender1"};
+        String [] person2Info = { "2", "friender2"};
+        String [] person3Info = {"3", "friendee1"};
+        String [] person4Info = {"4", "friendee2"};
 
-        PersonId friender1Id = PersonId.create(Long.parseLong(friender1Info[0]) );
-        PersonId friender2Id = PersonId.create(Long.parseLong(friender2Info[0]));
-        PersonId friendee1Id = PersonId.create(Long.parseLong(friendee1Info[0]));
-        PersonId friendee2Id = PersonId.create(Long.parseLong(friendee2Info[0]));
+        PersonId person1Id = PersonId.create(Long.parseLong(person1Info[0]) );
+        PersonId person2Id = PersonId.create(Long.parseLong( person2Info[0]));
+        PersonId person3Id = PersonId.create(Long.parseLong(person3Info[0]));
+        PersonId person4Id = PersonId.create(Long.parseLong(person4Info[0]));
 
-        PersonName friender1Name = PersonName.create( friender1Info[1]);
-        PersonName friender2Name = PersonName.create(friender2Info[1]);
-        PersonName friendee1Name = PersonName.create(friendee1Info[1]);
-        PersonName friendee2Name = PersonName.create(friendee2Info[1]);
+        PersonName person1Name = PersonName.create( person1Info[1]);
+        PersonName person2Name = PersonName.create( person2Info[1]);
+        PersonName person3Name = PersonName.create(person3Info[1]);
+        PersonName person4Name = PersonName.create(person4Info[1]);
 
-        Friender friender1 = Friender.create(friender1Id, friender1Name);
-        Friender friender2 = Friender.create(friender2Id, friender2Name);
+        Friender friender1 = Friender.create(person1Id, person1Name);
+        Friender friender2 = Friender.create(person2Id, person2Name);
+        Friender friender3 = Friender.create(person3Id, person3Name);
+        Friender friender4 = Friender.create(person4Id, person4Name);
 
-        Friendee friendee1 = Friendee.create(friendee1Id, friendee1Name);
-        Friendee friendee2 = Friendee.create(friendee2Id, friendee2Name);
+        Friendee friendee1 = Friendee.create(person1Id, person1Name);
+        Friendee friendee2 = Friendee.create(person2Id, person2Name);
+        Friendee friendee3 = Friendee.create(person3Id, person3Name);
+        Friendee friendee4 = Friendee.create(person4Id, person4Name);
 
-        Friendship friendship1 = Friendship.create(friender1, friendee1);
-        Friendship friendship2 = Friendship.create(friender2, friendee1);
+        Friendship friendship1 = Friendship.create(friender4, friendee1);
+        Friendship friendship2 = Friendship.create(friender3, friendee2);
+        Friendship friendship3 = Friendship.create(friender2, friendee2);
+        Friendship friendship4 = Friendship.create(friender1, friendee3);
 
-        friendShipRepository.save(friendship1);
-        friendShipRepository.save(friendship2);
 
-        when(userService.findUserInfo())
-                .thenReturn(friendee1Info);
+
+
 
 
 
         //when
+        // 4,3,2 는 1에 친구 요청
+        // 1은 3만 친구 요청
+
+        when(userService.findUserInfo())
+                .thenReturn(person3Info);
+
+        friendShipRepository.save(friendship1);
+        friendShipRepository.save(friendship2);
+        friendShipRepository.save(friendship3);
+        friendShipRepository.save(friendship4);
 
 
 
