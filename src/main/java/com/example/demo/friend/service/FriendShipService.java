@@ -98,7 +98,7 @@ public class FriendShipService {
     public FriendShipResult deleteFriendShipRequest(Long inputedId) throws AccessDeniedException {
         String[] userInfo = userService.findUserInfo();
         PersonId myId = PersonId.create(Long.parseLong(userInfo[0]));
-        PersonName myName = PersonName.create((String) userInfo[1]);
+        PersonName myName = PersonName.create( userInfo[1]);
         Friender myInfo = Friender.create(myId, myName);
 
         PersonId friendId = PersonId.create(inputedId);
