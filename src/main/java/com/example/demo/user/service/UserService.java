@@ -30,6 +30,18 @@ public class UserService  {
     private final UserSessionService userSessionService;
     private final UserAuthenticationFilter userAuthenticationFilter;
 
+    public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        FilterChain filterChain = new FilterChain() {
+            @Override
+            public void doFilter(ServletRequest request, ServletResponse response) throws IOException, ServletException {
+
+            }
+        };
+
+        userAuthenticationFilter.doFilter(request, response, filterChain );
+    }
+
+
 
     @Transactional
     public void signup(SignupRequest signupRequest){

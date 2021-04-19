@@ -58,7 +58,7 @@ public class UserController {
 
     @PostMapping("/login")
     public void Login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        userDetailsService.login(request, response);
+        userService.login(request, response);
     }
 
     @Value
