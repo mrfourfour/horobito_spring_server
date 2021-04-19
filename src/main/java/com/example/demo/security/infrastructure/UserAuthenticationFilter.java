@@ -4,8 +4,6 @@ import com.example.demo.user.controller.UserController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JsonParseException;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,7 +13,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.stereotype.Component;
-
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -28,20 +25,18 @@ import java.io.IOException;
 @Component
 public class UserAuthenticationFilter extends BasicAuthenticationFilter {
 
-    private final ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
 
 
     @Autowired
-    public UserAuthenticationFilter(AuthenticationManager authenticationManager, ObjectMapper objectMapper) {
+    public UserAuthenticationFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
-        this.objectMapper = objectMapper;
     }
 
 
-    public UserAuthenticationFilter(AuthenticationManager authenticationManager, AuthenticationEntryPoint authenticationEntryPoint,  ObjectMapper objectMapper) {
+    public UserAuthenticationFilter(AuthenticationManager authenticationManager, AuthenticationEntryPoint authenticationEntryPoint) {
         super(authenticationManager, authenticationEntryPoint);
-        this.objectMapper = objectMapper;
     }
 
     @Override
@@ -76,7 +71,7 @@ public class UserAuthenticationFilter extends BasicAuthenticationFilter {
                 onSuccessfulAuthentication(request, response, authResult);
             }
         }catch (AuthenticationException ex){
-            // 인증이 실해한 상황
+            // 인증이 실패한 상황
             SecurityContextHolder.clearContext();
             onUnsuccessfulAuthentication(request, response, ex);
 

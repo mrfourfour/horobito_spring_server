@@ -2,6 +2,7 @@ package com.example.demo.friend.service;
 
 
 import com.example.demo.friend.domain.*;
+import com.example.demo.user.domain.UserRepository;
 import com.example.demo.user.service.UserService;
 import com.example.demo.user.service.UserSessionService;
 import org.junit.jupiter.api.DisplayName;
@@ -23,10 +24,13 @@ public class FriendShipDeleteTest {
     FriendShipRepository friendShipRepository;
 
     @Mock
-    UserSessionService userSessionService;
+    UserRepository userRepository;
 
     @Mock
-    UserService userService;
+    UserSessionService userSessionService;
+
+
+    UserService userService = new UserService(userRepository, userSessionService);
 
     @DisplayName("친구관계 삭제 테스트 1. 친구 관계가 없는 경우  ")
     @Test
@@ -34,7 +38,7 @@ public class FriendShipDeleteTest {
 
         FriendShipService friendShipService
                 = new FriendShipService(friendShipRepository,
-                userSessionService, userService);
+                 userService);
 
         //given
 
@@ -43,6 +47,8 @@ public class FriendShipDeleteTest {
 
 
         //when
+        when(userSessionService.getLoggeddUser()).thenReturn(userRepository.findUserById(2L));
+
         when(userService.findUserInfo())
                 .thenReturn(friender);
 
@@ -62,17 +68,17 @@ public class FriendShipDeleteTest {
 
         FriendShipService friendShipService
                 = new FriendShipService(friendShipRepository,
-                userSessionService, userService);
+                userService);
 
         //given
 
-        String[] friender = { "1", "jihwan"};
-        String [] friendee = { "2", "friendee"};
+        String[] friender = {"1", "jihwan"};
+        String[] friendee = {"2", "friendee"};
 
-        PersonId myId = PersonId.create(Long.parseLong(friender[0]) );
+        PersonId myId = PersonId.create(Long.parseLong(friender[0]));
         PersonId friendId = PersonId.create(Long.parseLong(friendee[0]));
 
-        PersonName myName = PersonName.create( friender[1]);
+        PersonName myName = PersonName.create(friender[1]);
         PersonName friendName = PersonName.create(friendee[1]);
 
         Friender frienderMe = Friender.create(myId, myName);

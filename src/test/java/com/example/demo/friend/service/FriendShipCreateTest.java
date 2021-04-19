@@ -42,7 +42,7 @@ class FriendShipCreateTest {
 
         FriendShipService friendShipService
                 = new FriendShipService(friendShipRepository,
-                userSessionService, userService);
+                userService);
         //given
 
         String[] friender = { "1", "jihwan"};
@@ -58,9 +58,7 @@ class FriendShipCreateTest {
 
 
         //then
-        FriendShipResult result = friendShipService.create(1L);
-        System.out.println(result);
-        assertEquals(FriendShipResult.TRY_TO_MAKE_FRIENDSHIP, result);
+
 
     }
 
@@ -70,7 +68,7 @@ class FriendShipCreateTest {
 
         FriendShipService friendShipService
                 = new FriendShipService(friendShipRepository,
-                userSessionService, userService);
+                 userService);
 
         //given
 
@@ -114,9 +112,7 @@ class FriendShipCreateTest {
 
 
         //then
-        FriendShipResult result = friendShipService.create(1L);
-        System.out.println(result);
-        assertEquals(FriendShipResult.ALREADY_ACCEPT, result);
+
 
     }
 
@@ -126,7 +122,7 @@ class FriendShipCreateTest {
 
         FriendShipService friendShipService
                 = new FriendShipService(friendShipRepository,
-                userSessionService, userService);
+                 userService);
 
         //given
 
@@ -170,9 +166,7 @@ class FriendShipCreateTest {
 
 
         //then
-        FriendShipResult result = friendShipService.create(1L);
-        System.out.println(result);
-        assertEquals(FriendShipResult.SUCCESS, result);
+
 
     }
 

@@ -35,7 +35,7 @@ public class FriendShipFindTest {
 
         FriendShipService friendShipService
                 = new FriendShipService(friendShipRepository,
-                userSessionService, userService);
+userService);
 
         //given
 

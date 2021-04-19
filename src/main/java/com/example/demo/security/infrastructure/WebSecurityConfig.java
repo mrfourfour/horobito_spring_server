@@ -26,7 +26,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final PasswordEncoder passwordEncoder;
 
 
-    private final ObjectMapper objectMapper;
 
 
 
@@ -46,7 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .authenticated()
         .and()
-                .addFilter(new UserAuthenticationFilter(authenticationManagerBean(), objectMapper));
+                .addFilter(new UserAuthenticationFilter(authenticationManagerBean()));
 
     }
 
