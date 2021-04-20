@@ -92,11 +92,17 @@ public class PreferenceInfoService {
     @Transactional
     public void likeCommentByFeedIdAndCommentId(Long feedId, Long commentId) throws AccessDeniedException {
         String[] userInfo = userService.findUserInfo();
-        Feed feed;
-        Comment comment;
+        Feed feed = feedRepository.findFeedByIdAndDeleted(feedId, false);
 
-        if ((feed=feedRepository.findFeedByIdAndDeleted(feedId, false))==null){
-            throw new NullPointerException();
+
+        if (feed==null){
+            throw new IllegalArgumentException();
+        }
+
+        Comment comment =commentService.findCommentById(feed.getComments(), commentId);
+
+        if(comment ==null){
+            throw new IllegalArgumentException();
         }
 
         if (friendShipRepository.findFriendshipByFriender_FrienderIdAndFriendee_FriendeeId(
@@ -104,9 +110,6 @@ public class PreferenceInfoService {
             throw new IllegalStateException();
         }
 
-        if((comment = commentService.findCommentById(feed.getComments(), commentId))==null){
-            throw new NullPointerException();
-        }
 
         PreferenceInfo preferenceInfo = preferenceInfoRepository
                 .findByDocumentIdAndPreferredPersonIdAndLocation(feed.getId(), Long.parseLong(userInfo[0]), PreferenceLocation.COMMENT);
