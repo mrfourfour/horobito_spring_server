@@ -45,11 +45,12 @@ public class Feed {
     @JsonIgnoreProperties("feed")
     private List<Comment> comments = new ArrayList<>();
 
-    private Feed(Writer writer, Content content){
+    private Feed(Writer writer, Title title, Content content){
         this.writer = writer;
         this.content = content;
         this.wrtTime = Instant.now();
         this.preferenceCountInfo = PreferenceCount.create();
+        this.title = title;
         this.deleted = false;
     }
 
@@ -58,8 +59,8 @@ public class Feed {
         this.deleted =true;
     }
 
-    public static Feed create(Writer writer, Content content) {
-        return new Feed(writer, content);
+    public static Feed create(Writer writer, Title title,  Content content) {
+        return new Feed(writer, title, content);
     }
 
     public void like(){

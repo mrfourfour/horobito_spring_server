@@ -90,9 +90,9 @@ public class FeedService {
     }
 
 
-    public Object makeFeedByContents(String title, String insertedContent) throws AccessDeniedException {
+    public Object makeFeedByContents(String insertedTitle, String insertedContent) throws AccessDeniedException {
 
-        if (insertedContent.length()==0){
+        if (insertedTitle.length()==0){
             return RequestResult.BAD_REQUEST;
         }
 
@@ -102,7 +102,8 @@ public class FeedService {
         WriterName wrtName = WriterName.create(userInfo[1]);
         Writer writer = Writer.create(id, wrtName);
         Content content = Content.create(insertedContent);
-        Feed feed = Feed.create(writer, content);
+        Title title = Title.create(insertedTitle);
+        Feed feed = Feed.create(writer, title, content);
         feedRepository.save(feed);
 
         FeedDto feedDto = toFriendDto(feed);

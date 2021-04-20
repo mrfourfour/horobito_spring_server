@@ -17,7 +17,7 @@ public class Title {
     private Title(String title){
         this.title = title;
     }
-    private static Title create(String title){
+    public static Title create(String title){
         return new Title(title);
     }
 }
