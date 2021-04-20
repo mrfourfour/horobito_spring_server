@@ -35,7 +35,7 @@ public class PreferenceCount {
     }
 
     public static PreferenceCount create(long preference){
-        return new PreferenceCount();
+        return new PreferenceCount(preference);
     }
 
 

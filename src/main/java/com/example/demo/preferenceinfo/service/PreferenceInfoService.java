@@ -59,6 +59,7 @@ public class PreferenceInfoService {
                 .findByDocumentIdAndPreferredPersonIdAndLocation(feed.getId(), Long.parseLong(userInfo[0]), PreferenceLocation.FEED);
 
 
+
         // 비지니스 예외 방식에 예외처리를 담는 것은 좋은 방식이 아니다 . - 비쌈
         if (preferenceInfo==null){
 
@@ -74,13 +75,14 @@ public class PreferenceInfoService {
             if (preferenceInfo.findState()==PreferenceStatus.LIKE){
                 preferenceInfo.disLike();
                 feed.disLike();
-
+            }else {
+                if (preferenceInfo.findState()==PreferenceStatus.INDIFFERENCE){
+                    preferenceInfo.like();
+                    feed.like();
+                }
             }
 
-            if (preferenceInfo.findState()==PreferenceStatus.INDIFFERENCE){
-                preferenceInfo.like();
-                feed.like();
-            }
+
         }
 
 
@@ -92,7 +94,6 @@ public class PreferenceInfoService {
         String[] userInfo = userService.findUserInfo();
         Feed feed;
         Comment comment;
-        PreferenceInfo preferenceInfo;
 
         if ((feed=feedRepository.findFeedByIdAndDeleted(feedId, false))==null){
             throw new NullPointerException();
@@ -107,8 +108,10 @@ public class PreferenceInfoService {
             throw new NullPointerException();
         }
 
-        if ((preferenceInfo = preferenceInfoRepository
-                .findByDocumentIdAndPreferredPersonIdAndLocation(feed.getId(), Long.parseLong(userInfo[0]), PreferenceLocation.COMMENT))==null){
+        PreferenceInfo preferenceInfo = preferenceInfoRepository
+                .findByDocumentIdAndPreferredPersonIdAndLocation(feed.getId(), Long.parseLong(userInfo[0]), PreferenceLocation.COMMENT);
+
+        if (preferenceInfo ==null){
             preferenceInfo = PreferenceInfo.create(Long.parseLong(userInfo[0]), feed.getId());
             preferenceInfo.locate(PreferenceLocation.COMMENT);
             preferenceInfo.like();
@@ -118,19 +121,23 @@ public class PreferenceInfoService {
 
 
 
+        }else {
+            if (preferenceInfo.findState()==PreferenceStatus.LIKE){
+                preferenceInfo.disLike();
+                comment.disLike();
+
+            }else {
+                if (preferenceInfo.findState()==PreferenceStatus.INDIFFERENCE){
+                    preferenceInfo.like();
+                    comment.like();
+                }
+            }
+
+
         }
 
 
-        if (preferenceInfo.findState()==PreferenceStatus.LIKE){
-            preferenceInfo.disLike();
-            comment.disLike();
 
-        }
-
-        if (preferenceInfo.findState()==PreferenceStatus.INDIFFERENCE){
-            preferenceInfo.like();
-            comment.like();
-        }
 
 
 
