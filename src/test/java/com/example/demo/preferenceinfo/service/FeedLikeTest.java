@@ -164,6 +164,8 @@ class FeedLikeTest {
 
         Long feedId = Long.parseLong("2");
 
+        Long commentId = Long.parseLong("4");
+
 
 
 
@@ -175,6 +177,8 @@ class FeedLikeTest {
         Content content = Content.create("content");
 
         Feed feed = FeedHelper.create(feedId, writer, content);
+
+
 
 
 

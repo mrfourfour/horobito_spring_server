@@ -112,15 +112,15 @@ public class PreferenceInfoService {
 
 
         PreferenceInfo preferenceInfo = preferenceInfoRepository
-                .findByDocumentIdAndPreferredPersonIdAndLocation(feed.getId(), Long.parseLong(userInfo[0]), PreferenceLocation.COMMENT);
+                .findByDocumentIdAndPreferredPersonIdAndLocation(comment.getId(), Long.parseLong(userInfo[0]), PreferenceLocation.COMMENT);
 
         if (preferenceInfo ==null){
-            preferenceInfo = PreferenceInfo.create(Long.parseLong(userInfo[0]), feed.getId());
+            preferenceInfo = PreferenceInfo.create(Long.parseLong(userInfo[0]), comment.getId());
             preferenceInfo.locate(PreferenceLocation.COMMENT);
             preferenceInfo.like();
             preferenceInfoRepository.save(preferenceInfo);
 
-            feed.like();
+            comment.like();
 
 
 

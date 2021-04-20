@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -39,7 +40,7 @@ public class Feed {
 
     @OneToMany(mappedBy = "feed", cascade = {CascadeType.PERSIST})
     @JsonIgnoreProperties("feed")
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
 
     private Feed(Writer writer, Content content){
         this.writer = writer;
