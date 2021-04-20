@@ -33,26 +33,36 @@ public class PreferenceInfoService {
 
     @Transactional
     public void likeFeedByFeedId(Long id) throws AccessDeniedException, IllegalAccessException {
-        String[] userInfo = userService.findUserInfo();
+        String[] userInfo = userService.findUserInfo(); // dto 사용할 것
         Feed feed;
 
+
+
+        // 변수는 final 처럼 작성이 깔끔
+        // 변수의 초기화는 참조가 계속 바뀌기 때문에, 런타임에 이해 어려움
+        // 초기화는 왠만해서는 딱 1번만
+
         if ((feed=feedRepository.findFeedByIdAndDeleted(id, false))==null){
-            throw new NullPointerException();
+            throw new NullPointerException();// 고칠 것 -> IllegalStateException() 등, 또는 IlliArgument xxx[id 값 오류]
         }
 
         if (feed.getWriter().getId().equals(Long.parseLong(userInfo[0]))){
             throw new IllegalAccessException();
         }
 
-        if (friendShipRepository.findFriendshipByFriender_FrienderIdAndFriendee_FriendeeId(
-                PersonId.create(Long.parseLong(userInfo[0])), PersonId.create(feed.getWriter().getId()))==null){
+        if ((friendShipRepository.findFriendshipByFriender_FrienderIdAndFriendee_FriendeeId(
+                PersonId.create(Long.parseLong(userInfo[0])), PersonId.create(feed.getWriter().getId())))==null){
             throw new IllegalStateException();
         }
 
+        PreferenceInfo preferenceInfo = preferenceInfoRepository
+                .findByDocumentIdAndPreferredPersonIdAndLocation(feed.getId(), Long.parseLong(userInfo[0]), PreferenceLocation.FEED);
 
-        if (preferenceInfoRepository
-                .findByDocumentIdAndPreferredPersonIdAndLocation(feed.getId(), Long.parseLong(userInfo[0]), PreferenceLocation.FEED)==null){
-            PreferenceInfo preferenceInfo = PreferenceInfo.create(Long.parseLong(userInfo[0]), feed.getId());
+
+        // 비지니스 예외 방식에 예외처리를 담는 것은 좋은 방식이 아니다 . - 비쌈
+        if (preferenceInfo==null){
+
+            preferenceInfo = PreferenceInfo.create(Long.parseLong(userInfo[0]), feed.getId());
             preferenceInfo.locate(PreferenceLocation.FEED);
             preferenceInfo.like();
             preferenceInfoRepository.save(preferenceInfo);
@@ -60,10 +70,7 @@ public class PreferenceInfoService {
             feed.like();
 
         }else {
-            PreferenceInfo preferenceInfo
-                    = preferenceInfoRepository
-                    .findByDocumentIdAndPreferredPersonIdAndLocation(feed.getId(), Long.parseLong(userInfo[0]), PreferenceLocation.FEED);
-
+            // 변수 추출 : else 일때 2번
             if (preferenceInfo.findState()==PreferenceStatus.LIKE){
                 preferenceInfo.disLike();
                 feed.disLike();
