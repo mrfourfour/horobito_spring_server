@@ -142,9 +142,14 @@ class FriendShipCreateTest {
         Friendship forwardFriendShip
                 = Friendship.create(frienderMe, friendeeYou);
 
+
         Friendship backwardFriendShip
                 = Friendship.create(frienderYou, friendeeMe);
-        backwardFriendShip.acceptFriendShip();
+        backwardFriendShip.requestFriendShip();
+
+        System.out.println("forwardFriendShip의 상태 : " + forwardFriendShip.getFriendState());
+        System.out.println("backwardFriendShip의 상태 : " + backwardFriendShip.getFriendState());
+
 
 
         //when
@@ -163,6 +168,9 @@ class FriendShipCreateTest {
 
         //then
 
+        sut.create(1L);
+        System.out.println("forwardFriendShip의 상태 : " + forwardFriendShip.getFriendState());
+        System.out.println("backwardFriendShip의 상태 : " + backwardFriendShip.getFriendState());
 
 
     }
