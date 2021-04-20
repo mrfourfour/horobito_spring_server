@@ -28,15 +28,15 @@ public class PreferenceInfo {
 
     private PreferenceStatus preferenceStatus;
 
-    private PreferenceInfo(Long preferredPersonId, Long documentId, PreferenceLocation location  ){
+    private PreferenceInfo(Long preferredPersonId, Long documentId){
         this.preferredPersonId = preferredPersonId;
         this.documentId = documentId;
-        this.location = location;
-        this.preferenceStatus = PreferenceStatus.DISLIKE;
+
+        this.preferenceStatus = PreferenceStatus.INDIFFERENCE;
     }
 
-    public static PreferenceInfo create(Long preferredPersonId, Long documentId, PreferenceLocation location ){
-        return new PreferenceInfo(preferredPersonId, documentId, location );
+    public static PreferenceInfo create(Long preferredPersonId, Long documentId){
+        return new PreferenceInfo(preferredPersonId, documentId );
     }
 
 

@@ -52,29 +52,31 @@ public class PreferenceInfoService {
 
         if (preferenceInfoRepository
                 .findByDocumentIdAndPreferredPersonIdAndLocation(feed.getId(), Long.parseLong(userInfo[0]), PreferenceLocation.FEED)==null){
-            PreferenceInfo preferenceInfo = PreferenceInfo.create(Long.parseLong(userInfo[0]), feed.getId(), PreferenceLocation.FEED);
+            PreferenceInfo preferenceInfo = PreferenceInfo.create(Long.parseLong(userInfo[0]), feed.getId());
             preferenceInfo.locate(PreferenceLocation.FEED);
             preferenceInfo.like();
             preferenceInfoRepository.save(preferenceInfo);
 
             feed.like();
 
-        }
-
-        PreferenceInfo preferenceInfo
+        }else {
+            PreferenceInfo preferenceInfo
                     = preferenceInfoRepository
                     .findByDocumentIdAndPreferredPersonIdAndLocation(feed.getId(), Long.parseLong(userInfo[0]), PreferenceLocation.FEED);
 
-        if (preferenceInfo.findState()==PreferenceStatus.LIKE){
+            if (preferenceInfo.findState()==PreferenceStatus.LIKE){
                 preferenceInfo.disLike();
                 feed.disLike();
 
-        }
+            }
 
-        if (preferenceInfo.findState()==PreferenceStatus.INDIFFERENCE){
+            if (preferenceInfo.findState()==PreferenceStatus.INDIFFERENCE){
                 preferenceInfo.like();
                 feed.like();
+            }
         }
+
+
 
     }
 
@@ -100,7 +102,7 @@ public class PreferenceInfoService {
 
         if ((preferenceInfo = preferenceInfoRepository
                 .findByDocumentIdAndPreferredPersonIdAndLocation(feed.getId(), Long.parseLong(userInfo[0]), PreferenceLocation.COMMENT))==null){
-            preferenceInfo = PreferenceInfo.create(Long.parseLong(userInfo[0]), feed.getId(), PreferenceLocation.COMMENT);
+            preferenceInfo = PreferenceInfo.create(Long.parseLong(userInfo[0]), feed.getId());
             preferenceInfo.locate(PreferenceLocation.COMMENT);
             preferenceInfo.like();
             preferenceInfoRepository.save(preferenceInfo);
