@@ -25,7 +25,6 @@ import java.nio.file.AccessDeniedException;
 public class PreferenceInfoService {
 
     private final FeedRepository feedRepository;
-    private final UserSessionService userSessionService;
     private final PreferenceInfoRepository preferenceInfoRepository;
     private final FriendShipRepository friendShipRepository;
     private final UserService userService;
