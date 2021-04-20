@@ -12,6 +12,7 @@ import com.example.demo.preferenceinfo.domain.PreferenceInfo;
 import com.example.demo.preferenceinfo.domain.PreferenceLocation;
 import com.example.demo.preferenceinfo.domain.PreferenceInfoRepository;
 import com.example.demo.user.domain.User;
+import com.example.demo.user.service.UserService;
 import com.example.demo.user.service.UserSessionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,12 +28,13 @@ public class PreferenceInfoService {
     private final UserSessionService userSessionService;
     private final PreferenceInfoRepository preferenceInfoRepository;
     private final FriendShipRepository friendShipRepository;
+    private final UserService userService;
     private final CommentService commentService;
 
 
     @Transactional
     public void likeFeedByFeedId(Long id) throws AccessDeniedException, IllegalAccessException {
-        User user = getLoggedUser();
+        String[] userInfo = userService.findUserInfo();
         Feed feed;
 
         if ((feed=feedRepository.findFeedByIdAndDeleted(id, false))==null){
@@ -40,17 +42,17 @@ public class PreferenceInfoService {
         }
 
         if (friendShipRepository.findFriendshipByFriender_FrienderIdAndFriendee_FriendeeId(
-                PersonId.create(user.getId()), PersonId.create(feed.getWriter().getId()))==null){
+                PersonId.create(Long.parseLong(userInfo[0])), PersonId.create(feed.getWriter().getId()))==null){
             throw new IllegalStateException();
         }
 
-        if (feed.getWriter().getId().equals(user.getId())){
+        if (feed.getWriter().getId().equals(Long.parseLong(userInfo[0]))){
             throw new IllegalAccessException();
         }
 
         if (preferenceInfoRepository
-                .findByDocumentIdAndPreferredPersonIdAndLocation(feed.getId(), user.getId(), PreferenceLocation.FEED)==null){
-            PreferenceInfo preferenceInfo = PreferenceInfo.create(user.getId(), feed.getId(), PreferenceLocation.FEED);
+                .findByDocumentIdAndPreferredPersonIdAndLocation(feed.getId(), Long.parseLong(userInfo[0]), PreferenceLocation.FEED)==null){
+            PreferenceInfo preferenceInfo = PreferenceInfo.create(Long.parseLong(userInfo[0]), feed.getId(), PreferenceLocation.FEED);
             preferenceInfo.locate(PreferenceLocation.FEED);
             preferenceInfo.like();
             preferenceInfoRepository.save(preferenceInfo);
@@ -61,7 +63,7 @@ public class PreferenceInfoService {
 
         PreferenceInfo preferenceInfo
                     = preferenceInfoRepository
-                    .findByDocumentIdAndPreferredPersonIdAndLocation(feed.getId(), user.getId(), PreferenceLocation.FEED);
+                    .findByDocumentIdAndPreferredPersonIdAndLocation(feed.getId(), Long.parseLong(userInfo[0]), PreferenceLocation.FEED);
 
         if (preferenceInfo.findState()==PreferenceStatus.LIKE){
                 preferenceInfo.disLike();
@@ -78,7 +80,7 @@ public class PreferenceInfoService {
 
     @Transactional
     public void likeCommentByFeedIdAndCommentId(Long feedId, Long commentId) throws AccessDeniedException {
-        User user = getLoggedUser();
+        String[] userInfo = userService.findUserInfo();
         Feed feed;
         Comment comment;
         PreferenceInfo preferenceInfo;
@@ -88,7 +90,7 @@ public class PreferenceInfoService {
         }
 
         if (friendShipRepository.findFriendshipByFriender_FrienderIdAndFriendee_FriendeeId(
-                PersonId.create(user.getId()), PersonId.create(feed.getWriter().getId()))==null){
+                PersonId.create(Long.parseLong(userInfo[0])), PersonId.create(feed.getWriter().getId()))==null){
             throw new IllegalStateException();
         }
 
@@ -97,8 +99,8 @@ public class PreferenceInfoService {
         }
 
         if ((preferenceInfo = preferenceInfoRepository
-                .findByDocumentIdAndPreferredPersonIdAndLocation(feed.getId(), user.getId(), PreferenceLocation.COMMENT))==null){
-            preferenceInfo = PreferenceInfo.create(user.getId(), feed.getId(), PreferenceLocation.COMMENT);
+                .findByDocumentIdAndPreferredPersonIdAndLocation(feed.getId(), Long.parseLong(userInfo[0]), PreferenceLocation.COMMENT))==null){
+            preferenceInfo = PreferenceInfo.create(Long.parseLong(userInfo[0]), feed.getId(), PreferenceLocation.COMMENT);
             preferenceInfo.locate(PreferenceLocation.COMMENT);
             preferenceInfo.like();
             preferenceInfoRepository.save(preferenceInfo);
@@ -124,12 +126,6 @@ public class PreferenceInfoService {
 
 
     }
-
-    private User getLoggedUser() throws AccessDeniedException {
-        return userSessionService.getLoggeddUser();
-    }
-
-
 
 
 }
