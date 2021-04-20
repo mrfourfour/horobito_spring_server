@@ -1,6 +1,6 @@
 package com.example.demo.preferenceinfo.service;
 
-import com.example.demo.feed.domain.FeedRepository;
+import com.example.demo.feed.domain.*;
 import com.example.demo.feed.service.CommentService;
 import com.example.demo.friend.domain.FriendShipRepository;
 import com.example.demo.preferenceinfo.domain.PreferenceInfoRepository;
@@ -15,6 +15,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.nio.file.AccessDeniedException;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -53,6 +55,44 @@ class PreferenceInfoServiceTest {
         when(userService.findUserInfo()).thenReturn(userInfo);
 
         assertThrows(NullPointerException.class, ()->sut.likeFeedByFeedId(1L));
+
+
+    }
+
+    @DisplayName("게시글 좋아요 테스트2, 게시글 작성자와 친구 관계가 아닐 경우")
+    @Test
+    void secondTest() throws AccessDeniedException {
+        //given
+        Long id = Long.parseLong("1");
+
+        PreferenceInfoService sut =
+                new PreferenceInfoService(
+                        feedRepository,
+                        preferenceInfoRepository,
+                        friendShipRepository,
+                        userService,
+                        commentService
+                );
+
+        String[] userInfo = {"1", "hello"};
+
+        WriterId writerId = WriterId.create(1L);
+        WriterName writerName = WriterName.create("tempWriter");
+
+        Writer writer = Writer.create(writerId, writerName);
+
+        Content content = Content.create("tmep");
+
+        Feed feed = Feed.create(writer, content);
+
+
+        //when
+        when(userService.findUserInfo()).thenReturn(userInfo);
+
+        when(feedRepository.findFeedByIdAndDeleted(any(), any()))
+                .thenReturn(feed);
+
+        assertThrows(IllegalStateException.class, ()->sut.likeFeedByFeedId(id));
 
 
     }
