@@ -97,4 +97,43 @@ class PreferenceInfoServiceTest {
 
     }
 
+    @DisplayName("게시글 좋아요 테스트3, 내 게시글인 경우")
+    @Test
+    void thirdTest() throws AccessDeniedException {
+        //given
+
+        PreferenceInfoService sut =
+                new PreferenceInfoService(
+                        feedRepository,
+                        preferenceInfoRepository,
+                        friendShipRepository,
+                        userService,
+                        commentService
+                );
+
+        String[] userInfo = {"1", "hello"};
+
+        Long id = Long.parseLong("1");
+
+        WriterId writerId = WriterId.create(id);
+        WriterName writerName = WriterName.create("tempWriter");
+
+        Writer writer = Writer.create(writerId, writerName);
+
+        Content content = Content.create("tmep");
+
+        Feed feed = Feed.create(writer, content);
+
+
+        //when
+        when(userService.findUserInfo()).thenReturn(userInfo);
+
+        when(feedRepository.findFeedByIdAndDeleted(any(), any()))
+                .thenReturn(feed);
+
+        assertThrows(IllegalAccessException.class, ()->sut.likeFeedByFeedId(id));
+
+
+    }
+
 }

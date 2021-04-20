@@ -40,14 +40,15 @@ public class PreferenceInfoService {
             throw new NullPointerException();
         }
 
+        if (feed.getWriter().getId().equals(Long.parseLong(userInfo[0]))){
+            throw new IllegalAccessException();
+        }
+
         if (friendShipRepository.findFriendshipByFriender_FrienderIdAndFriendee_FriendeeId(
                 PersonId.create(Long.parseLong(userInfo[0])), PersonId.create(feed.getWriter().getId()))==null){
             throw new IllegalStateException();
         }
 
-        if (feed.getWriter().getId().equals(Long.parseLong(userInfo[0]))){
-            throw new IllegalAccessException();
-        }
 
         if (preferenceInfoRepository
                 .findByDocumentIdAndPreferredPersonIdAndLocation(feed.getId(), Long.parseLong(userInfo[0]), PreferenceLocation.FEED)==null){
