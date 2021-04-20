@@ -112,6 +112,11 @@ public class FriendShipService {
                     = friendShipRepository.findFriendshipByFrienderAndFriendee_FriendeeId(myInfo, friendId);
             forwardFriendShip.deleteFriendShip();
 
+            Friendship backwardFriendShip
+                    = friendShipRepository.findFriendshipByFriender_FrienderIdAndFriendee_FriendeeId(friendId, myId);
+            backwardFriendShip.requestFriendShip();
+
+
             return FriendShipResult.SUCCESS;
         }
 
