@@ -9,9 +9,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.nio.file.AccessDeniedException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -28,7 +33,7 @@ public class FriendShipFindTest {
     @Mock
     UserService userService;
 
-    @DisplayName("친구관계 찾기 테스트  ")
+    @DisplayName("친구관계 요청 테스트  ")
     @Test
     void testForAccept() throws AccessDeniedException {
 
@@ -71,27 +76,39 @@ userService);
 
 
 
-
-
-
         //when
         // 4,3,2 는 1에 친구 요청
         // 1은 3만 친구 요청
 
         when(userService.findUserInfo())
-                .thenReturn(person3Info);
+                .thenReturn(person1Info);
 
         friendShipRepository.save(friendship1);
         friendShipRepository.save(friendship2);
         friendShipRepository.save(friendship3);
         friendShipRepository.save(friendship4);
 
+        Page<Friendship> dtos = friendShipRepository
+                .findAllByFriendee_FriendeeId(
+                       person1Id, PageRequest.of(0, 4));
 
+
+        System.out.println();
 
         //then
+        List<FriendDto> result = friendShipService.findRequestForMe(0, 4);
+        for (FriendDto dtoss : result){
+            System.out.println(dtos);
+        }
 
 
+    }
 
+    private FriendDto toFriendDto(BasicInfo basicInfo) {
+        return new FriendDto(
+                basicInfo.getId(),
+                basicInfo.getName()
+        );
     }
 
 }
