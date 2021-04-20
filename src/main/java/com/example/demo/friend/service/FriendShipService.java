@@ -65,7 +65,6 @@ public class FriendShipService {
         Friendee friendeeMe = Friendee.create(myId, myName);
 
 
-
         if ((friendShipRepository.findFriendshipByFrienderAndFriendee_FriendeeId(frienderMe, friendId))==null){
             Friendship forwardFriendShip = createFriendship(frienderMe, friendeeYou);
             forwardFriendShip.requestFriendShip();
@@ -83,10 +82,13 @@ public class FriendShipService {
 
             if (forwardFriendShip.getFriendState()==FriendShipState.ACCEPT
                     || forwardFriendShip.getFriendState()==FriendShipState.REQUEST){
+                throw new IllegalStateException();
             }else if (forwardFriendShip.getFriendState()==FriendShipState.REQUESTED
                     && backwardFriendShip.getFriendState()==FriendShipState.REQUEST){
                 forwardFriendShip.acceptFriendShip();
                 backwardFriendShip.acceptFriendShip();
+            }else {
+                throw new IllegalStateException();
             }
 
         }

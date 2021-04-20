@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.nio.file.AccessDeniedException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
@@ -28,8 +29,6 @@ class FriendShipCreateTest {
     @Mock
     FriendShipRepository friendShipRepository;
 
-    @Mock
-    UserSessionService userSessionService;
 
     @Mock
     UserService userService;
@@ -40,9 +39,10 @@ class FriendShipCreateTest {
     @Test
     void createFriendShip() throws AccessDeniedException {
 
-        FriendShipService friendShipService
+        FriendShipService sut
                 = new FriendShipService(friendShipRepository,
                 userService);
+
         //given
 
         String[] friender = { "1", "jihwan"};
@@ -55,8 +55,6 @@ class FriendShipCreateTest {
         when(userService.findUserInfo(any()))
                 .thenReturn(friendee);
 
-
-
         //then
 
 
@@ -66,7 +64,7 @@ class FriendShipCreateTest {
     @Test
     void testForAlreadyAccept() throws AccessDeniedException {
 
-        FriendShipService friendShipService
+        FriendShipService sut
                 = new FriendShipService(friendShipRepository,
                  userService);
 
@@ -78,8 +76,8 @@ class FriendShipCreateTest {
         PersonId myId = PersonId.create(Long.parseLong(friender[0]) );
         PersonId friendId = PersonId.create(Long.parseLong(friendee[0]));
 
-        PersonName myName = PersonName.create((String) friender[1]);
-        PersonName friendName = PersonName.create((String) friendee[1]);
+        PersonName myName = PersonName.create(friender[1]);
+        PersonName friendName = PersonName.create(friendee[1]);
 
         Friender frienderMe = Friender.create(myId, myName);
         Friendee friendeeYou = Friendee.create(friendId, friendName);
@@ -112,15 +110,15 @@ class FriendShipCreateTest {
 
 
         //then
-
-
+        assertThrows(IllegalStateException.class, ()->sut.create(1L));
     }
+
 
     @DisplayName("친구관계 맺기 테스트 3. 요청 수락  ")
     @Test
     void testForAccept() throws AccessDeniedException {
 
-        FriendShipService friendShipService
+        FriendShipService sut
                 = new FriendShipService(friendShipRepository,
                  userService);
 
@@ -163,9 +161,8 @@ class FriendShipCreateTest {
                 .thenReturn(forwardFriendShip)
                 .thenReturn(backwardFriendShip);
 
-
-
         //then
+
 
 
     }
