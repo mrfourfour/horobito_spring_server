@@ -11,13 +11,16 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+
+
 @ExtendWith(MockitoExtension.class)
 public class FriendShipFindTest {
 
@@ -93,11 +96,14 @@ userService);
 
 
         //then
+        assertThrows(IllegalArgumentException.class, ()->sut.findRequestForMe(-1, 2));
+        assertThrows(IllegalArgumentException.class, ()->sut.findRequestForMe(1, -2));
 
         List<FriendDto> result = sut.findRequestForMe(0, 4);
         for (FriendDto dto : result){
-            System.out.println(dto);
+                    System.out.println(dto);
         }
+
 
     }
 
