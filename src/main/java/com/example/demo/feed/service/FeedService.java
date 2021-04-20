@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class FeedService {
     private final FeedRepository feedRepository;
-    private final UserSessionService userSessionService;
     private final FriendShipRepository friendShipRepository;
     private final UserService userService;
 

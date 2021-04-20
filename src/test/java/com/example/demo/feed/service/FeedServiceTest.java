@@ -1,12 +1,12 @@
-package com.example.demo.timeline.service;
+package com.example.demo.feed.service;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(MockitoExtension.class)
-class TimeLineServiceTest {
 
+@ExtendWith(MockitoExtension.class)
+class FeedServiceTest {
 
 }
