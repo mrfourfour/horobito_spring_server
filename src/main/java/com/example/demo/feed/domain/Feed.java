@@ -27,6 +27,9 @@ public class Feed {
     private Writer writer;
 
     @Embedded
+    private Title title;
+
+    @Embedded
     private Content content;
 
     @Column(name = "preference")

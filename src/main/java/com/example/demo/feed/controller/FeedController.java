@@ -46,8 +46,9 @@ public class FeedController {
 
 
     @PostMapping("/feeds")
-    public Object makeFeed(@RequestBody String contents) throws AccessDeniedException {
-        Object result = feedService.makeFeedByContents(contents);
+    public Object makeFeed(@RequestParam String title,
+                           @RequestParam String contents) throws AccessDeniedException {
+        Object result = feedService.makeFeedByContents(title, contents);
 
         if (result instanceof FeedDto){
             ResponseEntity.ok();

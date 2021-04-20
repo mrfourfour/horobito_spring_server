@@ -90,7 +90,7 @@ public class FeedService {
     }
 
 
-    public Object makeFeedByContents(String insertedContent) throws AccessDeniedException {
+    public Object makeFeedByContents(String title, String insertedContent) throws AccessDeniedException {
 
         if (insertedContent.length()==0){
             return RequestResult.BAD_REQUEST;
