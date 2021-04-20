@@ -119,9 +119,9 @@ public class FriendShipService {
 
 
 
-    public  Object findRequestForMe(int page, int size) throws AccessDeniedException {
+    public  List<FriendDto> findRequestForMe(int page, int size) throws AccessDeniedException {
         if (page<0 || size<0){
-            return FriendShipResult.DENIED;
+            throw new IllegalArgumentException();
         }
 
 
