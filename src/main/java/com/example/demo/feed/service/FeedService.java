@@ -40,20 +40,24 @@ public class FeedService {
     }
 
 
-    public Object findFeedDetailByFeedId(Long id) throws AccessDeniedException {
+    public FeedDto findFeedDetailByFeedId(Long id) throws AccessDeniedException, IllegalAccessException {
+        String[] userInfo = userService.findUserInfo();
+
         Feed feed = feedRepository.findFeedByIdAndDeleted(id, false);
-        PersonId myId = PersonId.create(Long.parseLong(userService.findUserInfo()[0]));
+        if (feed==null){
+            throw new IllegalArgumentException();
+        }
+
+        PersonId myId = PersonId.create(Long.parseLong(userInfo[0]));
         PersonId friendId = PersonId.create(feed.getId());
-        Friendship friendship;
+        Friendship friendship = friendShipRepository.findFriendshipByFriender_FrienderIdAndFriendee_FriendeeId(myId, friendId);
 
-        if ((friendship=friendShipRepository.findFriendshipByFriender_FrienderIdAndFriendee_FriendeeId(myId, friendId))==null){
-            return RequestResult.BAD_REQUEST;
-        }
-        if (myId.getId().equals(friendId.getId())){
 
-        }else if (friendship.getFriendState()!= FriendShipState.ACCEPT){
-            return RequestResult.UNAUTHORIZED;
+
+        if (friendship==null || friendship.getFriendState()!=FriendShipState.ACCEPT){
+            throw new IllegalAccessException();
         }
+
 
         FeedDto feedDto = toFriendDto(feed);
         return feedDto;

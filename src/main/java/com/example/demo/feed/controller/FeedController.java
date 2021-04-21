@@ -26,22 +26,18 @@ public class FeedController {
 
 
     @GetMapping("/feeds/{feedId}")
-    public Object findFeedDetailByFeedId(@PathVariable Long feedId) throws AccessDeniedException {
-        Object result =  feedService.findFeedDetailByFeedId(feedId);
-        if (result instanceof FeedDto){
-            ResponseEntity.ok();
-            return result;
-        }else {
-            switch ((RequestResult)result){
-                case BAD_REQUEST:
-                    ResponseEntity.status(HttpStatus.BAD_REQUEST);
-                    break;
-                case UNAUTHORIZED:
-                    ResponseEntity.status(HttpStatus.UNAUTHORIZED);
-                    break;
-            }
-            return result;
+    public ResponseEntity<FeedDto> findFeedDetailByFeedId(@PathVariable Long feedId) throws AccessDeniedException {
+
+
+        try {
+           FeedDto result=   feedService.findFeedDetailByFeedId(feedId);
+           return ResponseEntity.ok().body(result);
+        }catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }catch( IllegalAccessException e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+
     }
 
 
