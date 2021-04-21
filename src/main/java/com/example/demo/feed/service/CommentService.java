@@ -3,6 +3,8 @@ package com.example.demo.feed.service;
 
 import com.example.demo.feed.domain.*;
 import com.example.demo.friend.domain.FriendShipRepository;
+import com.example.demo.friend.domain.FriendShipState;
+import com.example.demo.friend.domain.Friendship;
 import com.example.demo.friend.domain.PersonId;
 import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserRepository;
@@ -29,18 +31,21 @@ public class CommentService {
     public CommentDto makeCommentByFeedIdAndContents(Long feedId, String insertedContent) throws AccessDeniedException, IllegalAccessException {
 
         Feed feed = feedRepository.findFeedByIdAndDeleted(feedId, false);
-
         if (insertedContent.length()==0 || feed==null){
             throw new IllegalArgumentException();
         }
 
         String[] userInfo = userService.findUserInfo();
         Long friendId = feed.getWriter().getId();
-
-        if (friendShipRepository.findFriendshipByFriender_FrienderIdAndFriendee_FriendeeId(
+        Friendship friendship
+                = friendShipRepository.findFriendshipByFriender_FrienderIdAndFriendee_FriendeeId(
                 PersonId.create(friendId),
-                PersonId.create(Long.parseLong(userInfo[0]))
-        )==null){
+                PersonId.create(Long.parseLong(userInfo[0])));
+
+
+
+
+        if (friendship==null || friendship.getFriendState()!= FriendShipState.ACCEPT){
             throw new IllegalAccessException();
         }
 
