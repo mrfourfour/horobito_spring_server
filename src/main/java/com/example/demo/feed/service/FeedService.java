@@ -90,10 +90,10 @@ public class FeedService {
     }
 
 
-    public Object makeFeedByContents(String insertedTitle, String insertedContent) throws AccessDeniedException {
+    public FeedDto makeFeedByContents(String insertedTitle, String insertedContent) throws AccessDeniedException {
 
         if (insertedTitle.length()==0){
-            return RequestResult.BAD_REQUEST;
+            throw new IllegalArgumentException();
         }
 
         String[] userInfo = userService.findUserInfo();

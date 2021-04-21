@@ -90,7 +90,9 @@ class FeedLikeTest {
 
         Content content = Content.create("tmep");
 
-        Feed feed = Feed.create(writer, content);
+        Title title = Title.create("This is title");
+
+        Feed feed = Feed.create(writer, title, content);
 
 
         //when
@@ -129,7 +131,9 @@ class FeedLikeTest {
 
         Content content = Content.create("tmep");
 
-        Feed feed = Feed.create(writer, content);
+        Title title = Title.create("This is title");
+
+        Feed feed = Feed.create(writer, title, content);
 
 
         //when
@@ -176,7 +180,9 @@ class FeedLikeTest {
 
         Content content = Content.create("content");
 
-        Feed feed = FeedHelper.create(feedId, writer, content);
+        Title title = Title.create("This is title");
+
+        Feed feed = FeedHelper.create(feedId, writer, title,  content);
 
 
 
@@ -248,7 +254,9 @@ class FeedLikeTest {
 
         Content content = Content.create("content");
 
-        Feed feed = FeedHelper.create(feedId, writer, content);
+        Title title = Title.create("This is title");
+
+        Feed feed = FeedHelper.create(feedId, writer, title, content);
 
         PreferenceInfo preferenceInfo
                 = PreferenceInfo.create(userId, feedId);

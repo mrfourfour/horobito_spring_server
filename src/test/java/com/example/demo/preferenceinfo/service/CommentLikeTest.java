@@ -96,6 +96,8 @@ public class CommentLikeTest {
 
         Long commendId = Long.parseLong("4");
 
+        Title title = Title.create("This is title");
+
         WriterId writerId = WriterId.create(friendId);
         WriterName writerName = WriterName.create("writerName");
 
@@ -103,7 +105,7 @@ public class CommentLikeTest {
 
         Content content = Content.create("content");
 
-        Feed feed = FeedHelper.create(feedId, writer, content);
+        Feed feed = FeedHelper.create(feedId, writer, title, content);
 
 
 
@@ -153,9 +155,11 @@ public class CommentLikeTest {
 
         Writer writer = Writer.create(writerId, writerName);
 
+        Title title = Title.create("This is title");
+
         Content content = Content.create("content");
 
-        Feed feed = FeedHelper.create(feedId, writer, content);
+        Feed feed = FeedHelper.create(feedId, writer, title, content);
 
         Comment comment = Comment.create(writer, content);
 
@@ -213,7 +217,9 @@ public class CommentLikeTest {
 
         Content content = Content.create("content");
 
-        Feed feed = FeedHelper.create(feedId, writer, content);
+        Title title = Title.create("This is title");
+
+        Feed feed = FeedHelper.create(feedId, writer,title, content);
 
         Comment comment = CommentHelper.create(commendId, writer, content);
 
@@ -275,7 +281,9 @@ public class CommentLikeTest {
 
         Content content = Content.create("content");
 
-        Feed feed = FeedHelper.create(feedId, writer, content);
+        Title title = Title.create("This is title");
+
+        Feed feed = FeedHelper.create(feedId, writer, title, content);
 
         Comment comment = CommentHelper.create(commendId, writer, content);
 
@@ -353,7 +361,9 @@ public class CommentLikeTest {
 
         Content content = Content.create("content");
 
-        Feed feed = FeedHelper.create(feedId, writer, content);
+        Title title = Title.create("This is title");
+
+        Feed feed = FeedHelper.create(feedId, writer, title, content);
 
         Comment comment = CommentHelper.create(commendId, writer, content);
 
