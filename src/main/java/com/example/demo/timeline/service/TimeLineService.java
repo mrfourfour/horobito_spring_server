@@ -28,7 +28,6 @@ public class TimeLineService {
     public List<FeedDto> findMyTimeLine(int page, int pageSize) throws AccessDeniedException {
         if (page<0 || pageSize<0){
             throw new IllegalArgumentException();
-
         }
 
         String [] userInfo = userService.findUserInfo();
