@@ -18,7 +18,7 @@ import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
-class FeedCreateTest {
+class CreateFeedTest {
 
     @Mock
     FeedRepository feedRepository;

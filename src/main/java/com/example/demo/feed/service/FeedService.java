@@ -6,9 +6,7 @@ import com.example.demo.friend.domain.FriendShipRepository;
 import com.example.demo.friend.domain.FriendShipState;
 import com.example.demo.friend.domain.Friendship;
 import com.example.demo.friend.domain.PersonId;
-import com.example.demo.user.domain.User;
 import com.example.demo.user.service.UserService;
-import com.example.demo.user.service.UserSessionService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
@@ -59,11 +57,11 @@ public class FeedService {
         }
 
 
-        FeedDto feedDto = toFriendDto(feed);
+        FeedDto feedDto = toFeedDto(feed);
         return feedDto;
     }
 
-    private FeedDto toFriendDto(Feed feed) {
+    private FeedDto toFeedDto(Feed feed) {
         return new FeedDto(
                 feed.getId(),
                 feed.getWriter().getId(),
@@ -105,7 +103,7 @@ public class FeedService {
         Feed feed = Feed.create(writer, title, content);
         feedRepository.save(feed);
 
-        FeedDto feedDto = toFriendDto(feed);
+        FeedDto feedDto = toFeedDto(feed);
         return feedDto;
 
     }

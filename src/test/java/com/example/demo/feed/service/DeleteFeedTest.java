@@ -17,7 +17,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class FeedDeleteTest {
+public class DeleteFeedTest {
 
     @Mock
     FeedRepository feedRepository;
