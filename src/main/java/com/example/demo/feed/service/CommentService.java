@@ -28,11 +28,12 @@ public class CommentService {
     @Transactional
     public CommentDto makeCommentByFeedIdAndContents(Long feedId, String insertedContent) throws AccessDeniedException, IllegalAccessException {
 
-        if (insertedContent.length()==0 || feedId<1){
+        Feed feed = feedRepository.findFeedByIdAndDeleted(feedId, false);
+
+        if (insertedContent.length()==0 || feed==null){
             throw new IllegalArgumentException();
         }
 
-        Feed feed = feedRepository.findFeedByIdAndDeleted(feedId, false);
         String[] userInfo = userService.findUserInfo();
         Long friendId = feed.getWriter().getId();
 
