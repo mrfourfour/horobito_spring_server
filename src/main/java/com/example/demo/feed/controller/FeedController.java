@@ -66,21 +66,14 @@ public class FeedController {
 
     @DeleteMapping("/feeds/{feedId}")
     public void deleteFeedByFeedId(@PathVariable Long feedId) throws AccessDeniedException {
-        RequestResult result = feedService.deleteFeedByFeedId(feedId);
+        try {
+            feedService.deleteFeedByFeedId(feedId);
+        }catch (IllegalArgumentException e) {
 
-        switch (result){
-            case OK:
-                ResponseEntity.ok();
-                break;
-            case BAD_REQUEST:
-                ResponseEntity.status(HttpStatus.BAD_REQUEST);
-                break;
-            case FORBIDDEN:
-                ResponseEntity.status(HttpStatus.FORBIDDEN);
-                break;
-            case UNAUTHORIZED:
-                ResponseEntity.status(HttpStatus.UNAUTHORIZED);
+        }catch( IllegalAccessException e){
+
         }
+
 
     }
 

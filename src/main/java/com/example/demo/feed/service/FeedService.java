@@ -24,24 +24,19 @@ public class FeedService {
     private final UserService userService;
 
     @Transactional
-    public RequestResult deleteFeedByFeedId(Long id) throws AccessDeniedException {
+    public void deleteFeedByFeedId(Long id) throws AccessDeniedException, IllegalAccessException {
         Feed feed = feedRepository.findFeedByIdAndDeleted(id, false);
         PersonId myId = PersonId.create(Long.parseLong(userService.findUserInfo()[0]));
-        PersonId friendId = PersonId.create(feed.getId());
-        Friendship friendship;
 
-        if ((friendship=friendShipRepository.findFriendshipByFriender_FrienderIdAndFriendee_FriendeeId(myId, friendId))==null){
-            return RequestResult.BAD_REQUEST;
+        if (feed==null){
+            throw new IllegalArgumentException();
         }
 
-        if (myId.getId().equals(friendId.getId())){
-
-        }else if (friendship.getFriendState()!= FriendShipState.ACCEPT){
-            return RequestResult.UNAUTHORIZED;
+        if (myId.getId().equals(feed.getId())){
+            feed.delete();
+        }else {
+            throw new IllegalAccessException();
         }
-
-        feed.delete();
-        return RequestResult.OK;
     }
 
 
