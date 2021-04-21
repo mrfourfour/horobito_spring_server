@@ -14,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.nio.file.AccessDeniedException;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -51,5 +52,33 @@ class FeedCreateTest {
 
 
     }
+
+    @DisplayName("게시글 만들기 2. 올바른 요청인 경우 ")
+    @Test
+    void test2() throws AccessDeniedException {
+        FeedService feedService
+                = new FeedService(
+                feedRepository,
+                friendShipRepository,
+                userService
+        );
+
+        String[] person1Info = {"1" , "jihwan"};
+
+        String title = "title1";
+
+        String content = "content 1";
+
+
+        when(userService.findUserInfo())
+                .thenReturn(person1Info);
+
+
+
+        System.out.println(feedService.makeFeedByContents(title, content));
+        verify(feedRepository, times(1)).save(any());
+    }
+
+
 
 }
