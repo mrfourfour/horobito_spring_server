@@ -79,9 +79,13 @@ public class FindFeedDetailTest {
         PersonName person1Name = PersonName.create( person1Info[1]);
         PersonName person2Name = PersonName.create( friendName);
 
+
+
+
         Content content = Content.create("content");
         Title title = Title.create("This is title");
         Feed feed = FeedHelper.create(feedId, writer, title,  content);
+
         Friender friender = Friender.create(person1Id, person1Name);
         Friendee friendee = Friendee.create(person2Id, person2Name);
 
@@ -134,6 +138,10 @@ public class FindFeedDetailTest {
         Content content = Content.create("content");
         Title title = Title.create("This is title");
         Feed feed = FeedHelper.create(feedId, writer, title,  content);
+        Comment comment1 = Comment.create(writer, content);
+        Comment comment2 = Comment.create(writer, content);
+        feed.enrollComment(comment1);
+        feed.enrollComment(comment2);
         Friender friender = Friender.create(person1Id, person1Name);
         Friendee friendee = Friendee.create(person2Id, person2Name);
 
