@@ -49,13 +49,10 @@ public class CommentService {
             throw new IllegalAccessException();
         }
 
-
         Content content = Content.create(insertedContent);
-
         WriterId id = WriterId.create(Long.parseLong(userInfo[0]));
         WriterName wrtName = WriterName.create(userInfo[1]);
         Writer writer = Writer.create(id, wrtName);
-
         Comment comment = Comment.create(writer, content);
         feed.enrollComment(comment);
 
