@@ -47,8 +47,8 @@ class FriendShipCreateTest {
 
         String[] friender = { "1", "jihwan"};
         String [] friendee = { "2", "friendee"};
-        Long friendId = Long.parseLong("1");
 
+        Long friendId = Long.parseLong("1");
         //when
         when(userService.findUserInfo())
                 .thenReturn(friender);
