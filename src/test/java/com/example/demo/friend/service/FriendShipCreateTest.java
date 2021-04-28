@@ -19,7 +19,7 @@ import java.nio.file.AccessDeniedException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -47,6 +47,7 @@ class FriendShipCreateTest {
 
         String[] friender = { "1", "jihwan"};
         String [] friendee = { "2", "friendee"};
+        Long friendId = Long.parseLong("1");
 
         //when
         when(userService.findUserInfo())
@@ -56,6 +57,9 @@ class FriendShipCreateTest {
                 .thenReturn(friendee);
 
         //then
+
+        sut.create(friendId);
+        verify(friendShipRepository, times(2)).save(any());
 
 
     }
@@ -169,6 +173,9 @@ class FriendShipCreateTest {
         //then
 
         sut.create(1L);
+        assertEquals(FriendShipState.ACCEPT, forwardFriendShip.getFriendState());
+        assertEquals(FriendShipState.ACCEPT, backwardFriendShip.getFriendState());
+
         System.out.println("forwardFriendShip의 상태 : " + forwardFriendShip.getFriendState());
         System.out.println("backwardFriendShip의 상태 : " + backwardFriendShip.getFriendState());
 

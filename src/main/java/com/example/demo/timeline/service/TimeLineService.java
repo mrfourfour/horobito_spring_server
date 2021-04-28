@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class TimeLineService {
+
     private final FriendShipRepository friendShipRepository;
 
     private final FeedRepository feedRepository;
