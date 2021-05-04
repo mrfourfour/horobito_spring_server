@@ -35,31 +35,40 @@ public class CommentService {
         if (insertedContent.length()==0 || feed==null){
             throw new IllegalArgumentException();
         }
-
         UserDto userInfo = userService.findUserInfo();
-        Long friendId = feed.getWriter().getId();
-        Friendship friendship
-                = friendShipRepository.findFriendshipByFriender_FrienderIdAndFriendee_FriendeeId(
-                PersonId.create(friendId),
-                PersonId.create(userInfo.getUserId()));
 
-
+        Friendship friendship = findFriendShip(feed, userInfo);
 
 
         if (friendship==null || friendship.getFriendState()!= FriendShipState.ACCEPT){
             throw new IllegalAccessException();
         }
-
-        Content content = Content.create(insertedContent);
-        WriterId id = WriterId.create(userInfo.getUserId());
-        WriterName wrtName = WriterName.create(userInfo.getUsername());
-        Writer writer = Writer.create(id, wrtName);
-        Comment comment = Comment.create(writer, content);
+        Comment comment = createComment(insertedContent, userInfo);
         feed.enrollComment(comment);
 
-        CommentDto commentDto = toCommentDto(comment);
 
+        CommentDto commentDto = toCommentDto(comment);
         return commentDto;
+    }
+
+    private Friendship findFriendShip(Feed feed, UserDto userInfo) throws AccessDeniedException {
+        Long friendId = feed.getWriter().getId();
+        return friendShipRepository.findFriendshipByFriender_FrienderIdAndFriendee_FriendeeId(
+                PersonId.create(friendId),
+                PersonId.create(userInfo.getUserId()));
+    }
+
+
+    private Comment createComment(String insertedContent, UserDto userInfo) {
+        Content content = Content.create(insertedContent);
+        Writer writer = createWriter(userInfo);
+        return Comment.create(writer, content);
+    }
+
+    private Writer createWriter(UserDto userInfo) {
+        WriterId id = WriterId.create(userInfo.getUserId());
+        WriterName wrtName = WriterName.create(userInfo.getUsername());
+        return Writer.create(id, wrtName);
     }
 
     private CommentDto toCommentDto(Comment comment) {

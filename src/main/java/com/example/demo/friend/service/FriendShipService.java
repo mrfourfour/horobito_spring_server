@@ -132,17 +132,21 @@ public class FriendShipService {
             throw new IllegalArgumentException();
         }
 
-
         PersonId myId = PersonId.create(userService.findUserInfo().getUserId());
 
-        List<FriendDto> friendshipList = friendShipRepository.findAllByFriendee_FriendeeId(myId, PageRequest.of(page, size))
+        List<FriendDto> friendshipList = createFriendShipList(myId, page, size);
+
+        return friendshipList;
+    }
+
+
+    private List<FriendDto> createFriendShipList(PersonId myId, int page, int size) {
+        return friendShipRepository.findAllByFriendee_FriendeeId(myId, PageRequest.of(page, size))
                 .stream()
                 .filter(friendship -> friendship.getFriendState()==FriendShipState.REQUEST)
                 .map(Friendship::getFriender)
                 .map(this::toFriendDto)
                 .collect(Collectors.toList());
-
-        return friendshipList;
     }
 
     public Friendship createFriendship(Friender friender, Friendee friendee) {

@@ -1,7 +1,8 @@
 package com.example.demo.user.service;
 
 
-import com.example.demo.security.service.UserSessionUtils;
+
+import com.example.demo.mysecurity.service.UserSessionUtils;
 import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
