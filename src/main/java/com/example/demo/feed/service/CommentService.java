@@ -9,6 +9,7 @@ import com.example.demo.friend.domain.PersonId;
 import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserRepository;
 import com.example.demo.user.domain.Username;
+import com.example.demo.user.service.UserDto;
 import com.example.demo.user.service.UserService;
 import com.example.demo.user.service.UserSessionService;
 import lombok.RequiredArgsConstructor;
@@ -35,12 +36,12 @@ public class CommentService {
             throw new IllegalArgumentException();
         }
 
-        String[] userInfo = userService.findUserInfo();
+        UserDto userInfo = userService.findUserInfo();
         Long friendId = feed.getWriter().getId();
         Friendship friendship
                 = friendShipRepository.findFriendshipByFriender_FrienderIdAndFriendee_FriendeeId(
                 PersonId.create(friendId),
-                PersonId.create(Long.parseLong(userInfo[0])));
+                PersonId.create(userInfo.getUserId()));
 
 
 
@@ -50,8 +51,8 @@ public class CommentService {
         }
 
         Content content = Content.create(insertedContent);
-        WriterId id = WriterId.create(Long.parseLong(userInfo[0]));
-        WriterName wrtName = WriterName.create(userInfo[1]);
+        WriterId id = WriterId.create(userInfo.getUserId());
+        WriterName wrtName = WriterName.create(userInfo.getUsername());
         Writer writer = Writer.create(id, wrtName);
         Comment comment = Comment.create(writer, content);
         feed.enrollComment(comment);
