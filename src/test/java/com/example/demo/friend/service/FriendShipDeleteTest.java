@@ -4,6 +4,7 @@ package com.example.demo.friend.service;
 import com.example.demo.friend.domain.*;
 import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserRepository;
+import com.example.demo.user.service.UserDto;
 import com.example.demo.user.service.UserService;
 import com.example.demo.user.service.UserSessionService;
 import org.junit.jupiter.api.DisplayName;
@@ -51,7 +52,9 @@ public class FriendShipDeleteTest {
         //given
 
 
-        String[] friender= {"1", "jihwan"};
+        Long id1 = Long.parseLong("1");
+        UserDto friender = UserDto.create(id1,"jihwan");
+
 
         //when
         when(userService.findUserInfo()).thenReturn(friender);
@@ -72,14 +75,17 @@ public class FriendShipDeleteTest {
 
         //given
 
-        String[] friender = {"1", "jihwan"};
-        String[] friendee = {"2", "friendee"};
+        Long id1 = Long.parseLong("1");
+        UserDto friender = UserDto.create(id1,"jihwan");
 
-        PersonId myId = PersonId.create(Long.parseLong(friender[0]));
-        PersonId friendId = PersonId.create(Long.parseLong(friendee[0]));
+        Long id2 = Long.parseLong("1");
+        UserDto friendee = UserDto.create(id2,"friendee");
 
-        PersonName myName = PersonName.create(friender[1]);
-        PersonName friendName = PersonName.create(friendee[1]);
+        PersonId myId = PersonId.create(friender.getUserId());
+        PersonId friendId = PersonId.create(friendee.getUserId());
+
+        PersonName myName = PersonName.create(friender.getUsername());
+        PersonName friendName = PersonName.create(friendee.getUsername());
 
         Friender frienderMe = Friender.create(myId, myName);
         Friendee friendeeYou = Friendee.create(friendId, friendName);
