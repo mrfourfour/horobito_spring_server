@@ -12,6 +12,7 @@ import com.example.demo.preferenceinfo.domain.PreferenceInfo;
 import com.example.demo.preferenceinfo.domain.PreferenceLocation;
 import com.example.demo.preferenceinfo.domain.PreferenceInfoRepository;
 import com.example.demo.user.domain.User;
+import com.example.demo.user.service.UserDto;
 import com.example.demo.user.service.UserService;
 import com.example.demo.user.service.UserSessionService;
 import lombok.RequiredArgsConstructor;
@@ -33,10 +34,8 @@ public class PreferenceInfoService {
 
     @Transactional
     public void likeFeedByFeedId(Long id) throws AccessDeniedException, IllegalAccessException {
-        String[] userInfo = userService.findUserInfo(); // dto 사용할 것
+        UserDto userInfo = userService.findUserInfo(); // dto 사용할 것
         Feed feed;
-
-
 
         // 변수는 final 처럼 작성이 깔끔
         // 변수의 초기화는 참조가 계속 바뀌기 때문에, 런타임에 이해 어려움
@@ -46,24 +45,24 @@ public class PreferenceInfoService {
             throw new NullPointerException();// 고칠 것 -> IllegalStateException() 등, 또는 IlliArgument xxx[id 값 오류]
         }
 
-        if (feed.getWriter().getId().equals(Long.parseLong(userInfo[0]))){
+        if (feed.getWriter().getId().equals(userInfo.getUserId())){
             throw new IllegalAccessException();
         }
 
         if ((friendShipRepository.findFriendshipByFriender_FrienderIdAndFriendee_FriendeeId(
-                PersonId.create(Long.parseLong(userInfo[0])), PersonId.create(feed.getWriter().getId())))==null){
+                PersonId.create(userInfo.getUserId()), PersonId.create(feed.getWriter().getId())))==null){
             throw new IllegalStateException();
         }
 
         PreferenceInfo preferenceInfo = preferenceInfoRepository
-                .findByDocumentIdAndPreferredPersonIdAndLocation(feed.getId(), Long.parseLong(userInfo[0]), PreferenceLocation.FEED);
+                .findByDocumentIdAndPreferredPersonIdAndLocation(feed.getId(), userInfo.getUserId(), PreferenceLocation.FEED);
 
 
 
         // 비지니스 예외 방식에 예외처리를 담는 것은 좋은 방식이 아니다 . - 비쌈
         if (preferenceInfo==null){
 
-            preferenceInfo = PreferenceInfo.create(Long.parseLong(userInfo[0]), feed.getId());
+            preferenceInfo = PreferenceInfo.create(userInfo.getUserId(), feed.getId());
             preferenceInfo.locate(PreferenceLocation.FEED);
             preferenceInfo.like();
             preferenceInfoRepository.save(preferenceInfo);
@@ -91,7 +90,7 @@ public class PreferenceInfoService {
 
     @Transactional
     public void likeCommentByFeedIdAndCommentId(Long feedId, Long commentId) throws AccessDeniedException {
-        String[] userInfo = userService.findUserInfo();
+        UserDto userInfo = userService.findUserInfo();
         Feed feed = feedRepository.findFeedByIdAndDeleted(feedId, false);
 
 
@@ -106,16 +105,16 @@ public class PreferenceInfoService {
         }
 
         if (friendShipRepository.findFriendshipByFriender_FrienderIdAndFriendee_FriendeeId(
-                PersonId.create(Long.parseLong(userInfo[0])), PersonId.create(feed.getWriter().getId()))==null){
+                PersonId.create(userInfo.getUserId()), PersonId.create(feed.getWriter().getId()))==null){
             throw new IllegalStateException();
         }
 
 
         PreferenceInfo preferenceInfo = preferenceInfoRepository
-                .findByDocumentIdAndPreferredPersonIdAndLocation(comment.getId(), Long.parseLong(userInfo[0]), PreferenceLocation.COMMENT);
+                .findByDocumentIdAndPreferredPersonIdAndLocation(comment.getId(), userInfo.getUserId(), PreferenceLocation.COMMENT);
 
         if (preferenceInfo ==null){
-            preferenceInfo = PreferenceInfo.create(Long.parseLong(userInfo[0]), comment.getId());
+            preferenceInfo = PreferenceInfo.create(userInfo.getUserId(), comment.getId());
             preferenceInfo.locate(PreferenceLocation.COMMENT);
             preferenceInfo.like();
             preferenceInfoRepository.save(preferenceInfo);
