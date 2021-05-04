@@ -49,17 +49,49 @@ public class FeedService {
 
         PersonId myId = PersonId.create(userInfo.getUserId());
         PersonId friendId = PersonId.create(feed.getId());
-        Friendship friendship = friendShipRepository.findFriendshipByFriender_FrienderIdAndFriendee_FriendeeId(myId, friendId);
-
+        Friendship friendship = findFriendShip(myId, friendId);
 
 
         if (friendship==null || friendship.getFriendState()!=FriendShipState.ACCEPT){
             throw new IllegalAccessException();
         }
 
+        FeedDto feedDto = toFeedDto(feed);
+        return feedDto;
+    }
+
+
+    private Friendship findFriendShip(PersonId myId, PersonId friendId) {
+        return friendShipRepository.findFriendshipByFriender_FrienderIdAndFriendee_FriendeeId(myId, friendId);
+    }
+
+
+    public FeedDto makeFeedByContents(String insertedTitle, String insertedContent) throws AccessDeniedException {
+
+        if (insertedTitle.length()==0){
+            throw new IllegalArgumentException();
+        }
+
+        UserDto userInfo = userService.findUserInfo();
+        Writer writer = createWriter(userInfo);
+        Feed feed = createFeed(insertedContent, insertedTitle, writer);
+        feedRepository.save(feed);
 
         FeedDto feedDto = toFeedDto(feed);
         return feedDto;
+
+    }
+
+    private Feed createFeed(String insertedContent, String insertedTitle ,Writer writer) {
+        Content content = Content.create(insertedContent);
+        Title title = Title.create(insertedTitle);
+        return Feed.create(writer, title, content);
+    }
+
+    private Writer createWriter(UserDto userInfo) {
+        WriterId id = WriterId.create(userInfo.getUserId());
+        WriterName wrtName = WriterName.create(userInfo.getUsername());
+        return Writer.create(id, wrtName);
     }
 
     private FeedDto toFeedDto(Feed feed) {
@@ -84,28 +116,6 @@ public class FeedService {
                 comment.getPreferenceCountInfo().getPreference(),
                 comment.getWrtTime()
         );
-
-    }
-
-
-    public FeedDto makeFeedByContents(String insertedTitle, String insertedContent) throws AccessDeniedException {
-
-        if (insertedTitle.length()==0){
-            throw new IllegalArgumentException();
-        }
-
-        UserDto userInfo = userService.findUserInfo();
-
-        WriterId id = WriterId.create(userInfo.getUserId());
-        WriterName wrtName = WriterName.create(userInfo.getUsername());
-        Writer writer = Writer.create(id, wrtName);
-        Content content = Content.create(insertedContent);
-        Title title = Title.create(insertedTitle);
-        Feed feed = Feed.create(writer, title, content);
-        feedRepository.save(feed);
-
-        FeedDto feedDto = toFeedDto(feed);
-        return feedDto;
 
     }
 
