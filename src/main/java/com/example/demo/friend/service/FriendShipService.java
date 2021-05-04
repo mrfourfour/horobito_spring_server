@@ -1,6 +1,7 @@
 package com.example.demo.friend.service;
 
 import com.example.demo.friend.domain.*;
+import com.example.demo.user.service.UserDto;
 import com.example.demo.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -26,9 +27,9 @@ public class FriendShipService {
             throw new IllegalArgumentException();
         }
 
-        String[] userInfo = userService.findUserInfo();
-        PersonId userId = PersonId.create(Long.parseLong(userInfo[0]));
-        PersonName userName = PersonName.create(userInfo[1]);
+        UserDto userInfo = userService.findUserInfo();
+        PersonId userId = PersonId.create(userInfo.getUserId());
+        PersonName userName = PersonName.create(userInfo.getUsername());
 
         Friender friender = Friender.create(userId, userName);
 
@@ -49,14 +50,14 @@ public class FriendShipService {
 
     @Transactional
     public void create(Long inputedFriendId) throws AccessDeniedException {
-        String[] user = userService.findUserInfo();
-        String [] friend = userService.findUserInfo(inputedFriendId);
+        UserDto userInfo = userService.findUserInfo();
+        UserDto friendInfo = userService.findUserInfo(inputedFriendId);
 
-        PersonId myId = PersonId.create(Long.parseLong(user[0]) );
-        PersonId friendId = PersonId.create(Long.parseLong(friend[0]));
+        PersonId myId = PersonId.create(userInfo.getUserId() );
+        PersonId friendId = PersonId.create(friendInfo.getUserId());
 
-        PersonName myName = PersonName.create(user[1]);
-        PersonName friendName = PersonName.create( friend[1]);
+        PersonName myName = PersonName.create(userInfo.getUsername());
+        PersonName friendName = PersonName.create( friendInfo.getUsername());
 
         Friender frienderMe = Friender.create(myId, myName);
         Friendee friendeeYou = Friendee.create(friendId, friendName);
@@ -98,9 +99,9 @@ public class FriendShipService {
 
 
     public FriendShipResult deleteFriendShipRequest(Long inputedId) throws AccessDeniedException {
-        String[] userInfo = userService.findUserInfo();
-        PersonId myId = PersonId.create(Long.parseLong(userInfo[0]));
-        PersonName myName = PersonName.create( userInfo[1]);
+        UserDto userInfo = userService.findUserInfo();
+        PersonId myId = PersonId.create(userInfo.getUserId());
+        PersonName myName = PersonName.create(userInfo.getUsername());
         Friender myInfo = Friender.create(myId, myName);
 
         PersonId friendId = PersonId.create(inputedId);
@@ -132,7 +133,7 @@ public class FriendShipService {
         }
 
 
-        PersonId myId = PersonId.create(Long.parseLong(userService.findUserInfo()[0]));
+        PersonId myId = PersonId.create(userService.findUserInfo().getUserId());
 
         List<FriendDto> friendshipList = friendShipRepository.findAllByFriendee_FriendeeId(myId, PageRequest.of(page, size))
                 .stream()
