@@ -3,6 +3,7 @@ package com.example.demo.feed.service;
 
 import com.example.demo.feed.domain.*;
 import com.example.demo.friend.domain.FriendShipRepository;
+import com.example.demo.user.service.UserDto;
 import com.example.demo.user.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,7 +39,8 @@ public class DeleteFeedTest {
                 userService
         );
 
-        String[] person1 = {"1" , "jihwan"};
+        Long id1 = Long.parseLong("1");
+        UserDto person1 = UserDto.create(id1,"hello");
 
         String title = "";
 
@@ -63,7 +65,8 @@ public class DeleteFeedTest {
                 userService
         );
 
-        String[] userInfo = {"1", "hello"};
+        Long id1 = Long.parseLong("1");
+        UserDto userInfo= UserDto.create(id1,"hello");
 
         Long friendId = Long.parseLong("3");
 
