@@ -8,6 +8,7 @@ import com.example.demo.friend.domain.Friendship;
 import com.example.demo.friend.domain.PersonId;
 import com.example.demo.preferenceinfo.domain.PreferenceInfo;
 import com.example.demo.preferenceinfo.domain.PreferenceInfoRepository;
+import com.example.demo.user.service.UserDto;
 import com.example.demo.user.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -53,7 +54,8 @@ public class CommentLikeTest {
                         commentService
                 );
 
-        String[] userInfo = {"1", "hello"};
+        Long id1 = Long.parseLong("1");
+        UserDto userInfo = UserDto.create(id1,"hello");
 
         Long userId = Long.parseLong("1");
 
@@ -86,7 +88,8 @@ public class CommentLikeTest {
                         commentService
                 );
 
-        String[] userInfo = {"1", "hello"};
+        Long id1 = Long.parseLong("1");
+        UserDto userInfo = UserDto.create(id1,"hello");
 
         Long userId = Long.parseLong("1");
 
@@ -140,7 +143,8 @@ public class CommentLikeTest {
                         commentService
                 );
 
-        String[] userInfo = {"1", "hello"};
+        Long id1 = Long.parseLong("1");
+        UserDto userInfo = UserDto.create(id1,"hello");
 
         Long userId = Long.parseLong("1");
 
@@ -200,7 +204,8 @@ public class CommentLikeTest {
                         commentService
                 );
 
-        String[] userInfo = {"1", "hello"};
+        Long id1 = Long.parseLong("1");
+        UserDto userInfo = UserDto.create(id1,"hello");
 
         Long userId = Long.parseLong("1");
 
@@ -264,7 +269,8 @@ public class CommentLikeTest {
                         commentService
                 );
 
-        String[] userInfo = {"1", "hello"};
+        Long id1 = Long.parseLong("1");
+        UserDto userInfo = UserDto.create(id1,"hello");
 
         Long userId = Long.parseLong("1");
 
@@ -344,7 +350,8 @@ public class CommentLikeTest {
                         commentService
                 );
 
-        String[] userInfo = {"1", "hello"};
+        Long id1 = Long.parseLong("1");
+        UserDto userInfo = UserDto.create(id1,"hello");
 
         Long userId = Long.parseLong("1");
 
