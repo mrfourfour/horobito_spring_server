@@ -53,15 +53,21 @@ public class UserService  {
 
 
 
-    public String[] findUserInfo() throws AccessDeniedException {
+    public UserDto findUserInfo() throws AccessDeniedException {
         User user = userSessionService.getLoggeddUser();
-        return new String[]{String.valueOf(user.getId()), user.getUserBasicInfo().getUsername()};
+        return toUserDto(user);
     }
 
-    public String[] findUserInfo(Long id) throws AccessDeniedException {
+    public UserDto findUserInfo(Long id) throws AccessDeniedException {
         User user = userRepository.findUserById(id);
-        return new String[]{String.valueOf(user.getId()),
-                user.getUserBasicInfo().getUsername()};
+        return toUserDto(user);
+    }
+
+    public UserDto toUserDto(User user){
+        return UserDto.create(
+                user.getId(),
+                user.getUserBasicInfo().getUsername()
+        );
     }
 }
 
