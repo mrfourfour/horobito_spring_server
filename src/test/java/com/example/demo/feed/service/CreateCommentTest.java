@@ -3,6 +3,7 @@ package com.example.demo.feed.service;
 
 import com.example.demo.feed.domain.*;
 import com.example.demo.friend.domain.*;
+import com.example.demo.user.service.UserDto;
 import com.example.demo.user.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -86,7 +87,9 @@ public class CreateCommentTest {
         Long commentId = Long.parseLong("3");
         String commentContent = "asdf";
 
-        String[] person1Info = {"1", "hello"};
+
+        Long id1 = Long.parseLong("1");
+        UserDto person1Info = UserDto.create(id1,"hello");
 
         Long friendId = Long.parseLong("3");
         String friendName = "hhhh";
@@ -100,10 +103,10 @@ public class CreateCommentTest {
         Title title = Title.create("This is title");
         Feed feed = FeedHelper.create(feedId, writer, title,  content);
 
-        PersonId person1Id = PersonId.create(Long.parseLong(person1Info[0]));
+        PersonId person1Id = PersonId.create(person1Info.getUserId());
         PersonId person2Id = PersonId.create(friendId);
 
-        PersonName person1Name = PersonName.create( person1Info[1]);
+        PersonName person1Name = PersonName.create(person1Info.getUsername());
         PersonName person2Name = PersonName.create( friendName);
 
         Friender friender = Friender.create(person1Id, person1Name);
@@ -131,7 +134,9 @@ public class CreateCommentTest {
         Long commentId = Long.parseLong("3");
         String commentContent = "asdf";
 
-        String[] person1Info = {"1", "hello"};
+
+        Long id1 = Long.parseLong("1");
+        UserDto person1Info = UserDto.create(id1,"hello");
 
         Long friendId = Long.parseLong("3");
         String friendName = "hhhh";
@@ -145,10 +150,10 @@ public class CreateCommentTest {
         Title title = Title.create("This is title");
         Feed feed = FeedHelper.create(feedId, writer, title,  content);
 
-        PersonId person1Id = PersonId.create(Long.parseLong(person1Info[0]));
+        PersonId person1Id = PersonId.create(person1Info.getUserId());
         PersonId person2Id = PersonId.create(friendId);
 
-        PersonName person1Name = PersonName.create( person1Info[1]);
+        PersonName person1Name = PersonName.create(person1Info.getUsername());
         PersonName person2Name = PersonName.create( friendName);
 
         Friender friender = Friender.create(person1Id, person1Name);
@@ -181,7 +186,8 @@ public class CreateCommentTest {
         Long commentId = Long.parseLong("3");
         String commentContent = "나오면 성공";
 
-        String[] person1Info = {"1", "hello"};
+        Long id1 = Long.parseLong("1");
+        UserDto person1Info = UserDto.create(id1,"hello");
 
         Long friendId = Long.parseLong("3");
         String friendName = "hhhh";
@@ -195,10 +201,10 @@ public class CreateCommentTest {
         Title title = Title.create("This is title");
         Feed feed = FeedHelper.create(feedId, writer, title,  content);
 
-        PersonId person1Id = PersonId.create(Long.parseLong(person1Info[0]));
+        PersonId person1Id = PersonId.create(person1Info.getUserId());
         PersonId person2Id = PersonId.create(friendId);
 
-        PersonName person1Name = PersonName.create( person1Info[1]);
+        PersonName person1Name = PersonName.create(person1Info.getUsername());
         PersonName person2Name = PersonName.create( friendName);
 
         Friender friender = Friender.create(person1Id, person1Name);
