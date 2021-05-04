@@ -6,6 +6,7 @@ import com.example.demo.friend.domain.FriendShipRepository;
 import com.example.demo.friend.domain.FriendShipState;
 import com.example.demo.friend.domain.Friendship;
 import com.example.demo.friend.domain.PersonId;
+import com.example.demo.user.service.UserDto;
 import com.example.demo.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 
@@ -24,7 +25,7 @@ public class FeedService {
     @Transactional
     public void deleteFeedByFeedId(Long id) throws AccessDeniedException, IllegalAccessException {
         Feed feed = feedRepository.findFeedByIdAndDeleted(id, false);
-        PersonId myId = PersonId.create(Long.parseLong(userService.findUserInfo()[0]));
+        PersonId myId = PersonId.create(userService.findUserInfo().getUserId());
 
         if (feed==null){
             throw new IllegalArgumentException();
@@ -39,14 +40,14 @@ public class FeedService {
 
 
     public FeedDto findFeedDetailByFeedId(Long id) throws AccessDeniedException, IllegalAccessException {
-        String[] userInfo = userService.findUserInfo();
+        UserDto userInfo = userService.findUserInfo();
 
         Feed feed = feedRepository.findFeedByIdAndDeleted(id, false);
         if (feed==null){
             throw new IllegalArgumentException();
         }
 
-        PersonId myId = PersonId.create(Long.parseLong(userInfo[0]));
+        PersonId myId = PersonId.create(userInfo.getUserId());
         PersonId friendId = PersonId.create(feed.getId());
         Friendship friendship = friendShipRepository.findFriendshipByFriender_FrienderIdAndFriendee_FriendeeId(myId, friendId);
 
@@ -93,10 +94,10 @@ public class FeedService {
             throw new IllegalArgumentException();
         }
 
-        String[] userInfo = userService.findUserInfo();
+        UserDto userInfo = userService.findUserInfo();
 
-        WriterId id = WriterId.create(Long.parseLong(userInfo[0]));
-        WriterName wrtName = WriterName.create(userInfo[1]);
+        WriterId id = WriterId.create(userInfo.getUserId());
+        WriterName wrtName = WriterName.create(userInfo.getUsername());
         Writer writer = Writer.create(id, wrtName);
         Content content = Content.create(insertedContent);
         Title title = Title.create(insertedTitle);
