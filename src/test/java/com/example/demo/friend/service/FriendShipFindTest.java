@@ -2,6 +2,7 @@ package com.example.demo.friend.service;
 
 
 import com.example.demo.friend.domain.*;
+import com.example.demo.user.service.UserDto;
 import com.example.demo.user.service.UserService;
 
 import org.junit.jupiter.api.DisplayName;
@@ -33,6 +34,8 @@ public class FriendShipFindTest {
     @Mock
     UserService userService;
 
+
+
     // 성공
     @DisplayName("친구관계 요청 확인 테스트1. 알맞은 요청 테스트 || 잘못된 페이지 번호 또는 크기 ")
     @Test
@@ -44,20 +47,26 @@ userService);
 
         //given
 
-        String[] person1Info = { "1", "person1"};
-        String [] person2Info = { "2", "person2"};
-        String [] person3Info = {"3", "person3"};
-        String [] person4Info = {"4", "person4"};
 
-        PersonId person1Id = PersonId.create(Long.parseLong(person1Info[0]) );
-        PersonId person2Id = PersonId.create(Long.parseLong( person2Info[0]));
-        PersonId person3Id = PersonId.create(Long.parseLong(person3Info[0]));
-        PersonId person4Id = PersonId.create(Long.parseLong(person4Info[0]));
+        Long id1 = Long.parseLong("1");
+        UserDto person1Info = UserDto.create(id1,"person1");
+        Long id2 = Long.parseLong("2");
+        UserDto person2Info = UserDto.create(id2,"person2");
+        Long id3 = Long.parseLong("3");
+        UserDto person3Info = UserDto.create(id3,"person3");
+        Long id4 = Long.parseLong("4");
+        UserDto person4Info = UserDto.create(id4,"person4");
 
-        PersonName person1Name = PersonName.create( person1Info[1]);
-        PersonName person2Name = PersonName.create( person2Info[1]);
-        PersonName person3Name = PersonName.create(person3Info[1]);
-        PersonName person4Name = PersonName.create(person4Info[1]);
+
+        PersonId person1Id = PersonId.create(person1Info.getUserId() );
+        PersonId person2Id = PersonId.create(person2Info.getUserId());
+        PersonId person3Id = PersonId.create(person3Info.getUserId());
+        PersonId person4Id = PersonId.create(person4Info.getUserId());
+
+        PersonName person1Name = PersonName.create( person1Info.getUsername());
+        PersonName person2Name = PersonName.create( person2Info.getUsername());
+        PersonName person3Name = PersonName.create(person3Info.getUsername());
+        PersonName person4Name = PersonName.create(person4Info.getUsername());
 
         Friender friender1 = Friender.create(person1Id, person1Name);
         Friender friender2 = Friender.create(person2Id, person2Name);
@@ -68,6 +77,7 @@ userService);
         Friendee friendee2 = Friendee.create(person2Id, person2Name);
         Friendee friendee3 = Friendee.create(person3Id, person3Name);
         Friendee friendee4 = Friendee.create(person4Id, person4Name);
+
 
         Friendship forwardFriendship1 = Friendship.create(friender4, friendee1);
         forwardFriendship1.requestFriendShip();
@@ -122,20 +132,25 @@ userService);
 
         //given
 
-        String[] person1Info = { "1", "person1"};
-        String [] person2Info = { "2", "person2"};
-        String [] person3Info = {"3", "person3"};
-        String [] person4Info = {"4", "person4"};
+        Long id1 = Long.parseLong("1");
+        UserDto person1Info = UserDto.create(id1,"person1");
+        Long id2 = Long.parseLong("2");
+        UserDto person2Info = UserDto.create(id2,"person2");
+        Long id3 = Long.parseLong("3");
+        UserDto person3Info = UserDto.create(id3,"person3");
+        Long id4 = Long.parseLong("4");
+        UserDto person4Info = UserDto.create(id4,"person4");
 
-        PersonId person1Id = PersonId.create(Long.parseLong(person1Info[0]) );
-        PersonId person2Id = PersonId.create(Long.parseLong( person2Info[0]));
-        PersonId person3Id = PersonId.create(Long.parseLong(person3Info[0]));
-        PersonId person4Id = PersonId.create(Long.parseLong(person4Info[0]));
 
-        PersonName person1Name = PersonName.create( person1Info[1]);
-        PersonName person2Name = PersonName.create( person2Info[1]);
-        PersonName person3Name = PersonName.create(person3Info[1]);
-        PersonName person4Name = PersonName.create(person4Info[1]);
+        PersonId person1Id = PersonId.create(person1Info.getUserId() );
+        PersonId person2Id = PersonId.create(person2Info.getUserId());
+        PersonId person3Id = PersonId.create(person3Info.getUserId());
+        PersonId person4Id = PersonId.create(person4Info.getUserId());
+
+        PersonName person1Name = PersonName.create( person1Info.getUsername());
+        PersonName person2Name = PersonName.create( person2Info.getUsername());
+        PersonName person3Name = PersonName.create(person3Info.getUsername());
+        PersonName person4Name = PersonName.create(person4Info.getUsername());
 
         Friender friender1 = Friender.create(person1Id, person1Name);
         Friender friender2 = Friender.create(person2Id, person2Name);
@@ -201,20 +216,25 @@ userService);
 
         //given
 
-        String[] person1Info = { "1", "person1"};
-        String [] person2Info = { "2", "person2"};
-        String [] person3Info = {"3", "person3"};
-        String [] person4Info = {"4", "person4"};
+        Long id1 = Long.parseLong("1");
+        UserDto person1Info = UserDto.create(id1,"person1");
+        Long id2 = Long.parseLong("2");
+        UserDto person2Info = UserDto.create(id2,"person2");
+        Long id3 = Long.parseLong("3");
+        UserDto person3Info = UserDto.create(id3,"person3");
+        Long id4 = Long.parseLong("4");
+        UserDto person4Info = UserDto.create(id4,"person4");
 
-        PersonId person1Id = PersonId.create(Long.parseLong(person1Info[0]) );
-        PersonId person2Id = PersonId.create(Long.parseLong( person2Info[0]));
-        PersonId person3Id = PersonId.create(Long.parseLong(person3Info[0]));
-        PersonId person4Id = PersonId.create(Long.parseLong(person4Info[0]));
 
-        PersonName person1Name = PersonName.create( person1Info[1]);
-        PersonName person2Name = PersonName.create( person2Info[1]);
-        PersonName person3Name = PersonName.create(person3Info[1]);
-        PersonName person4Name = PersonName.create(person4Info[1]);
+        PersonId person1Id = PersonId.create(person1Info.getUserId() );
+        PersonId person2Id = PersonId.create(person2Info.getUserId());
+        PersonId person3Id = PersonId.create(person3Info.getUserId());
+        PersonId person4Id = PersonId.create(person4Info.getUserId());
+
+        PersonName person1Name = PersonName.create( person1Info.getUsername());
+        PersonName person2Name = PersonName.create( person2Info.getUsername());
+        PersonName person3Name = PersonName.create(person3Info.getUsername());
+        PersonName person4Name = PersonName.create(person4Info.getUsername());
 
         Friender friender1 = Friender.create(person1Id, person1Name);
         Friender friender2 = Friender.create(person2Id, person2Name);

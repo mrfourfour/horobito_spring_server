@@ -4,6 +4,7 @@ import com.example.demo.feed.domain.Content;
 import com.example.demo.feed.domain.FeedRepository;
 import com.example.demo.feed.domain.Title;
 import com.example.demo.friend.domain.FriendShipRepository;
+import com.example.demo.user.service.UserDto;
 import com.example.demo.user.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,7 +40,6 @@ class CreateFeedTest {
                 userService
         );
 
-        String[] person1 = {"1" , "jihwan"};
 
         String title = "";
 
@@ -63,7 +63,8 @@ class CreateFeedTest {
                 userService
         );
 
-        String[] person1Info = {"1" , "jihwan"};
+        Long id1 = Long.parseLong("1");
+        UserDto person1Info = UserDto.create(id1,"hello");
 
         String title = "title1";
 

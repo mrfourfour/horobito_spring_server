@@ -6,6 +6,7 @@ import com.example.demo.user.domain.Password;
 import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserRepository;
 import com.example.demo.user.domain.Username;
+import com.example.demo.user.service.UserDto;
 import com.example.demo.user.service.UserService;
 import com.example.demo.user.service.UserSessionService;
 import org.junit.jupiter.api.DisplayName;
@@ -19,7 +20,7 @@ import java.nio.file.AccessDeniedException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -45,9 +46,14 @@ class FriendShipCreateTest {
 
         //given
 
-        String[] friender = { "1", "jihwan"};
-        String [] friendee = { "2", "friendee"};
 
+        Long id1 = Long.parseLong("1");
+        UserDto friender = UserDto.create(id1,"jihwan");
+
+        Long id2 = Long.parseLong("1");
+        UserDto friendee = UserDto.create(id2,"friendee");
+
+        Long friendId = Long.parseLong("1");
         //when
         when(userService.findUserInfo())
                 .thenReturn(friender);
@@ -56,6 +62,9 @@ class FriendShipCreateTest {
                 .thenReturn(friendee);
 
         //then
+
+        sut.create(friendId);
+        verify(friendShipRepository, times(2)).save(any());
 
 
     }
@@ -70,14 +79,17 @@ class FriendShipCreateTest {
 
         //given
 
-        String[] friender = { "1", "jihwan"};
-        String [] friendee = { "2", "friendee"};
+        Long id1 = Long.parseLong("1");
+        UserDto friender = UserDto.create(id1,"jihwan");
 
-        PersonId myId = PersonId.create(Long.parseLong(friender[0]) );
-        PersonId friendId = PersonId.create(Long.parseLong(friendee[0]));
+        Long id2 = Long.parseLong("1");
+        UserDto friendee = UserDto.create(id2,"friendee");
 
-        PersonName myName = PersonName.create(friender[1]);
-        PersonName friendName = PersonName.create(friendee[1]);
+        PersonId myId = PersonId.create(friender.getUserId() );
+        PersonId friendId = PersonId.create(friendee.getUserId());
+
+        PersonName myName = PersonName.create(friendee.getUsername());
+        PersonName friendName = PersonName.create(friendee.getUsername());
 
         Friender frienderMe = Friender.create(myId, myName);
         Friendee friendeeYou = Friendee.create(friendId, friendName);
@@ -124,14 +136,17 @@ class FriendShipCreateTest {
 
         //given
 
-        String[] friender = { "1", "jihwan"};
-        String [] friendee = { "2", "friendee"};
+        Long id1 = Long.parseLong("1");
+        UserDto friender = UserDto.create(id1,"jihwan");
 
-        PersonId myId = PersonId.create(Long.parseLong(friender[0]) );
-        PersonId friendId = PersonId.create(Long.parseLong(friendee[0]));
+        Long id2 = Long.parseLong("1");
+        UserDto friendee = UserDto.create(id2,"friendee");
 
-        PersonName myName = PersonName.create((String) friender[1]);
-        PersonName friendName = PersonName.create((String) friendee[1]);
+        PersonId myId = PersonId.create(friender.getUserId() );
+        PersonId friendId = PersonId.create(friendee.getUserId());
+
+        PersonName myName = PersonName.create(friender.getUsername());
+        PersonName friendName = PersonName.create((friendee.getUsername()));
 
         Friender frienderMe = Friender.create(myId, myName);
         Friendee friendeeYou = Friendee.create(friendId, friendName);
@@ -169,6 +184,9 @@ class FriendShipCreateTest {
         //then
 
         sut.create(1L);
+        assertEquals(FriendShipState.ACCEPT, forwardFriendShip.getFriendState());
+        assertEquals(FriendShipState.ACCEPT, backwardFriendShip.getFriendState());
+
         System.out.println("forwardFriendShip의 상태 : " + forwardFriendShip.getFriendState());
         System.out.println("backwardFriendShip의 상태 : " + backwardFriendShip.getFriendState());
 

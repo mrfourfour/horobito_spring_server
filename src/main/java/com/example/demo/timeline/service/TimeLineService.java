@@ -6,6 +6,7 @@ import com.example.demo.feed.service.CommentDto;
 import com.example.demo.feed.service.FeedDto;
 import com.example.demo.friend.domain.*;
 import com.example.demo.user.domain.User;
+import com.example.demo.user.service.UserDto;
 import com.example.demo.user.service.UserService;
 import com.example.demo.user.service.UserSessionService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class TimeLineService {
+
     private final FriendShipRepository friendShipRepository;
 
     private final FeedRepository feedRepository;
@@ -30,9 +32,9 @@ public class TimeLineService {
             throw new IllegalArgumentException();
         }
 
-        String [] userInfo = userService.findUserInfo();
-        PersonId myId = PersonId.create(Long.parseLong(userInfo[0]));
-        PersonName myName = PersonName.create(userInfo[1]);
+        UserDto userInfo = userService.findUserInfo();
+        PersonId myId = PersonId.create(userInfo.getUserId());
+        PersonName myName = PersonName.create(userInfo.getUsername());
         Friender user = Friender.create(myId, myName);
 
         List<WriterId> writerList =

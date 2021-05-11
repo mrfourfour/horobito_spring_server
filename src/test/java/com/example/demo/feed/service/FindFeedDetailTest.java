@@ -3,6 +3,7 @@ package com.example.demo.feed.service;
 
 import com.example.demo.feed.domain.*;
 import com.example.demo.friend.domain.*;
+import com.example.demo.user.service.UserDto;
 import com.example.demo.user.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,7 +41,8 @@ public class FindFeedDetailTest {
 
 
 
-        String[] person1 = {"1" , "jihwan"};
+        Long id1 = Long.parseLong("1");
+        UserDto person1 = UserDto.create(id1,"hello");
 
         Long id = Long.parseLong("2");
 
@@ -63,7 +65,8 @@ public class FindFeedDetailTest {
                 userService
         );
 
-        String[] person1Info = {"1", "hello"};
+        Long id1 = Long.parseLong("1");
+        UserDto person1Info = UserDto.create(id1,"hello");
 
         Long friendId = Long.parseLong("3");
         String friendName = "hhhh";
@@ -73,10 +76,10 @@ public class FindFeedDetailTest {
         WriterName writerName = WriterName.create("writerName");
         Writer writer = Writer.create(writerId, writerName);
 
-        PersonId person1Id = PersonId.create(Long.parseLong(person1Info[0]));
+        PersonId person1Id = PersonId.create(person1Info.getUserId());
         PersonId person2Id = PersonId.create(friendId);
 
-        PersonName person1Name = PersonName.create( person1Info[1]);
+        PersonName person1Name = PersonName.create(person1Info.getUsername());
         PersonName person2Name = PersonName.create( friendName);
 
 
@@ -119,7 +122,8 @@ public class FindFeedDetailTest {
                 userService
         );
 
-        String[] person1Info = {"1", "hello"};
+        Long id1 = Long.parseLong("1");
+        UserDto person1Info = UserDto.create(id1,"hello");
 
         Long friendId = Long.parseLong("3");
         String friendName = "hhhh";
@@ -133,10 +137,10 @@ public class FindFeedDetailTest {
         Title title = Title.create("This is title");
         Feed feed = FeedHelper.create(feedId, writer, title,  content);
 
-        PersonId person1Id = PersonId.create(Long.parseLong(person1Info[0]));
+        PersonId person1Id = PersonId.create(person1Info.getUserId());
         PersonId person2Id = PersonId.create(friendId);
 
-        PersonName person1Name = PersonName.create( person1Info[1]);
+        PersonName person1Name = PersonName.create(person1Info.getUsername());
         PersonName person2Name = PersonName.create( friendName);
 
         Comment comment1 = Comment.create(writer, content);

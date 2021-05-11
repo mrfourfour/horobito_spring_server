@@ -4,18 +4,14 @@ package com.example.demo.user.service;
 
 
 
-import com.example.demo.security.infrastructure.UserAuthenticationFilter;
-import com.example.demo.security.service.UserDetailsService;
 import com.example.demo.user.domain.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -53,15 +49,21 @@ public class UserService  {
 
 
 
-    public String[] findUserInfo() throws AccessDeniedException {
+    public UserDto findUserInfo() throws AccessDeniedException {
         User user = userSessionService.getLoggeddUser();
-        return new String[]{String.valueOf(user.getId()), user.getUserBasicInfo().getUsername()};
+        return toUserDto(user);
     }
 
-    public String[] findUserInfo(Long id) throws AccessDeniedException {
+    public UserDto findUserInfo(Long id) throws AccessDeniedException {
         User user = userRepository.findUserById(id);
-        return new String[]{String.valueOf(user.getId()),
-                user.getUserBasicInfo().getUsername()};
+        return toUserDto(user);
+    }
+
+    public UserDto toUserDto(User user){
+        return UserDto.create(
+                user.getId(),
+                user.getUserBasicInfo().getUsername()
+        );
     }
 }
 

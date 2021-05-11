@@ -9,6 +9,7 @@ import com.example.demo.preferenceinfo.domain.PreferenceInfo;
 import com.example.demo.preferenceinfo.domain.PreferenceInfoRepository;
 import com.example.demo.preferenceinfo.domain.PreferenceLocation;
 import com.example.demo.preferenceinfo.domain.PreferenceStatus;
+import com.example.demo.user.service.UserDto;
 import com.example.demo.user.service.UserService;
 import com.example.demo.user.service.UserSessionService;
 import org.junit.jupiter.api.DisplayName;
@@ -55,7 +56,8 @@ class FeedLikeTest {
                         commentService
                 );
 
-        String[] userInfo = {"1", "hello"};
+        Long id1 = Long.parseLong("1");
+        UserDto userInfo = UserDto.create(id1,"hello");
 
 
         //when
@@ -81,7 +83,8 @@ class FeedLikeTest {
                         commentService
                 );
 
-        String[] userInfo = {"1", "hello"};
+        Long id1 = Long.parseLong("1");
+        UserDto userInfo = UserDto.create(id1,"hello");
 
         WriterId writerId = WriterId.create(1L);
         WriterName writerName = WriterName.create("tempWriter");
@@ -120,7 +123,8 @@ class FeedLikeTest {
                         commentService
                 );
 
-        String[] userInfo = {"1", "hello"};
+        Long id1 = Long.parseLong("1");
+        UserDto userInfo = UserDto.create(id1,"hello");
 
         Long id = Long.parseLong("1");
 
@@ -160,8 +164,8 @@ class FeedLikeTest {
                         commentService
                 );
 
-        String[] userInfo = {"1", "hello"};
-
+        Long id1 = Long.parseLong("1");
+        UserDto userInfo = UserDto.create(id1,"hello");
         Long userId = Long.parseLong("1");
 
         Long friendId = Long.parseLong("3");
@@ -236,7 +240,8 @@ class FeedLikeTest {
                         commentService
                 );
 
-        String[] userInfo = {"1", "hello"};
+        Long id1 = Long.parseLong("1");
+        UserDto userInfo = UserDto.create(id1,"hello");
 
         Long userId = Long.parseLong("1");
 
