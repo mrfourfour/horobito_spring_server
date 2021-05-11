@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @RestController
@@ -20,33 +21,55 @@ public class FriendShipController {
 
     @GetMapping
     // request query로 받는 값들
-    public List<FriendDto> getMyFriends(@RequestParam(value="page") int page,
-                                        @RequestParam(value = "size") int size){
-        return friendShipService.getMyFriends(page, size);
+    public ResponseEntity<List<FriendDto>> getMyFriends(@RequestParam(value="page") int page,
+                                        @RequestParam(value = "size") int size) throws AccessDeniedException {
+
+        try {
+            List<FriendDto> result = friendShipService.getMyFriends(page, size);
+            return ResponseEntity.ok().body(result);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().build();
+        }
+
 
     }
 
     @PostMapping("/{friendId}")
-    public void createFriendShip(@PathVariable Long friendId){
-        FriendShipResult friendShipResult = friendShipService.create(friendId);
+    public void createFriendShip(@PathVariable Long friendId) throws AccessDeniedException {
+        try {
+            friendShipService.create(friendId);
+        }catch (Exception e){
 
-        if (friendShipResult == FriendShipResult.TRY_TO_MAKE_FRIENDSHIP || friendShipResult == FriendShipResult.SUCCESS){
-            ResponseEntity.ok();
-        }else if(friendShipResult == FriendShipResult.ALREADY_ACCEPT){
-            ResponseEntity.status(HttpStatus.BAD_REQUEST);
-        }else {
-            ResponseEntity.status(HttpStatus.FORBIDDEN);
         }
+
+
     }
 
     @DeleteMapping("/{friendId}")
-    public void deleteFriendShip(@PathVariable Long friendId){
-        friendShipService.deleteFriendShipRequest(friendId);
+    public void deleteFriendShip(@PathVariable Long friendId) throws AccessDeniedException {
+        FriendShipResult result = friendShipService.deleteFriendShipRequest(friendId);
+        switch ((FriendShipResult)result){
+            case NEVER_REQUESTED:
+                ResponseEntity.status(HttpStatus.BAD_REQUEST);
+                break;
+            case SUCCESS:
+                ResponseEntity.ok();
+        }
     }
 
     @GetMapping("/request")
-    public List<FriendDto> findRequestToMe(@RequestParam(value="page") int page,
-                                @RequestParam(value = "size") int size){
-        return friendShipService.findRequestForMe(page, size);
+    public Object findRequestToMe(@RequestParam(value="page") int page,
+                                @RequestParam(value = "size") int size) throws AccessDeniedException {
+        Object result = friendShipService.findRequestForMe(page, size);
+
+        if (result instanceof FriendShipResult){
+            switch ((FriendShipResult) result){
+                case DENIED:
+                    ResponseEntity.status(HttpStatus.BAD_REQUEST);
+            }
+        }else {
+            ResponseEntity.ok();
+        }
+        return result;
     }
 }

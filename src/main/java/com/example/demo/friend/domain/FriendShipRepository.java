@@ -9,12 +9,14 @@ import java.util.List;
 
 public interface FriendShipRepository  extends JpaRepository<Friendship, Long> {
 
-    Page<Friendship> findAllByUserInfo(UserInfo user, Pageable pageable);
+    Page<Friendship> findAllByFriender(Friender user, Pageable pageable);
 
-    List<Friendship> findAllByUserInfo(UserInfo userInfo);
+    List<Friendship> findAllByFriender(Friender userInfo);
 
 
-    Friendship findFriendshipByUserInfoAndFriend_FriendId(UserInfo user, Identfication id);
+    Friendship findFriendshipByFrienderAndFriendee_FriendeeId(Friender user, PersonId id);
 
-    Page<Friendship> findAllByFriend_FriendId(Identfication friendId, Pageable pageable);
+    Friendship findFriendshipByFriender_FrienderIdAndFriendee_FriendeeId(PersonId frienderId, PersonId friendeeId);
+
+    Page<Friendship> findAllByFriendee_FriendeeId(PersonId friendId, Pageable pageable);
 }

@@ -1,7 +1,6 @@
 package com.example.demo.feed.domain;
 
 
-import com.example.demo.user.domain.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -9,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Entity
 @Table(name = "comment")
@@ -27,25 +26,30 @@ public class Comment {
     @JsonIgnoreProperties("feed")
     private Feed feed;
 
+
     @Embedded
     private Writer writer;
 
-    private LocalDateTime wrtTime;
+    private Instant wrtTime;
 
     @Embedded
     private Content content;
 
     @Embedded
-    private Preference preferenceInfo;
+    private PreferenceCount preferenceCountInfo;
 
     private boolean deleted;
 
     public Comment(Writer writer, Content content){
         this.writer = writer;
         this.content = content;
-        this.preferenceInfo = Preference.create();
-        this.wrtTime = LocalDateTime.now();
+        this.preferenceCountInfo = PreferenceCount.create();
+        this.wrtTime = Instant.now();
         this.deleted = false;
+    }
+
+    public String getContent(){
+        return this.content.getContent();
     }
 
 
@@ -53,9 +57,14 @@ public class Comment {
         return new Comment(writer, content);
     }
 
-    public void likeOrDislike() {
-
+    public void disLike() {
+        this.preferenceCountInfo = PreferenceCount.create(this.preferenceCountInfo.getPreference()-1L);
     }
+
+    public void like() {
+        this.preferenceCountInfo = PreferenceCount.create(this.preferenceCountInfo.getPreference()+1L);
+    }
+
 
 //    public boolean checkPossibleOfLike(User user) {
 //        String writerId = this.getWriter().getWrtName();

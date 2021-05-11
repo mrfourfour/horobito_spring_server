@@ -1,17 +1,13 @@
 package com.example.demo.friend.service;
 
 import com.example.demo.friend.domain.*;
-import com.example.demo.user.domain.User;
-import com.example.demo.user.domain.UserRepository;
-import com.example.demo.user.domain.Username;
+import com.example.demo.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,22 +17,27 @@ import java.util.stream.Collectors;
 public class FriendShipService {
 
     private final FriendShipRepository friendShipRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
 
     @Transactional
-    public List<FriendDto> getMyFriends(int page, int size) {
-        User user = null;
-        Identfication userId = Identfication.create(user.getId());
-        UserInfo userInfo = createUserInfo(user, userId);
+    public List<FriendDto> getMyFriends(int page, int size) throws AccessDeniedException {
+        if (page<0 || size<0){
+            throw new IllegalArgumentException();
+        }
 
+        String[] userInfo = userService.findUserInfo();
+        PersonId userId = PersonId.create(Long.parseLong(userInfo[0]));
+        PersonName userName = PersonName.create(userInfo[1]);
+
+        Friender friender = Friender.create(userId, userName);
 
         List<FriendDto> friendshipList
                 = friendShipRepository
-                .findAllByUserInfo(userInfo, PageRequest.of(page, size))
+                .findAllByFriender(friender, PageRequest.of(page, size))
                 .stream()
-                .filter(Friendship::getFriendState)
-                .map(Friendship::getFriend)
+                .filter(friendship -> friendship.getFriendState()==FriendShipState.ACCEPT)
+                .map(Friendship::getFriendee)
                 .map(this::toFriendDto)
                 .collect(Collectors.toList());
 
@@ -47,111 +48,105 @@ public class FriendShipService {
 
 
     @Transactional
-    public FriendShipResult create(Long inputedFriendId) {
-        User user = findUser();
-        Identfication myId = Identfication.create(user.getId());
-        UserInfo myInfo = createUserInfo(user, myId);
+    public void create(Long inputedFriendId) throws AccessDeniedException {
+        String[] user = userService.findUserInfo();
+        String [] friend = userService.findUserInfo(inputedFriendId);
 
-        User friend = userRepository.findUserById(inputedFriendId);
-        Identfication friendId = Identfication.create(inputedFriendId);
-        UserInfo friendInfo = createUserInfo(friend, friendId);
+        PersonId myId = PersonId.create(Long.parseLong(user[0]) );
+        PersonId friendId = PersonId.create(Long.parseLong(friend[0]));
+
+        PersonName myName = PersonName.create(user[1]);
+        PersonName friendName = PersonName.create( friend[1]);
+
+        Friender frienderMe = Friender.create(myId, myName);
+        Friendee friendeeYou = Friendee.create(friendId, friendName);
+
+        Friender frienderYou = Friender.create(friendId, friendName);
+        Friendee friendeeMe = Friendee.create(myId, myName);
 
 
-        Friendship friendship;;
+        if ((friendShipRepository.findFriendshipByFrienderAndFriendee_FriendeeId(frienderMe, friendId))==null){
+            Friendship forwardFriendShip = createFriendship(frienderMe, friendeeYou);
+            forwardFriendShip.requestFriendShip();
 
-        if ((friendship=friendShipRepository.findFriendshipByUserInfoAndFriend_FriendId(myInfo, friendId))==null){
-            Friendship forwardFriendShip = createFriendship(myInfo, friendInfo);
-            forwardFriendShip.acceptFriendShip();
-
-            Friendship backwardFriendShip = createFriendship(friendInfo, myInfo);
+            Friendship backwardFriendShip = createFriendship(frienderYou, friendeeMe);
 
             friendShipRepository.save(forwardFriendShip);
             friendShipRepository.save(backwardFriendShip);
 
-            return FriendShipResult.TRY_TO_MAKE_FRIENDSHIP;
-
-
-
         }else {
             Friendship forwardFriendShip
-                    = friendShipRepository.findFriendshipByUserInfoAndFriend_FriendId(myInfo, friendId);
+                    = friendShipRepository.findFriendshipByFrienderAndFriendee_FriendeeId(frienderMe, friendId);
             Friendship backwardFriendShip
-                    = friendShipRepository.findFriendshipByUserInfoAndFriend_FriendId(friendInfo, myId);
+                    = friendShipRepository.findFriendshipByFrienderAndFriendee_FriendeeId(frienderYou, myId);
 
-            if (forwardFriendShip.getFriendState()){
-                return FriendShipResult.ALREADY_ACCEPT;
-            }else if (!forwardFriendShip.getFriendState() && backwardFriendShip.getFriendState()){
+            if (forwardFriendShip.getFriendState()==FriendShipState.ACCEPT
+                    || forwardFriendShip.getFriendState()==FriendShipState.REQUEST){
+                throw new IllegalStateException();
+            }else if (forwardFriendShip.getFriendState()==FriendShipState.REQUESTED
+                    && backwardFriendShip.getFriendState()==FriendShipState.REQUEST){
                 forwardFriendShip.acceptFriendShip();
-                return FriendShipResult.SUCCESS;
+                backwardFriendShip.acceptFriendShip();
             }else {
-                return FriendShipResult.DENIED;
+                throw new IllegalStateException();
             }
 
         }
     }
 
-    public User findUser(){
-        Authentication authentication = findAuthentication();
-        Username username = Username.create(authentication.getName());
-        return userRepository.findByUserBasicInfo_Username(username);
-
-    }
-
-    public Authentication findAuthentication(){
-        return SecurityContextHolder.getContext().getAuthentication();
-    }
-
-    private Friendship createFriendship(UserInfo user, UserInfo friendUserInfo) {
-        Identfication friendsId = Identfication.create(friendUserInfo.getId());
-        Name friendName = Name.create(friendUserInfo.getName());
-
-        Friend friend = Friend.create(friendsId, friendName);
-        
-        return Friendship.create(user, friend);
-    }
 
 
-    public FriendShipResult deleteFriendShipRequest(Long inputedId) {
-        User user = null;
-        Identfication myId = Identfication.create(user.getId());
-        UserInfo myInfo = createUserInfo(user, myId);
 
-        Identfication friendId = Identfication.create(inputedId);
+    public FriendShipResult deleteFriendShipRequest(Long inputedId) throws AccessDeniedException {
+        String[] userInfo = userService.findUserInfo();
+        PersonId myId = PersonId.create(Long.parseLong(userInfo[0]));
+        PersonName myName = PersonName.create( userInfo[1]);
+        Friender myInfo = Friender.create(myId, myName);
 
-        if ((friendShipRepository.findFriendshipByUserInfoAndFriend_FriendId(myInfo, friendId))==null){
+        PersonId friendId = PersonId.create(inputedId);
+
+        if ((friendShipRepository.findFriendshipByFrienderAndFriendee_FriendeeId(myInfo, friendId))==null){
 
             return FriendShipResult.NEVER_REQUESTED;
 
         }else {
             Friendship forwardFriendShip
-                    = friendShipRepository.findFriendshipByUserInfoAndFriend_FriendId(myInfo, friendId);
+                    = friendShipRepository.findFriendshipByFrienderAndFriendee_FriendeeId(myInfo, friendId);
             forwardFriendShip.deleteFriendShip();
+
+            Friendship backwardFriendShip
+                    = friendShipRepository.findFriendshipByFriender_FrienderIdAndFriendee_FriendeeId(friendId, myId);
+            backwardFriendShip.requestFriendShip();
+
 
             return FriendShipResult.SUCCESS;
         }
 
     }
 
-    private UserInfo createUserInfo(User user, Identfication id) {
-
-        Name name = Name.create(user.getUserBasicInfo().getUsername());
-        return UserInfo.create(id, name);
-    }
 
 
-    public List<FriendDto>findRequestForMe(int page, int size) {
+    public  List<FriendDto> findRequestForMe(int page, int size) throws AccessDeniedException {
+        if (page<0 || size<0){
+            throw new IllegalArgumentException();
+        }
 
-        User user = null;
-        Identfication myId = Identfication.create(user.getId());
 
-        List<FriendDto> friendshipList = friendShipRepository.findAllByFriend_FriendId(myId, PageRequest.of(page, size))
+        PersonId myId = PersonId.create(Long.parseLong(userService.findUserInfo()[0]));
+
+        List<FriendDto> friendshipList = friendShipRepository.findAllByFriendee_FriendeeId(myId, PageRequest.of(page, size))
                 .stream()
-                .filter(Friendship::getFriendState)
-                .map(Friendship::getUserInfo)
+                .filter(friendship -> friendship.getFriendState()==FriendShipState.REQUEST)
+                .map(Friendship::getFriender)
                 .map(this::toFriendDto)
                 .collect(Collectors.toList());
 
         return friendshipList;
+    }
+
+    public Friendship createFriendship(Friender friender, Friendee friendee) {
+
+        return Friendship.create(friender, friendee);
     }
 
     private FriendDto toFriendDto(BasicInfo basicInfo) {

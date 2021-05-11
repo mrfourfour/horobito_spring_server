@@ -2,103 +2,114 @@ package com.example.demo.feed.service;
 
 
 import com.example.demo.feed.domain.*;
-import com.example.demo.friend.domain.*;
-import com.example.demo.user.domain.User;
-import com.example.demo.user.domain.UserRepository;
-import com.example.demo.user.domain.Username;
+import com.example.demo.friend.domain.FriendShipRepository;
+import com.example.demo.friend.domain.FriendShipState;
+import com.example.demo.friend.domain.Friendship;
+import com.example.demo.friend.domain.PersonId;
+import com.example.demo.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.*;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.file.AccessDeniedException;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class FeedService {
     private final FeedRepository feedRepository;
-    private final UserRepository userRepository;
     private final FriendShipRepository friendShipRepository;
+    private final UserService userService;
 
     @Transactional
-    public void deleteFeedByFeedId(Long id) {
+    public void deleteFeedByFeedId(Long id) throws AccessDeniedException, IllegalAccessException {
         Feed feed = feedRepository.findFeedByIdAndDeleted(id, false);
-        feed.delete();
-    }
+        PersonId myId = PersonId.create(Long.parseLong(userService.findUserInfo()[0]));
 
-    public Feed[] findMyTimeLine(int page, int pageSize) { // 친구 문제
-        User user = findUser();
-        Identfication id = Identfication.create(user.getId());
-        Name name = Name.create(user.getUserBasicInfo().getUsername());
-        UserInfo userInfo = UserInfo.create(id, name);
-
-        WriterId[] friendIds
-                = friendShipRepository
-                .findAllByUserInfo(userInfo)
-                .stream()
-                .map(Friendship::getFriendId)
-                .map(WriterId::create)
-                .collect(Collectors.toList())
-                .toArray(WriterId[]::new);
-
-        int length = friendIds.length;
-
-        List<Feed> feedsList = new ArrayList<Feed>();
-
-        for (int i=0; i<length; i++){
-            feedsList.addAll(feedRepository.findFeedsByWriter_Id(friendIds[i]));
+        if (feed==null){
+            throw new IllegalArgumentException();
         }
 
-//        Page<Feed> feeds = new PageImpl<Feed>(feedsList, new PageRequest(page, pageSize, Sort.sort()), feedsList.size());
-
-
-//        Page<Feed> feeds = feedRepository.findAll(PageRequest.of(page, pageSize));
-
-        return feedsList.toArray(Feed[]::new);
+        if (myId.getId().equals(feed.getId())){
+            feed.delete();
+        }else {
+            throw new IllegalAccessException();
+        }
     }
 
-    public Feed findFeedDetailByFeedId(Long id) {
+
+    public FeedDto findFeedDetailByFeedId(Long id) throws AccessDeniedException, IllegalAccessException {
+        String[] userInfo = userService.findUserInfo();
+
         Feed feed = feedRepository.findFeedByIdAndDeleted(id, false);
-        return feed;
+        if (feed==null){
+            throw new IllegalArgumentException();
+        }
+
+        PersonId myId = PersonId.create(Long.parseLong(userInfo[0]));
+        PersonId friendId = PersonId.create(feed.getId());
+        Friendship friendship = friendShipRepository.findFriendshipByFriender_FrienderIdAndFriendee_FriendeeId(myId, friendId);
+
+
+
+        if (friendship==null || friendship.getFriendState()!=FriendShipState.ACCEPT){
+            throw new IllegalAccessException();
+        }
+
+
+        FeedDto feedDto = toFeedDto(feed);
+        return feedDto;
+    }
+
+    private FeedDto toFeedDto(Feed feed) {
+        return new FeedDto(
+                feed.getId(),
+                feed.getWriter().getId(),
+                feed.getWriter().getName(),
+                feed.getContent().getContent(),
+                feed.getComments().stream()
+                        .map(this::toCommentDto).collect(Collectors.toList()),
+                feed.getPreferenceCountInfo().getPreference(),
+                feed.getWrtTime()
+        );
+    }
+
+    private CommentDto toCommentDto(Comment comment){
+        return new CommentDto(
+                comment.getId(),
+                comment.getWriter().getId(),
+                comment.getWriter().getName(),
+                comment.getContent(),
+                comment.getPreferenceCountInfo().getPreference(),
+                comment.getWrtTime()
+        );
+
     }
 
 
+    public FeedDto makeFeedByContents(String insertedTitle, String insertedContent) throws AccessDeniedException {
 
-    public void makeFeedByContents(String InsertedContent) {
-//        User user = findUser();
-        Username username = null;
-        User user = null;
+        if (insertedTitle.length()==0){
+            throw new IllegalArgumentException();
+        }
 
-        WriterId id = WriterId.create(user.getId());
-        WriterName wrtName = WriterName.create(user.getUserBasicInfo().getUsername());
+        String[] userInfo = userService.findUserInfo();
+
+        WriterId id = WriterId.create(Long.parseLong(userInfo[0]));
+        WriterName wrtName = WriterName.create(userInfo[1]);
         Writer writer = Writer.create(id, wrtName);
-        Content content = Content.create(InsertedContent);
-        Feed feed = Feed.create(writer, content);
-
-
+        Content content = Content.create(insertedContent);
+        Title title = Title.create(insertedTitle);
+        Feed feed = Feed.create(writer, title, content);
         feedRepository.save(feed);
-        System.out.println("새로운 feed 생성 완료");
-    }
 
-    public User findUser(){
-        Authentication authentication = findAuthentication();
-        Username username = Username.create(authentication.getName());
-        return userRepository.findByUserBasicInfo_Username(username);
+        FeedDto feedDto = toFeedDto(feed);
+        return feedDto;
 
     }
 
-    public Authentication findAuthentication(){
-        return SecurityContextHolder.getContext().getAuthentication();
-    }
 
 
-    @Transactional
-    public void likeFeedByFeedID(Long id) {
-        Feed feed = feedRepository.findFeedByIdAndDeleted(id, false);
-        feed.like();
-    }
+
+
 }

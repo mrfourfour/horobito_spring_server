@@ -17,36 +17,40 @@ public class Friendship {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private UserInfo userInfo;
+    @Embedded
+    private Friender friender;
 
-    @ManyToOne
-    @JoinColumn(name = "friend_id")
-    private Friend friend;
+    @Embedded
+    private Friendee friendee;
 
     @Column(name = "friend_state")
-    private Boolean friendState;
+    @Enumerated(EnumType.STRING)
+    private FriendShipState friendState;
 
-    private Friendship(UserInfo userInfo, Friend friend){
-        this.userInfo = userInfo;
-        this.friend = friend;
-        this.friendState = false;
+    private Friendship(Friender friender, Friendee friendee){
+        this.friender = friender;
+        this.friendee = friendee;
+        this.friendState = FriendShipState.REQUESTED;
     }
 
-    public static Friendship create(UserInfo user, Friend friend) {
+    public static Friendship create(Friender user, Friendee friend) {
         return new Friendship(user, friend);
     }
 
-    public Long getFriendId(){
-        return this.friend.getId();
+    @Transient
+    public Long getFriendeeId(){
+        return this.friendee.getId();
     }
 
     public void acceptFriendShip() {
-        this.friendState = true;
+        this.friendState = FriendShipState.ACCEPT;
+    }
+
+    public void requestFriendShip(){
+        this.friendState = FriendShipState.REQUEST;
     }
 
     public void deleteFriendShip() {
-        this.friendState = false;
+        this.friendState = FriendShipState.DELETED;
     }
 }

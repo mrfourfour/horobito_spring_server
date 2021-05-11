@@ -13,23 +13,29 @@ import javax.persistence.Embeddable;
 @Setter(AccessLevel.PACKAGE)
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Preference {
+public class PreferenceCount {
 
     @Column(name = "preference")
     private long preference = 0L;
 
-    private Preference(long like){
+    private PreferenceCount(long like){
         this.preference = like;
     }
 
 
-    public Preference like(){
-        return new Preference(this.preference +1L);
+    public PreferenceCount like(){
+        return new PreferenceCount(this.preference +1L);
     }
 
 
-    public static Preference create(){
-        return new Preference();
+
+
+    public static PreferenceCount create(){
+        return new PreferenceCount();
+    }
+
+    public static PreferenceCount create(long preference){
+        return new PreferenceCount(preference);
     }
 
 

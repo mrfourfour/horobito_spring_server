@@ -12,15 +12,15 @@ import javax.persistence.Embeddable;
 @Setter(AccessLevel.PACKAGE)
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Name {
+public class PersonName {
 
     private String name;
 
-    private Name(String name) {
+    private PersonName(String name) {
         this.name = name;
     }
 
-    public static Name create(String name){
-        return new Name(name);
+    public static PersonName create(String name){
+        return new PersonName(name);
     }
 }

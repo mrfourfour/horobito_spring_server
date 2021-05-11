@@ -12,17 +12,18 @@ import javax.persistence.Embeddable;
 @Setter(AccessLevel.PROTECTED)
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Identfication {
+public class PersonId {
+
 
 
     private Long id;
 
-    private Identfication(Long id) {
+    private PersonId(Long id) {
         this.id = id;
     }
 
-    public static Identfication create(Long id){
-        return new Identfication(id);
+    public static PersonId create(Long id){
+        return new PersonId(id);
     }
 
 

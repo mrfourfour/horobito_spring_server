@@ -2,12 +2,21 @@ package com.example.demo.feed.service;
 
 
 import com.example.demo.feed.domain.*;
+import com.example.demo.friend.domain.FriendShipRepository;
+import com.example.demo.friend.domain.FriendShipState;
+import com.example.demo.friend.domain.Friendship;
+import com.example.demo.friend.domain.PersonId;
 import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserRepository;
 import com.example.demo.user.domain.Username;
+import com.example.demo.user.service.UserService;
+import com.example.demo.user.service.UserSessionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.nio.file.AccessDeniedException;
+import java.util.List;
 
 
 @Service
@@ -15,43 +24,64 @@ import org.springframework.transaction.annotation.Transactional;
 public class CommentService {
 
     private final FeedRepository feedRepository;
-
-    private final UserRepository userRepository;
+    private final UserService userService;
+    private final FriendShipRepository friendShipRepository;
 
     @Transactional
-    public void makeCommentByFeedIdAndContents(Long feedId, String insertedContent) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    public CommentDto makeCommentByFeedIdAndContents(Long feedId, String insertedContent) throws AccessDeniedException, IllegalAccessException {
+
         Feed feed = feedRepository.findFeedByIdAndDeleted(feedId, false);
-//        Username username = Username.create(authentication.getName());
-        Username username = Username.create("jihwan");
+        if (insertedContent.length()==0 || feed==null){
+            throw new IllegalArgumentException();
+        }
+
+        String[] userInfo = userService.findUserInfo();
+        Long friendId = feed.getWriter().getId();
+        Friendship friendship
+                = friendShipRepository.findFriendshipByFriender_FrienderIdAndFriendee_FriendeeId(
+                PersonId.create(friendId),
+                PersonId.create(Long.parseLong(userInfo[0])));
 
 
-        User user = userRepository.findByUserBasicInfo_Username(username);
 
+
+        if (friendship==null || friendship.getFriendState()!= FriendShipState.ACCEPT){
+            throw new IllegalAccessException();
+        }
 
         Content content = Content.create(insertedContent);
-
-        WriterId id = WriterId.create(user.getId());
-        WriterName wrtName = WriterName.create(user.getUserBasicInfo().getUsername());
+        WriterId id = WriterId.create(Long.parseLong(userInfo[0]));
+        WriterName wrtName = WriterName.create(userInfo[1]);
         Writer writer = Writer.create(id, wrtName);
-
         Comment comment = Comment.create(writer, content);
         feed.enrollComment(comment);
+
+        CommentDto commentDto = toCommentDto(comment);
+
+        return commentDto;
     }
 
-//    @Transactional
-//    public String likeOrDislikeCommentByFeedIdAndCommentId(Long feedId, int commentId) {
-//        Username username = Username.create("jihwan");
-//        User user = userRepository.findByUserBasicInfo_Username(username);
-//        try {
-//            Feed feed = feedRepository.findFeedByIdAndDeleted(feedId, false);
-//            Comment comment = feed.getComment(commentId);
-//            if(comment.checkPossibleOfLike(user)){
-//                comment.likeOrDislike();
-//            }
-//        } catch (Exception e){
-//
-//        }
-//        return null;
-//    }
+    private CommentDto toCommentDto(Comment comment) {
+        return new CommentDto(
+                comment.getId(),
+                comment.getWriter().getId(),
+                comment.getWriter().getName(),
+                comment.getContent(),
+                comment.getPreferenceCountInfo().getPreference(),
+                comment.getWrtTime()
+        );
+    }
+
+    public Comment findCommentById(List<Comment> commentList, Long commentId){
+        Comment result = null;
+        for (Comment comment : commentList){
+            if (comment.getId().equals(commentId)){
+                return comment;
+
+            }
+        }
+        return result;
+    }
+
+
 }
