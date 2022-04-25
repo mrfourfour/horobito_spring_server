@@ -1,4 +1,4 @@
-# horobito_spring_server
+# 타임라인 기반의 SNS 서버 구현 프로젝트
 
 ### 내용 및 기능
 
